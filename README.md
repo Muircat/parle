@@ -13,13 +13,21 @@ challenge opens: you type the sentence in French, and you can't carry on until y
 - **Guided → spontaneous.** Each grammar topic has a mastery score. Low mastery: type the sentence with a
   shuffled word bank in view (*Guidé*). Medium: type the key part of the sentence (*Compléter*). High: type the
   whole sentence from scratch (*Écrire*). "Plus facile" steps down a level (still typed).
+- **Adapts to you.** Every challenge is Débutant, Intermédiaire or Avancé. Harder ones unlock per topic as its
+  mastery grows (and across the board once your overall level rises), and the picker favours challenges right at
+  the edge of what you can do. Your level shows in the notebook.
+- **Villagers talk back.** Right-clicking a villager with a job starts a short typed exchange before you can
+  trade: they greet you (vous for librarians, clerics, smiths and cartographers; tu for the rest), then you make a
+  request suited to their job. Each villager has their own name and voice pitch. Get both lines right and the
+  trade window opens (and stays open to you for 5 minutes). Get it wrong and they don't understand you, so try
+  again.
 - **Revisits weak spots.** Spaced repetition per challenge (Leitner boxes); missed challenges and weak topics
   come back more often. Mistakes are listed in the notebook.
 - **Helpful marking.** Word-by-word feedback: wrong words underlined in red, missing words shown in green,
   accent-only slips accepted with a warning. Accent buttons (é è ê à ç …) under the text box.
-- **Curated content.** 74 challenges across 13 topics (passé composé avec avoir/être, futur proche, négation,
+- **Curated content.** 109 challenges across 16 topics (passé composé avec avoir/être, futur proche, négation,
   pronoms, imparfait, conditionnel, il faut/devoir, questions, prépositions de lieu, accords, verbes
-  pronominaux, connecteurs). No AI generation during play.
+  pronominaux, connecteurs, articles partitifs, pronoms relatifs, subjonctif). No AI generation during play.
 - Solving a challenge gives vanilla XP (3 / 6 / 10 by level, halved after a hint or a wrong try, none if you
   needed the solution).
 
@@ -57,7 +65,8 @@ Drop `.json` files into `config/parle/packs/` using the same format as
 `{a|b}` lists accepted alternatives (the first one is shown), `[...]` marks the part blanked in *Compléter* mode,
 `extra` are distractor tiles. Triggers: `kill:<mob>`, `mine:<block>` (deepslate variants merged, all logs are
 `mine:log`), `biome:<biome>`, `dim:the_nether|the_end|overworld`, `sleep`, `death`, `lowhp`, `dawn`; `*` is a
-wildcard. Challenges with `"on": []` only appear in review.
+wildcard. Villager dialogue uses `greet:vous`, `greet:tu`, `trade:<job>` (or `trade:any`) plus an `"npc"` line.
+Add `"level": 1|2|3` for difficulty. Challenges with `"on": []` only appear in review.
 
 ## Code layout
 - `core/` — plain Java, no Minecraft code: `Content` (library and picker), `Grader` (word diff), `Profile` (progress)

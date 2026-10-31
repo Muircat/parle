@@ -3,6 +3,7 @@ package dev.parle.client;
 import dev.parle.Parle;
 import dev.parle.core.Content.Challenge;
 import dev.parle.core.Grader;
+import dev.parle.core.Profile;
 import dev.parle.core.Profile.Mode;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
@@ -35,17 +36,28 @@ final class ChallengeScreen extends Screen {
     private int earned;
     private String draft = "", given = "";
     private Grader.Result result;
-    private int px, py, pw, ph = 214;
+    private final String speaker; // villager name and job, for trade dialogues
+    private final float pitch;
+    private final Runnable onSolved;
+    private int px, py, pw, ph = 234;
 
-    ChallengeScreen(Challenge c, String source) {
+    ChallengeScreen(Challenge c, String source) { this(c, source, null, 1f, null); }
+
+    ChallengeScreen(Challenge c, String source, String speaker, float pitch, Runnable onSolved) {
         super(Text.literal("Défi"));
         this.c = c;
         this.source = source;
+        this.speaker = speaker;
+        this.pitch = pitch;
+        this.onSolved = onSolved;
         this.mode = ParleClient.profile.mode(c);
         this.bank = c.tiles(ParleClient.RND);
     }
 
-    private boolean forced() { return !source.equals("review"); }
+    private boolean forced() { return !source.equals("review") && speaker == null; }
+
+    @Override
+    protected void applyBlur(float delta) { if (speaker == null) super.applyBlur(delta); } // keep the villager visible
 
     @Override
     protected void init() {
@@ -54,7 +66,7 @@ final class ChallengeScreen extends Screen {
         py = Math.max(6, (height - ph) / 2);
         int ix = px + 12, iw = pw - 24;
         if (state != State.DONE) {
-            TextFieldWidget field = addDrawableChild(new TextFieldWidget(textRenderer, ix, py + 96, iw, 20, Text.empty()));
+            TextFieldWidget field = addDrawableChild(new TextFieldWidget(textRenderer, ix, py + 116, iw, 20, Text.empty()));
             field.setMaxLength(160);
             field.setText(draft);
             field.setChangedListener(s -> draft = s);
@@ -63,7 +75,7 @@ final class ChallengeScreen extends Screen {
             for (int i = 0; i < ACCENTS.length(); i++) {
                 String ch = String.valueOf(ACCENTS.charAt(i));
                 addDrawableChild(ButtonWidget.builder(Text.literal(ch), b -> { field.write(ch); setFocused(field); })
-                        .dimensions(ix + i * 18, py + 120, 16, 14).build());
+                        .dimensions(ix + i * 18, py + 140, 16, 14).build());
             }
         }
         List<Map.Entry<String, Runnable>> row = new ArrayList<>();
@@ -76,7 +88,7 @@ final class ChallengeScreen extends Screen {
                 row.add(Map.entry("Vérifier ✔", this::check));
             }
             case COPY -> row.add(Map.entry("Vérifier ✔", this::check));
-            case DONE -> row.add(Map.entry(ParleClient.QUEUE.isEmpty() ? "Continuer" : "Défi suivant (" + ParleClient.QUEUE.size() + ")", this::next));
+            case DONE -> row.add(Map.entry(onSolved != null ? (ok ? "Continuer ➜" : "Partir") : ParleClient.QUEUE.isEmpty() ? "Continuer" : "Défi suivant (" + ParleClient.QUEUE.size() + ")", this::next));
         }
         int bw = (iw - 4 * (row.size() - 1)) / row.size();
         for (int i = 0; i < row.size(); i++) {
@@ -89,6 +101,10 @@ final class ChallengeScreen extends Screen {
 
     private void next() {
         close();
+        if (onSolved != null) {
+            if (ok) onSolved.run();
+            return;
+        }
         if (!ParleClient.QUEUE.isEmpty()) ParleClient.openNext(client);
     }
 
@@ -118,7 +134,8 @@ final class ChallengeScreen extends Screen {
                 return;
             }
             ok = true;
-            earned = Math.max(1, retried || hinted ? mode.xp / 2 : mode.xp);
+            int xp = mode.xp + 3 * (c.level - 1);
+            earned = Math.max(1, retried || hinted ? xp / 2 : xp);
             ParleClient.profile.record(c, true, !retried && !hinted, given);
             if (ClientPlayNetworking.canSend(Parle.Reward.ID)) ClientPlayNetworking.send(new Parle.Reward(earned));
             sound(true);
@@ -128,7 +145,8 @@ final class ChallengeScreen extends Screen {
     }
 
     private void sound(boolean good) {
-        client.getSoundManager().play(PositionedSoundInstance.master(good ? SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP : SoundEvents.ENTITY_VILLAGER_NO, good ? 1.3f : 1f, 0.6f));
+        var s = speaker != null ? (good ? SoundEvents.ENTITY_VILLAGER_YES : SoundEvents.ENTITY_VILLAGER_NO) : good ? SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP : SoundEvents.ENTITY_VILLAGER_NO;
+        client.getSoundManager().play(PositionedSoundInstance.master(s, speaker != null ? pitch : good ? 1.3f : 1f, 0.6f));
     }
 
     @Override
@@ -146,18 +164,24 @@ final class ChallengeScreen extends Screen {
         int ix = px + 12, iw = pw - 24;
         var topic = ParleClient.CONTENT.topics.get(c.topic);
         ctx.drawText(textRenderer, (topic != null ? topic.name() : c.topic) + " · " + ParleClient.label(source), ix, py + 10, UI.MUTED, false);
-        String chip = state == State.COPY || state == State.DONE && !ok ? "Recopier · 0 XP" : mode.label + " · +" + mode.xp + " XP";
+        String chip = state == State.COPY || state == State.DONE && !ok ? "Recopier · 0 XP" : mode.label + " · " + Profile.levelName(c.level);
         int cw = textRenderer.getWidth(chip) + 8;
         UI.round(ctx, px + pw - 12 - cw, py + 7, cw, 13, state == State.COPY ? UI.RED : UI.BLUE);
         ctx.drawText(textRenderer, chip, px + pw - 8 - cw, py + 10, UI.WHITE, false);
-        ctx.drawTextWrapped(textRenderer, Text.literal(c.say), ix, py + 26, iw, UI.WHITE);
+        int y = py + 26;
+        if (speaker != null && c.npc != null) {
+            ctx.drawText(textRenderer, speaker + " :", ix, y, UI.AMBER, false);
+            ctx.drawTextWrapped(textRenderer, Text.literal("« " + c.npc + " »").styled(s -> s.withItalic(true)), ix + 6, y += 11, iw - 6, UI.WHITE);
+            y += textRenderer.wrapLines(Text.literal("« " + c.npc + " »"), iw - 6).size() * 9 + 4;
+        }
+        ctx.drawTextWrapped(textRenderer, Text.literal(c.say), ix, y, iw, speaker != null ? UI.MUTED : UI.WHITE);
 
         switch (state) {
             case ASK -> {
-                if (mode == Mode.GUIDED) words(ctx, ix, py + 64, iw);
+                if (mode == Mode.GUIDED) words(ctx, ix, py + 84, iw);
                 else if (mode == Mode.FILL)
-                    ctx.drawTextWrapped(textRenderer, Text.literal(c.prefix()).append(UI.color("_____", UI.AMBER)).append(c.suffix()), ix, py + 68, iw, UI.MUTED);
-                int fy = py + 142;
+                    ctx.drawTextWrapped(textRenderer, Text.literal(c.prefix()).append(UI.color("_____", UI.AMBER)).append(c.suffix()), ix, py + 90, iw, UI.MUTED);
+                int fy = py + 162;
                 if (result != null) {
                     ctx.drawText(textRenderer, "Pas tout à fait. Corrige les mots soulignés et réessaie :", ix, fy, UI.RED, false);
                     ctx.drawTextWrapped(textRenderer, UI.marked(result.given()), ix, fy + 11, iw, UI.WHITE);
@@ -166,17 +190,17 @@ final class ChallengeScreen extends Screen {
                 if (hinted) ctx.drawTextWrapped(textRenderer, Text.literal("Indice : " + c.hint), ix, fy, iw, UI.AMBER);
             }
             case COPY -> {
-                ctx.drawText(textRenderer, "Solution (en vert : ce qui manquait). Recopie-la :", ix, py + 64, UI.MUTED, false);
-                ctx.drawTextWrapped(textRenderer, UI.marked(Grader.grade(given, List.of(result.expected())).wanted()), ix, py + 76, iw, UI.WHITE);
+                ctx.drawText(textRenderer, "Solution (en vert : ce qui manquait). Recopie-la :", ix, py + 84, UI.MUTED, false);
+                ctx.drawTextWrapped(textRenderer, UI.marked(Grader.grade(given, List.of(result.expected())).wanted()), ix, py + 96, iw, UI.WHITE);
                 if (draft.isBlank() || Grader.grade(draft, c.accepted()).verdict() == Grader.Verdict.WRONG)
-                    ctx.drawTextWrapped(textRenderer, Text.literal(c.hint), ix, py + 142, iw, UI.AMBER);
+                    ctx.drawTextWrapped(textRenderer, Text.literal(c.hint), ix, py + 162, iw, UI.AMBER);
             }
             case DONE -> {
                 boolean accents = ok && result.verdict() == Grader.Verdict.ACCENTS;
-                String head = !ok ? "C'est noté. Ce défi reviendra bientôt." : (accents ? "Presque ! Attention aux accents." : "Parfait !") + " +" + earned + " XP";
-                ctx.drawText(textRenderer, head, ix, py + 70, ok ? (accents ? UI.AMBER : UI.GREEN) : UI.MUTED, false);
-                ctx.drawTextWrapped(textRenderer, ok ? UI.marked(result.wanted()) : Text.literal(result.expected()), ix, py + 84, iw, UI.WHITE);
-                ctx.drawTextWrapped(textRenderer, Text.literal(c.hint), ix, py + 120, iw, UI.MUTED);
+                String head = !ok ? (speaker != null ? "« Désolé, je ne comprends pas. » Pas d'échange cette fois." : "C'est noté. Ce défi reviendra bientôt.") : (accents ? "Presque ! Attention aux accents." : "Parfait !") + " +" + earned + " XP";
+                ctx.drawText(textRenderer, head, ix, py + 90, ok ? (accents ? UI.AMBER : UI.GREEN) : UI.MUTED, false);
+                ctx.drawTextWrapped(textRenderer, ok ? UI.marked(result.wanted()) : Text.literal(result.expected()), ix, py + 104, iw, UI.WHITE);
+                ctx.drawTextWrapped(textRenderer, Text.literal(c.hint), ix, py + 140, iw, UI.MUTED);
             }
         }
     }

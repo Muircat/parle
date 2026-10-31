@@ -57,11 +57,24 @@ public final class Profile {
         return m == Mode.FILL && !c.hasBlank() ? Mode.WRITE : m;
     }
 
+    /** How hard this topic's challenges may get: 1 → 2 → 3 as its mastery grows. */
+    public int tier(String topic) { return 1 + Math.min(2, score(topic) / 4); }
+
+    /** Overall level from all practised topics, so strong players also meet advanced-only topics. */
+    public int level() {
+        double avg = score.values().stream().mapToInt(Integer::intValue).average().orElse(0);
+        return score.size() < 3 ? 1 : avg >= 7 ? 3 : avg >= 4 ? 2 : 1;
+    }
+
+    public static String levelName(int level) { return level >= 3 ? "Avancé" : level == 2 ? "Intermédiaire" : "Débutant"; }
+
     public boolean missed(String id) { return mistakes.stream().anyMatch(m -> m.id.equals(id)); }
 
     double weight(Content.Challenge c) {
+        int reach = Math.max(tier(c.topic), level());
+        if (c.level > reach) return 0; // too hard for now
         int b = 6 - box.getOrDefault(c.id, 0);
-        double w = b * b * (1 + (MAX - score(c.topic)) / 5.0);
+        double w = b * b * (1 + (MAX - score(c.topic)) / 5.0) * (c.level == reach ? 3 : 1); // favour the learner's edge
         if (System.currentTimeMillis() - seen.getOrDefault(c.id, 0L) < 600_000) w *= 0.05;
         return missed(c.id) ? w * 3 : w;
     }

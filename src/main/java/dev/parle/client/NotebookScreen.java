@@ -47,7 +47,7 @@ final class NotebookScreen extends Screen {
         super.render(ctx, mx, my, delta);
         int x = px + 12, split = pw >= 380 ? pw * 11 / 20 : pw - 24;
         ctx.drawText(textRenderer, title, x, py + 10, UI.WHITE, false);
-        String stats = p().solved + " réussis · série " + p().streak + " · record " + p().best;
+        String stats = "Niveau " + Profile.levelName(p().level()) + " · " + p().solved + " réussis · série " + p().streak + " · record " + p().best;
         ctx.drawText(textRenderer, stats, px + pw - 12 - textRenderer.getWidth(stats), py + 10, UI.MUTED, false);
         ctx.drawText(textRenderer, "Grammaire — clique pour t'entraîner", x, py + 26, UI.MUTED, false);
 

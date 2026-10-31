@@ -20,7 +20,8 @@ public final class Content {
      * {a|b} lists alternatives (first one is canonical), [..] marks the part blanked out in "fill in" mode.
      */
     public static final class Challenge {
-        public String id, topic, say, hint = "";
+        public String id, topic, say, hint = "", npc; // npc: what a villager says first, for trade dialogues
+        public int level = 1; // 1 beginner, 2 intermediate, 3 advanced
         public List<String> on = List.of(), answers = List.of(), extra = List.of();
         private transient List<String> accepted;
         private transient String prefix, focus, suffix;
@@ -84,13 +85,14 @@ public final class Content {
      */
     public Challenge pick(String trigger, String topic, Profile p, Random rnd) {
         List<Challenge> pool = challenges.stream().filter(c -> trigger == null
-                ? topic == null || c.topic.equals(topic)
+                ? c.npc == null && (topic == null || c.topic.equals(topic))
                 : c.on.stream().anyMatch(g -> glob(g, trigger))).toList();
         double[] w = new double[pool.size()];
         double total = 0;
         for (int i = 0; i < w.length; i++) total += w[i] = p.weight(pool.get(i));
+        if (total <= 0) return null;
         double roll = rnd.nextDouble() * total;
-        for (int i = 0; i < w.length; i++) if ((roll -= w[i]) <= 0) return pool.get(i);
+        for (int i = 0; i < w.length; i++) if (w[i] > 0 && (roll -= w[i]) <= 0) return pool.get(i);
         return pool.isEmpty() ? null : pool.get(pool.size() - 1);
     }
 
