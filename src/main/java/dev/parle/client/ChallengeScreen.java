@@ -36,18 +36,23 @@ final class ChallengeScreen extends Screen {
     private int earned;
     private String draft = "", given = "";
     private Grader.Result result;
-    private final String speaker; // villager name and job, for trade dialogues
+    private final String speaker, reg; // villager name and job, and "tu"/"vous", for trade dialogues
     private final float pitch;
     private final Runnable onSolved;
     private int px, py, pw, ph = 234;
 
-    ChallengeScreen(Challenge c, String source) { this(c, source, null, 1f, null); }
+    private boolean wrongRegister;
+    private String copyChecked;
+    private boolean copyOk;
 
-    ChallengeScreen(Challenge c, String source, String speaker, float pitch, Runnable onSolved) {
+    ChallengeScreen(Challenge c, String source) { this(c, source, null, null, 1f, null); }
+
+    ChallengeScreen(Challenge c, String source, String speaker, String reg, float pitch, Runnable onSolved) {
         super(Text.literal("Défi"));
         this.c = c;
         this.source = source;
         this.speaker = speaker;
+        this.reg = reg;
         this.pitch = pitch;
         this.onSolved = onSolved;
         this.mode = ParleClient.profile.mode(c);
@@ -119,7 +124,8 @@ final class ChallengeScreen extends Screen {
     private void check() {
         String input = state == State.ASK && mode == Mode.FILL ? (draft.isBlank() ? "" : c.prefix() + draft.trim() + c.suffix()) : draft;
         if (input.isBlank()) return;
-        Grader.Result r = Grader.grade(input, c.accepted());
+        Grader.Result r = Grader.check(input, c, reg);
+        wrongRegister = "vous".equals(reg) && r.verdict() == Grader.Verdict.WRONG && Grader.check(input, c, "tu").verdict() != Grader.Verdict.WRONG;
         if (state == State.COPY) {
             if (r.verdict() == Grader.Verdict.WRONG) { sound(false); return; }
             ok = false;
@@ -170,7 +176,7 @@ final class ChallengeScreen extends Screen {
         ctx.drawText(textRenderer, chip, px + pw - 8 - cw, py + 10, UI.WHITE, false);
         int y = py + 26;
         if (speaker != null && c.npc != null) {
-            ctx.drawText(textRenderer, speaker + " :", ix, y, UI.AMBER, false);
+            ctx.drawText(textRenderer, speaker + (reg != null ? " (on se dit « " + reg + " »)" : "") + " :", ix, y, UI.AMBER, false);
             ctx.drawTextWrapped(textRenderer, Text.literal("« " + c.npc + " »").styled(s -> s.withItalic(true)), ix + 6, y += 11, iw - 6, UI.WHITE);
             y += textRenderer.wrapLines(Text.literal("« " + c.npc + " »"), iw - 6).size() * 9 + 4;
         }
@@ -183,7 +189,7 @@ final class ChallengeScreen extends Screen {
                     ctx.drawTextWrapped(textRenderer, Text.literal(c.prefix()).append(UI.color("_____", UI.AMBER)).append(c.suffix()), ix, py + 90, iw, UI.MUTED);
                 int fy = py + 162;
                 if (result != null) {
-                    ctx.drawText(textRenderer, "Pas tout à fait. Corrige les mots soulignés et réessaie :", ix, fy, UI.RED, false);
+                    ctx.drawText(textRenderer, wrongRegister ? "Bonne phrase, mauvais registre : on vouvoie ce villageois !" : "Pas tout à fait. Corrige les mots soulignés et réessaie :", ix, fy, UI.RED, false);
                     ctx.drawTextWrapped(textRenderer, UI.marked(result.given()), ix, fy + 11, iw, UI.WHITE);
                     fy += 24;
                 }
@@ -192,7 +198,8 @@ final class ChallengeScreen extends Screen {
             case COPY -> {
                 ctx.drawText(textRenderer, "Solution (en vert : ce qui manquait). Recopie-la :", ix, py + 84, UI.MUTED, false);
                 ctx.drawTextWrapped(textRenderer, UI.marked(Grader.grade(given, List.of(result.expected())).wanted()), ix, py + 96, iw, UI.WHITE);
-                if (draft.isBlank() || Grader.grade(draft, c.accepted()).verdict() == Grader.Verdict.WRONG)
+                if (!draft.equals(copyChecked)) { copyChecked = draft; copyOk = Grader.check(draft, c, reg).verdict() != Grader.Verdict.WRONG; }
+                if (!copyOk)
                     ctx.drawTextWrapped(textRenderer, Text.literal(c.hint), ix, py + 162, iw, UI.AMBER);
             }
             case DONE -> {

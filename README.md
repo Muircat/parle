@@ -21,6 +21,10 @@ challenge opens: you type the sentence in French, and you can't carry on until y
   request suited to their job. Each villager has their own name and voice pitch. Get both lines right and the
   trade window opens (and stays open to you for 5 minutes). Get it wrong and they don't understand you, so try
   again.
+  Say it your way: answers are built from a phrasebook of greetings, request forms (je voudrais, j'aimerais,
+  pourriez-vous me donner, est-ce que je pourrais avoir…), questions and politeness, so each line accepts thousands
+  of correct phrasings. They must be grammatical and in the right register: tutoyer a librarian and they tell you
+  to use vous (being formal with a farmer is fine).
 - **Revisits weak spots.** Spaced repetition per challenge (Leitner boxes); missed challenges and weak topics
   come back more often. Mistakes are listed in the notebook.
 - **Helpful marking.** Word-by-word feedback: wrong words underlined in red, missing words shown in green,
@@ -63,6 +67,8 @@ Drop `.json` files into `config/parle/packs/` using the same format as
   "extra": ["suis", "tuer"] } ] }
 ```
 `{a|b}` lists accepted alternatives (the first one is shown), `[...]` marks the part blanked in *Compléter* mode,
+`{@name}` inserts a phrasebook entry (see `"phrases"` in content.json; `name.tu` / `name.vous` lists only apply in
+that register),
 `extra` are distractor tiles. Triggers: `kill:<mob>`, `mine:<block>` (deepslate variants merged, all logs are
 `mine:log`), `biome:<biome>`, `dim:the_nether|the_end|overworld`, `sleep`, `death`, `lowhp`, `dawn`; `*` is a
 wildcard. Villager dialogue uses `greet:vous`, `greet:tu`, `trade:<job>` (or `trade:any`) plus an `"npc"` line.

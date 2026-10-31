@@ -13,6 +13,24 @@ public final class Grader {
     /** given = the player's words, marked; wanted = the closest accepted answer's words, marked. */
     public record Result(Verdict verdict, String expected, List<Tok> given, List<Tok> wanted) {}
 
+    /** Checks an answer against a challenge (with its phrasebook), and explains the mistakes if it's wrong. */
+    public static Result check(String input, Content.Challenge c, String reg) {
+        if (c.matches(line(input, false, false), reg, false)) return grade(input, List.of(input));
+        Result r = grade(input, c.nearest(input, reg));
+        boolean accents = c.matches(line(input, true, false), reg, true);
+        return new Result(accents ? Verdict.ACCENTS : Verdict.WRONG, r.expected(), r.given(), r.wanted());
+    }
+
+    /** Words, lower-cased (and accent-free if fold), each followed by a space; quote = escape for a regex. */
+    static String line(String s, boolean fold, boolean quote) {
+        StringBuilder sb = new StringBuilder();
+        for (String t : tokens(s.replace("[", "").replace("]", ""))) {
+            String w = (fold ? key(t) : lower(t)) + " ";
+            sb.append(quote ? java.util.regex.Pattern.quote(w) : w);
+        }
+        return sb.toString();
+    }
+
     public static Result grade(String input, List<String> accepted) {
         List<String> u = tokens(input);
         Result best = null;

@@ -1,4 +1,241 @@
 {
+ "phrases": {
+  "hi": [
+   "",
+   "Bonjour, ",
+   "Bonjour ! ",
+   "Bonsoir, ",
+   "Pardon, ",
+   "Alors, ",
+   "Eh bien, ",
+   "Bon, ",
+   "Ah, ",
+   "Oui, ",
+   "Bonjour monsieur, ",
+   "Bonjour madame, "
+  ],
+  "hi.tu": [
+   "Salut, ",
+   "Salut ! ",
+   "Coucou, ",
+   "Hé, "
+  ],
+  "hi.vous": [
+   "Excusez-moi, ",
+   "Bonjour, excusez-moi, "
+  ],
+  "yes": [
+   "Oui",
+   "Oui, bien sûr",
+   "Bien sûr",
+   "Absolument",
+   "Tout à fait",
+   "Oui, tout à fait",
+   "Exactement",
+   "Oui, en effet",
+   "Volontiers",
+   "Oui, volontiers"
+  ],
+  "want": [
+   "Je voudrais ",
+   "J'aimerais ",
+   "Je veux ",
+   "Je souhaiterais ",
+   "Je souhaite ",
+   "Je prendrais ",
+   "Je vais prendre ",
+   "Je prends ",
+   "Je cherche ",
+   "Il me faut ",
+   "Je voudrais acheter ",
+   "J'aimerais acheter ",
+   "Je veux acheter ",
+   "Je voudrais avoir ",
+   "J'aimerais avoir ",
+   "Est-ce que je pourrais avoir ",
+   "Est-ce que je peux avoir ",
+   "Est-ce que je pourrais acheter ",
+   "Puis-je avoir ",
+   "Pourrais-je avoir ",
+   "Je peux avoir ",
+   "Je pourrais avoir "
+  ],
+  "want.vous": [
+   "Pourriez-vous me donner ",
+   "Pouvez-vous me donner ",
+   "Est-ce que vous pourriez me donner ",
+   "Vous pourriez me donner ",
+   "Donnez-moi ",
+   "Pourriez-vous me vendre ",
+   "Pouvez-vous me vendre ",
+   "Vous pouvez me vendre ",
+   "Vendez-moi "
+  ],
+  "want.tu": [
+   "Tu pourrais me donner ",
+   "Tu peux me donner ",
+   "Est-ce que tu pourrais me donner ",
+   "Pourrais-tu me donner ",
+   "Peux-tu me donner ",
+   "Donne-moi ",
+   "Tu peux me vendre ",
+   "Peux-tu me vendre ",
+   "Vends-moi "
+  ],
+  "want_do": [
+   "Je voudrais ",
+   "J'aimerais ",
+   "Je veux ",
+   "Je souhaiterais ",
+   "Je souhaite ",
+   "Je viens ",
+   "Je suis venu ",
+   "Je suis venue ",
+   "Est-ce que je pourrais ",
+   "Est-ce que je peux ",
+   "Puis-je ",
+   "Pourrais-je ",
+   "Je peux ",
+   "Je pourrais "
+  ],
+  "trade": [
+   "faire un échange",
+   "échanger",
+   "faire des échanges",
+   "acheter quelque chose",
+   "commercer",
+   "faire affaire",
+   "faire du commerce"
+  ],
+  "trade.vous": [
+   "voir ce que vous vendez",
+   "voir vos marchandises",
+   "voir vos articles",
+   "faire affaire avec vous",
+   "échanger avec vous",
+   "faire un échange avec vous"
+  ],
+  "trade.tu": [
+   "voir ce que tu vends",
+   "voir tes marchandises",
+   "voir tes articles",
+   "faire affaire avec toi",
+   "échanger avec toi",
+   "faire un échange avec toi"
+  ],
+  "please": [
+   "",
+   ", s'il vous plaît",
+   ", merci",
+   ", s'il vous plaît, merci",
+   ", merci beaucoup"
+  ],
+  "please.tu": [
+   ", s'il te plaît",
+   ", s'il te plaît, merci"
+  ],
+  "show": [
+   "J'aimerais voir ",
+   "Je voudrais voir ",
+   "Je veux voir ",
+   "Je souhaiterais voir ",
+   "Est-ce que je peux voir ",
+   "Est-ce que je pourrais voir ",
+   "Puis-je voir ",
+   "Pourrais-je voir "
+  ],
+  "show.vous": [
+   "Pourriez-vous me montrer ",
+   "Pouvez-vous me montrer ",
+   "Est-ce que vous pourriez me montrer ",
+   "Est-ce que vous pouvez me montrer ",
+   "Vous pourriez me montrer ",
+   "Montrez-moi "
+  ],
+  "show.tu": [
+   "Tu pourrais me montrer ",
+   "Tu peux me montrer ",
+   "Pourrais-tu me montrer ",
+   "Peux-tu me montrer ",
+   "Est-ce que tu peux me montrer ",
+   "Montre-moi "
+  ],
+  "goods.vous": [
+   "vos marchandises",
+   "vos articles",
+   "vos produits",
+   "ce que vous vendez",
+   "ce que vous avez"
+  ],
+  "goods.tu": [
+   "tes marchandises",
+   "tes articles",
+   "tes produits",
+   "ce que tu vends",
+   "ce que tu as"
+  ],
+  "have": [
+   "Est-ce qu'il y a ",
+   "Il y a ",
+   "Y a-t-il "
+  ],
+  "have.vous": [
+   "Avez-vous ",
+   "Est-ce que vous avez ",
+   "Vous avez ",
+   "Auriez-vous ",
+   "Est-ce que vous auriez ",
+   "Vous auriez ",
+   "Vendez-vous ",
+   "Est-ce que vous vendez ",
+   "Vous vendez "
+  ],
+  "have.tu": [
+   "As-tu ",
+   "Est-ce que tu as ",
+   "Tu as ",
+   "Aurais-tu ",
+   "Est-ce que tu aurais ",
+   "Tu aurais ",
+   "Vends-tu ",
+   "Est-ce que tu vends ",
+   "Tu vends "
+  ],
+  "how_much": [
+   "Combien coûte ",
+   "C'est combien, ",
+   "Ça coûte combien, ",
+   "Combien vaut "
+  ],
+  "fine": [
+   "Ça va bien",
+   "Ça va",
+   "Très bien",
+   "Bien",
+   "Ça va très bien",
+   "Je vais bien",
+   "Je vais très bien",
+   "Pas mal",
+   "Super",
+   "Tout va bien",
+   "Pas trop mal",
+   "Ça va super bien"
+  ],
+  "thanks": [
+   "",
+   ", merci",
+   ", merci beaucoup"
+  ],
+  "and_you.tu": [
+   ", et toi ?",
+   ". Et toi ?",
+   ", et toi, ça va ?"
+  ],
+  "and_you.vous": [
+   ", et vous ?",
+   ". Et vous ?"
+  ]
+ },
  "topics": {
   "pc_avoir": {
    "name": "Passé composé (avoir)",
@@ -979,7 +1216,7 @@
    "hint": "vouloir in the conditional: je voudrais.",
    "answers": [
     "Je [voudrais] vaincre le dragon.",
-    "Je {voudrais|veux|aimerais} {vaincre|tuer|battre} le dragon."
+    "{Je voudrais|Je veux|J'aimerais} {vaincre|tuer|battre} le dragon."
    ],
    "extra": [
     "veut",
@@ -1630,8 +1867,9 @@
    "say": "Greet them back politely and say you'd like to trade.",
    "hint": "Formal: je voudrais (politer than je veux), s'il vous plaît.",
    "answers": [
-    "Bonjour, je [voudrais] faire un échange{| s'il vous plaît}.",
-    "Bonjour, j'aimerais faire un échange{| s'il vous plaît}."
+    "Bonjour, je [voudrais] faire un échange.",
+    "{@hi}{@want_do}{@trade}{@please}",
+    "{@yes}, {@want_do}{@trade}{@please}"
    ],
    "extra": [
     "veux",
@@ -1649,8 +1887,9 @@
    "say": "Say yes, you're looking for something, and politely ask if they could show you their goods.",
    "hint": "pouvoir in the conditional with vous: pourriez-vous.",
    "answers": [
-    "Oui, je cherche quelque chose. [Pourriez-vous] me montrer vos {articles|marchandises|produits} ?",
-    "Oui, je cherche quelque chose. Pouvez-vous me montrer vos {articles|marchandises|produits} ?"
+    "Oui. [Pourriez-vous] me montrer vos marchandises ?",
+    "{@yes}, {@show}{@goods}{@please}",
+    "{@yes}, je cherche quelque chose{| de précis}. {@show}{@goods}{@please}"
    ],
    "extra": [
     "pourrais",
@@ -1669,8 +1908,7 @@
    "hint": "Je vous serais reconnaissant(e) de + infinitive; ce que = what.",
    "answers": [
     "Je vous [serais reconnaissant] de me montrer ce que vous vendez.",
-    "Je vous serais reconnaissante de me montrer ce que vous vendez.",
-    "Je vous serais {reconnaissant|reconnaissante} si vous pouviez me montrer ce que vous vendez."
+    "{@hi}Je vous serais {reconnaissant|reconnaissante} {de me montrer|si vous pouviez me montrer|si vous me montriez} {@goods}"
    ],
    "extra": [
     "serai",
@@ -1689,8 +1927,8 @@
    "hint": "Informal: et toi ?",
    "answers": [
     "[Ça va bien], et toi ?",
-    "{Ça va|Très bien|Bien}{| merci}, et toi ?",
-    "Ça va bien merci, et toi ?"
+    "{@yes}, {@fine}{@thanks}{@and_you}",
+    "{@fine}{@thanks}{@and_you}"
    ],
    "extra": [
     "vous",
@@ -1709,7 +1947,7 @@
    "hint": "ce que = what; parce que joins the reason.",
    "answers": [
     "J'aimerais voir ce que tu as [parce que] j'ai besoin de quelques choses.",
-    "Je voudrais voir ce que tu as {parce que|car} j'ai besoin de {quelques|plusieurs} choses."
+    "{@hi}{@show}{@goods} {parce que|car|puisque} j'ai besoin de {quelques|plusieurs|certaines} choses{@please}"
    ],
    "extra": [
     "qui",
@@ -1728,7 +1966,7 @@
    "hint": "revenir uses être (je suis revenu·e); description in the past: tu avais.",
    "answers": [
     "Oui, je [suis revenu] parce que tu avais les meilleurs prix.",
-    "Oui, je suis revenue parce que tu avais les meilleurs prix."
+    "{@yes}, je suis {revenu|revenue} {parce que|car|puisque} {tu avais|vous aviez} les meilleurs prix"
    ],
    "extra": [
     "ai",
@@ -1746,7 +1984,8 @@
    "say": "Say \"I'd like to trade, please.\"",
    "hint": "je voudrais + infinitive.",
    "answers": [
-    "Je [voudrais] échanger{| s'il vous plaît| s'il te plaît}."
+    "Je [voudrais] échanger.",
+    "{@hi}{@want_do}{@trade}{@please}"
    ],
    "extra": [
     "veut",
@@ -1761,11 +2000,12 @@
    ],
    "topic": "articles",
    "level": 1,
-   "say": "Say you'd like some bread, please.",
+   "say": "Ask for some bread.",
    "hint": "Some bread = du pain (partitive).",
    "answers": [
-    "Je voudrais [du pain]{| s'il te plaît}.",
-    "{J'aimerais|Je veux} du pain{| s'il te plaît}."
+    "Je voudrais [du pain], s'il te plaît.",
+    "{@hi}{@want}{du pain|un pain|une miche de pain|un peu de pain|des pains}{@please}",
+    "{@hi}J'ai besoin {de pain|d'un pain}{@please}"
    ],
    "extra": [
     "le",
@@ -1784,7 +2024,8 @@
    "hint": "en replaces 'of them': j'en prends cinq.",
    "answers": [
     "J'[en prends] cinq.",
-    "J'en {veux|voudrais|prendrai} cinq."
+    "{@hi}{J'en prends|J'en veux|J'en voudrais|J'en prendrai|J'en prendrais|Je vais en prendre|Je voudrais en prendre|J'aimerais en prendre|J'en achète|Je vais en acheter|Je voudrais en acheter} cinq{@please}",
+    "{@hi}{Je prends|Je veux|Je voudrais|Je vais prendre|J'aimerais} cinq pommes{@please}"
    ],
    "extra": [
     "les",
@@ -1802,8 +2043,9 @@
    "say": "Ask if they have a book with Mending (Raccommodage).",
    "hint": "Formal question with inversion: Avez-vous… ?",
    "answers": [
-    "[Avez-vous] un livre {avec|de} Raccommodage ?",
-    "Est-ce que vous avez un livre {avec|de} Raccommodage ?"
+    "[Avez-vous] un livre avec Raccommodage ?",
+    "{@hi}{@have}un livre {avec|de} Raccommodage{@please}",
+    "{@hi}{@want}un livre {avec|de} Raccommodage{@please}"
    ],
    "extra": [
     "as-tu",
@@ -1822,7 +2064,8 @@
    "hint": "si + imparfait → conditionnel: s'il coûtait, je l'achèterais.",
    "answers": [
     "S'il [coûtait] moins cher, je l'achèterais.",
-    "S'il coûtait moins, je l'achèterais."
+    "{S'il|Si ce livre|Si le livre} {coûtait moins cher|coûtait moins|était moins cher}, je {l'achèterais|le prendrais}",
+    "Je {l'achèterais|le prendrais} {s'il|si ce livre|si le livre} {coûtait moins cher|coûtait moins|était moins cher}"
    ],
    "extra": [
     "coûte",
@@ -1841,7 +2084,8 @@
    "hint": "Est-ce que vous vendez… ? or Vendez-vous… ?",
    "answers": [
     "[Est-ce que vous vendez] de la redstone ?",
-    "Vendez-vous de la redstone ?"
+    "{@hi}{@have}de la redstone{@please}",
+    "{@hi}{@want}de la redstone{@please}"
    ],
    "extra": [
     "vends",
@@ -1859,7 +2103,8 @@
    "say": "Say \"I need you to give me an ender pearl\" (il faut que…).",
    "hint": "il faut que + subjunctive: que vous me donniez.",
    "answers": [
-    "Il faut que vous me [donniez] une perle {de l'Ender|d'Ender}."
+    "Il faut que vous me [donniez] une perle de l'Ender.",
+    "{@hi}{Il faut|J'ai besoin|Il est nécessaire} que vous me {donniez|vendiez} une perle {de l'Ender|d'Ender}{@please}"
    ],
    "extra": [
     "donnez",
@@ -1878,7 +2123,7 @@
    "hint": "je voudrais + infinitive; en fer = made of iron.",
    "answers": [
     "Je voudrais acheter un [plastron en fer].",
-    "{J'aimerais|Je voudrais} {acheter|avoir} un plastron en fer."
+    "{@hi}{@want}un plastron {en fer|de fer}{@please}"
    ],
    "extra": [
     "de",
@@ -1897,7 +2142,7 @@
    "hint": "que is the object: l'épée que j'ai.",
    "answers": [
     "Oui, ça m'intéresse, car l'épée [que j'ai] est cassée.",
-    "Oui, ça m'intéresse, parce que l'épée que j'ai est cassée."
+    "{@yes}, {ça m'intéresse|je suis intéressé|je suis intéressée}, {car|parce que|puisque|} l'épée {que j'ai|que je porte|que je possède} est {cassée|brisée}"
    ],
    "extra": [
     "qui",
@@ -1915,7 +2160,8 @@
    "say": "Answer \"Yes, I need one, mine broke yesterday.\"",
    "hint": "se casser uses être; la mienne is feminine so: s'est cassée.",
    "answers": [
-    "Oui, j'en ai besoin, la mienne [s'est cassée] hier."
+    "Oui, j'en ai besoin, la mienne [s'est cassée] hier.",
+    "{@yes}, j'en ai besoin{,| car| parce que| puisque} {la mienne|ma pioche} s'est {cassée|brisée} hier"
    ],
    "extra": [
     "a",
@@ -1934,9 +2180,11 @@
    "hint": "Combien coûte… ? or C'est combien… ?",
    "answers": [
     "[Combien coûte] le saumon ?",
-    "C'est combien le saumon ?",
-    "Le saumon coûte combien ?",
-    "Combien est-ce que le saumon coûte ?"
+    "{@hi}{@how_much}le saumon{@please}",
+    "{@hi}Le saumon coûte combien{@please}",
+    "{@hi}Quel est le prix du saumon{@please}",
+    "{@hi}{Tu vends|Vous vendez} le saumon à combien{@please}",
+    "{@hi}Combien {coûte le saumon|est-ce que coûte le saumon|est-ce que le saumon coûte}{@please}"
    ],
    "extra": [
     "comment",
@@ -1954,7 +2202,9 @@
    "say": "Say you'd like the blue wool, not the white one.",
    "hint": "la laine is feminine: bleue, la blanche.",
    "answers": [
-    "Je voudrais la laine [bleue], pas la blanche."
+    "Je voudrais la laine [bleue], pas la blanche.",
+    "{@hi}{@want}la laine bleue{, pas la blanche| et pas la blanche|, pas celle qui est blanche}{@please}",
+    "{@hi}{@want}de la laine bleue{, pas de la blanche|}{@please}"
    ],
    "extra": [
     "bleu",
@@ -1972,7 +2222,9 @@
    "say": "Say you haven't eaten anything since this morning.",
    "hint": "ne … rien wraps the helper verb: je n'ai rien mangé.",
    "answers": [
-    "Je [n'ai rien mangé] depuis ce matin."
+    "Je [n'ai rien mangé] depuis ce matin.",
+    "{|Oui, |Oui. |Ah oui, |Si, }je n'ai {rien|pas} mangé depuis ce matin",
+    "{@yes}, je n'ai {rien|pas} mangé depuis ce matin"
    ],
    "extra": [
     "pas",
@@ -1991,7 +2243,8 @@
    "hint": "qui is the subject: une carte qui mène…",
    "answers": [
     "Avez-vous une carte [qui mène] à un manoir ?",
-    "Est-ce que vous avez une carte qui {mène|va} à un manoir ?"
+    "{@hi}{@have}une carte qui {mène|va|conduit} à un manoir{@please}",
+    "{@hi}{@want}une carte qui {mène|va|conduit} à un manoir{@please}"
    ],
    "extra": [
     "que",
@@ -2010,7 +2263,8 @@
    "hint": "avoir besoin de → en: j'en ai besoin.",
    "answers": [
     "J'[en ai besoin] parce que je vais combattre des pillards.",
-    "J'en ai besoin {car|parce que} je vais {combattre|affronter} des pillards."
+    "{|Oui, |Oui. }j'en ai besoin {parce que|car|puisque} je vais {combattre|affronter|attaquer} des pillards",
+    "{@hi}{@want}des flèches pour {combattre|affronter|attaquer} des pillards{@please}"
    ],
    "extra": [
     "y",
@@ -2028,7 +2282,9 @@
    "say": "Say you're building a castle that will be bigger than the church.",
    "hint": "qui + futur, and the comparative plus … que.",
    "answers": [
-    "Je construis un château [qui sera] plus grand que l'église."
+    "Je construis un château [qui sera] plus grand que l'église.",
+    "{|Oui, |Oui. }je construis un château qui sera plus {grand|haut} que l'église",
+    "{@yes}, un château qui sera plus {grand|haut} que l'église"
    ],
    "extra": [
     "que",
@@ -2047,7 +2303,8 @@
    "hint": "préférer in the conditional: je préférerais.",
    "answers": [
     "Je [préférerais] les bottes.",
-    "{Je préfère|J'aimerais mieux} les bottes."
+    "{@hi}{Je préférerais|Je préfère|J'aimerais mieux|Je voudrais plutôt|Je prendrais plutôt|Je vais plutôt prendre} les bottes{@please}",
+    "{Merci, mais|Non merci,|C'est gentil, mais} {je préférerais|je préfère|j'aimerais mieux} les bottes"
    ],
    "extra": [
     "préfère",

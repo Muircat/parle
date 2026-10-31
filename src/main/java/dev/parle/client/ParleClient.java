@@ -117,7 +117,8 @@ public final class ParleClient implements ClientModInitializer {
         String name = v.hasCustomName() ? v.getCustomName().getString() : NAMES[Math.floorMod(h, NAMES.length)];
         String who = name + ", " + JOBS.getOrDefault(job, job);
         float pitch = 0.75f + Math.floorMod(h >> 4, 11) * 0.06f;
-        Challenge greet = CONTENT.pick("greet:" + (FORMAL.contains(job) ? "vous" : "tu"), null, profile, RND);
+        String reg = FORMAL.contains(job) ? "vous" : "tu";
+        Challenge greet = CONTENT.pick("greet:" + reg, null, profile, RND);
         Challenge ask = CONTENT.pick("trade:" + job, null, profile, RND);
         if (ask == null) ask = CONTENT.pick("trade:any", null, profile, RND);
         Challenge second = ask;
@@ -126,8 +127,8 @@ public final class ParleClient implements ClientModInitializer {
             mc.interactionManager.interactEntity(mc.player, v, Hand.MAIN_HAND);
         };
         mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.ENTITY_VILLAGER_AMBIENT, pitch, 1f));
-        Runnable step2 = second == null ? open : () -> mc.setScreen(new ChallengeScreen(second, "trade:" + job, who, pitch, open));
-        if (greet != null) mc.setScreen(new ChallengeScreen(greet, "trade:" + job, who, pitch, step2));
+        Runnable step2 = second == null ? open : () -> mc.setScreen(new ChallengeScreen(second, "trade:" + job, who, reg, pitch, open));
+        if (greet != null) mc.setScreen(new ChallengeScreen(greet, "trade:" + job, who, reg, pitch, step2));
         else step2.run();
     }
 
