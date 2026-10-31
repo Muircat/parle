@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "parle",
+  "version": "${version}",
+  "name": "Parle!",
+  "description": "Practise speaking French while you play: short, hand-written sentence challenges tied to what just happened in your world.",
+  "authors": ["Frek"],
+  "license": "MIT",
+  "icon": "assets/parle/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["dev.parle.Parle"],
+    "client": ["dev.parle.client.ParleClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
