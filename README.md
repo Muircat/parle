@@ -1,30 +1,34 @@
 # Parle! learn French whilst you play Minecraft
 
 A Fabric mod for **Minecraft 1.21.1** that turns moments in your survival world into short, hand-written
-French sentence challenges. You kill a zombie, find diamonds, enter the Nether or wake up at dawn, and a small
-badge appears: *Nouveau défi · Combat [J]*. Answer when you're ready; nothing pops up mid-fight.
+French sentence challenges. You kill a zombie, find diamonds, enter the Nether or wake up at dawn, and a
+challenge opens: you type the sentence in French, and you can't carry on until you have.
 
 ## How it teaches
 - **Production, not vocab drills.** Every challenge asks you to *say* something about what just happened
-  ("Say that you killed the creeper before it exploded").
-- **Guided → spontaneous.** Each grammar topic has a mastery score. Low mastery: arrange word tiles
-  (*Construire*). Medium: type the key part of the sentence (*Compléter*). High: write the whole sentence
-  (*Écrire*). "Plus facile" steps down one level whenever you want.
-- **Revisits weak spots.** Spaced repetition per challenge (Leitner boxes), plus missed challenges and weak
-  topics come back more often. Mistakes are listed in the notebook.
+  ("Say that you killed the creeper before it exploded"), and you always **type** the French yourself.
+- **Not optional.** When a gameplay moment triggers a challenge it opens straight away (as soon as no other
+  menu is open), Esc does nothing, and there is no skip button. Get it right, or press *Solution* and type the
+  correct sentence out yourself before you can play on. In singleplayer the game pauses while you answer.
+- **Guided → spontaneous.** Each grammar topic has a mastery score. Low mastery: type the sentence with a
+  shuffled word bank in view (*Guidé*). Medium: type the key part of the sentence (*Compléter*). High: type the
+  whole sentence from scratch (*Écrire*). "Plus facile" steps down a level (still typed).
+- **Revisits weak spots.** Spaced repetition per challenge (Leitner boxes); missed challenges and weak topics
+  come back more often. Mistakes are listed in the notebook.
 - **Helpful marking.** Word-by-word feedback: wrong words underlined in red, missing words shown in green,
   accent-only slips accepted with a warning. Accent buttons (é è ê à ç …) under the text box.
 - **Curated content.** 74 challenges across 13 topics (passé composé avec avoir/être, futur proche, négation,
   pronoms, imparfait, conditionnel, il faut/devoir, questions, prépositions de lieu, accords, verbes
   pronominaux, connecteurs). No AI generation during play.
-- Solving a challenge gives vanilla XP (3 / 6 / 10 by level, halved with a hint or retry).
+- Solving a challenge gives vanilla XP (3 / 6 / 10 by level, halved after a hint or a wrong try, none if you
+  needed the solution).
 
 ## Controls
 | Key | Action |
 | --- | --- |
-| **J** | Open the waiting challenge (or a review challenge if none is waiting) |
-| **N** | Notebook: topic mastery, mistakes to revisit, settings (challenges on/off, pause between them) |
-| Enter | Check / retry / continue · Backspace removes the last tile |
+| **J** | Extra practice: a review challenge (this one you may close) |
+| **N** | Notebook: topic mastery, mistakes to revisit, how often challenges come (every 30 s to 5 min) |
+| Enter | Check / continue |
 
 Both can be rebound in Options → Controls → *Parle! (French)*.
 
@@ -58,6 +62,6 @@ wildcard. Challenges with `"on": []` only appear in review.
 ## Code layout
 - `core/` — plain Java, no Minecraft code: `Content` (library and picker), `Grader` (word diff), `Profile` (progress)
 - `Parle` — server: gameplay triggers and XP payout
-- `client/` — `ParleClient` (queue, keys, HUD badge), `ChallengeScreen`, `NotebookScreen`, `UI`
+- `client/` — `ParleClient` (queue, keys, auto-open), `ChallengeScreen`, `NotebookScreen`, `UI`
 
 Progress is saved in `config/parle/profile.json`.

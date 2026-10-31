@@ -18,22 +18,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/** One challenge: build the sentence from tiles, fill in its key part, or write it all, depending on mastery. */
+/**
+ * One challenge, always typed. Gameplay challenges can't be skipped or escaped: you answer correctly,
+ * or you look at the solution and type it out yourself before you can carry on.
+ */
 final class ChallengeScreen extends Screen {
-    private enum State { ASK, WRONG, DONE }
+    private enum State { ASK, COPY, DONE }
     private static final String ACCENTS = "éèêëàâçùûîïôœ";
 
     private final Challenge c;
     private final String source;
+    private final List<String> bank;
     private Mode mode;
     private State state = State.ASK;
     private boolean hinted, retried, ok;
     private int earned;
     private String draft = "", given = "";
     private Grader.Result result;
-    private TextFieldWidget field;
-    private final List<String> pool, built = new ArrayList<>();
-    private final List<int[]> poolRects = new ArrayList<>(), builtRects = new ArrayList<>();
     private int px, py, pw, ph = 214;
 
     ChallengeScreen(Challenge c, String source) {
@@ -41,8 +42,10 @@ final class ChallengeScreen extends Screen {
         this.c = c;
         this.source = source;
         this.mode = ParleClient.profile.mode(c);
-        this.pool = c.tiles(ParleClient.RND);
+        this.bank = c.tiles(ParleClient.RND);
     }
+
+    private boolean forced() { return !source.equals("review"); }
 
     @Override
     protected void init() {
@@ -50,33 +53,29 @@ final class ChallengeScreen extends Screen {
         px = (width - pw) / 2;
         py = Math.max(6, (height - ph) / 2);
         int ix = px + 12, iw = pw - 24;
-        field = null;
-        if (state == State.ASK && mode != Mode.BUILD) {
-            int fy = py + (mode == Mode.FILL ? 88 : 66);
-            field = addDrawableChild(new TextFieldWidget(textRenderer, ix, fy, iw, 20, Text.empty()));
+        if (state != State.DONE) {
+            TextFieldWidget field = addDrawableChild(new TextFieldWidget(textRenderer, ix, py + 96, iw, 20, Text.empty()));
             field.setMaxLength(160);
             field.setText(draft);
             field.setChangedListener(s -> draft = s);
-            field.setPlaceholder(UI.color(mode == Mode.FILL ? "Complète la phrase…" : "Écris ta phrase en français…", UI.MUTED));
+            field.setPlaceholder(UI.color(state == State.COPY ? "Recopie la solution…" : mode == Mode.FILL ? "Tape la partie manquante…" : "Tape ta phrase en français…", UI.MUTED));
             setInitialFocus(field);
             for (int i = 0; i < ACCENTS.length(); i++) {
                 String ch = String.valueOf(ACCENTS.charAt(i));
                 addDrawableChild(ButtonWidget.builder(Text.literal(ch), b -> { field.write(ch); setFocused(field); })
-                        .dimensions(ix + i * 18, fy + 24, 16, 14).build());
+                        .dimensions(ix + i * 18, py + 120, 16, 14).build());
             }
         }
         List<Map.Entry<String, Runnable>> row = new ArrayList<>();
         switch (state) {
             case ASK -> {
                 if (!hinted && !c.hint.isEmpty()) row.add(Map.entry("Indice", () -> { hinted = true; rebuild(); }));
-                if (mode != Mode.BUILD) row.add(Map.entry("Plus facile", () -> { mode = Mode.values()[mode.ordinal() - 1]; rebuild(); }));
-                row.add(Map.entry("Passer", this::close));
+                if (mode != Mode.GUIDED) row.add(Map.entry("Plus facile", () -> { mode = Mode.values()[mode.ordinal() - 1]; draft = ""; rebuild(); }));
+                if (result != null) row.add(Map.entry("Solution", this::reveal));
+                if (!forced()) row.add(Map.entry("Fermer", this::close));
                 row.add(Map.entry("Vérifier ✔", this::check));
             }
-            case WRONG -> {
-                row.add(Map.entry("Voir la solution", () -> finish(false)));
-                row.add(Map.entry("Réessayer", this::retry));
-            }
+            case COPY -> row.add(Map.entry("Vérifier ✔", this::check));
             case DONE -> row.add(Map.entry(ParleClient.QUEUE.isEmpty() ? "Continuer" : "Défi suivant (" + ParleClient.QUEUE.size() + ")", this::next));
         }
         int bw = (iw - 4 * (row.size() - 1)) / row.size();
@@ -86,46 +85,54 @@ final class ChallengeScreen extends Screen {
         }
     }
 
-    private void retry() { retried = true; state = State.ASK; rebuild(); }
+    private void rebuild() { clearAndInit(); }
 
     private void next() {
         close();
         if (!ParleClient.QUEUE.isEmpty()) ParleClient.openNext(client);
     }
 
-    private void rebuild() { clearAndInit(); }
-
-    private void check() {
-        String input = switch (mode) {
-            case BUILD -> String.join(" ", built);
-            case FILL -> draft.isBlank() ? "" : c.prefix() + draft.trim() + c.suffix();
-            case WRITE -> draft;
-        };
-        if (input.isBlank()) return;
-        given = input;
-        result = Grader.grade(input, c.accepted());
-        if (result.verdict() != Grader.Verdict.WRONG) finish(true);
-        else {
-            state = State.WRONG;
-            hinted = true;
-            sound(false);
-            rebuild();
-        }
+    /** Gives up on this one: it counts as a mistake, and the player must copy the answer out to move on. */
+    private void reveal() {
+        ParleClient.profile.record(c, false, false, given);
+        state = State.COPY;
+        draft = "";
+        rebuild();
     }
 
-    private void finish(boolean correct) {
-        ok = correct;
-        earned = correct ? Math.max(1, hinted || retried ? mode.xp / 2 : mode.xp) : 0;
-        ParleClient.profile.record(c, correct, correct && !hinted && !retried, given);
-        if (earned > 0 && ClientPlayNetworking.canSend(Parle.Reward.ID)) ClientPlayNetworking.send(new Parle.Reward(earned));
-        if (correct) sound(true);
-        state = State.DONE;
+    private void check() {
+        String input = state == State.ASK && mode == Mode.FILL ? (draft.isBlank() ? "" : c.prefix() + draft.trim() + c.suffix()) : draft;
+        if (input.isBlank()) return;
+        Grader.Result r = Grader.grade(input, c.accepted());
+        if (state == State.COPY) {
+            if (r.verdict() == Grader.Verdict.WRONG) { sound(false); return; }
+            ok = false;
+            state = State.DONE;
+        } else {
+            given = input;
+            result = r;
+            if (r.verdict() == Grader.Verdict.WRONG) {
+                retried = hinted = true;
+                sound(false);
+                rebuild();
+                return;
+            }
+            ok = true;
+            earned = Math.max(1, retried || hinted ? mode.xp / 2 : mode.xp);
+            ParleClient.profile.record(c, true, !retried && !hinted, given);
+            if (ClientPlayNetworking.canSend(Parle.Reward.ID)) ClientPlayNetworking.send(new Parle.Reward(earned));
+            sound(true);
+            state = State.DONE;
+        }
         rebuild();
     }
 
     private void sound(boolean good) {
         client.getSoundManager().play(PositionedSoundInstance.master(good ? SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP : SoundEvents.ENTITY_VILLAGER_NO, good ? 1.3f : 1f, 0.6f));
     }
+
+    @Override
+    public boolean shouldCloseOnEsc() { return state == State.DONE || !forced(); }
 
     @Override
     public void renderBackground(DrawContext ctx, int mx, int my, float delta) {
@@ -139,82 +146,57 @@ final class ChallengeScreen extends Screen {
         int ix = px + 12, iw = pw - 24;
         var topic = ParleClient.CONTENT.topics.get(c.topic);
         ctx.drawText(textRenderer, (topic != null ? topic.name() : c.topic) + " · " + ParleClient.label(source), ix, py + 10, UI.MUTED, false);
-        String chip = mode.label + " · +" + mode.xp + " XP";
+        String chip = state == State.COPY || state == State.DONE && !ok ? "Recopier · 0 XP" : mode.label + " · +" + mode.xp + " XP";
         int cw = textRenderer.getWidth(chip) + 8;
-        UI.round(ctx, px + pw - 12 - cw, py + 7, cw, 13, UI.BLUE);
+        UI.round(ctx, px + pw - 12 - cw, py + 7, cw, 13, state == State.COPY ? UI.RED : UI.BLUE);
         ctx.drawText(textRenderer, chip, px + pw - 8 - cw, py + 10, UI.WHITE, false);
         ctx.drawTextWrapped(textRenderer, Text.literal(c.say), ix, py + 26, iw, UI.WHITE);
 
-        if (state == State.ASK && mode == Mode.BUILD) {
-            UI.round(ctx, ix, py + 62, iw, 36, UI.INSET);
-            if (built.isEmpty()) ctx.drawCenteredTextWithShadow(textRenderer, "Clique sur les mots pour construire la phrase", px + pw / 2, py + 76, UI.MUTED);
-            tiles(ctx, built, builtRects, ix + 4, py + 66, iw - 8, UI.BLUE, mx, my);
-            tiles(ctx, pool, poolRects, ix, py + 104, iw, UI.TILE, mx, my);
-        } else if (state == State.ASK && mode == Mode.FILL) {
-            ctx.drawTextWrapped(textRenderer, Text.literal(c.prefix()).append(UI.color("_____", UI.AMBER)).append(c.suffix()), ix, py + 66, iw, UI.MUTED);
-        } else if (state != State.ASK) {
-            ctx.drawText(textRenderer, "Ta réponse :", ix, py + 64, UI.MUTED, false);
-            ctx.drawTextWrapped(textRenderer, UI.marked(result != null ? result.given() : List.of()), ix, py + 76, iw, UI.WHITE);
+        switch (state) {
+            case ASK -> {
+                if (mode == Mode.GUIDED) words(ctx, ix, py + 64, iw);
+                else if (mode == Mode.FILL)
+                    ctx.drawTextWrapped(textRenderer, Text.literal(c.prefix()).append(UI.color("_____", UI.AMBER)).append(c.suffix()), ix, py + 68, iw, UI.MUTED);
+                int fy = py + 142;
+                if (result != null) {
+                    ctx.drawText(textRenderer, "Pas tout à fait. Corrige les mots soulignés et réessaie :", ix, fy, UI.RED, false);
+                    ctx.drawTextWrapped(textRenderer, UI.marked(result.given()), ix, fy + 11, iw, UI.WHITE);
+                    fy += 24;
+                }
+                if (hinted) ctx.drawTextWrapped(textRenderer, Text.literal("Indice : " + c.hint), ix, fy, iw, UI.AMBER);
+            }
+            case COPY -> {
+                ctx.drawText(textRenderer, "Solution (en vert : ce qui manquait). Recopie-la :", ix, py + 64, UI.MUTED, false);
+                ctx.drawTextWrapped(textRenderer, UI.marked(Grader.grade(given, List.of(result.expected())).wanted()), ix, py + 76, iw, UI.WHITE);
+                if (draft.isBlank() || Grader.grade(draft, c.accepted()).verdict() == Grader.Verdict.WRONG)
+                    ctx.drawTextWrapped(textRenderer, Text.literal(c.hint), ix, py + 142, iw, UI.AMBER);
+            }
+            case DONE -> {
+                boolean accents = ok && result.verdict() == Grader.Verdict.ACCENTS;
+                String head = !ok ? "C'est noté. Ce défi reviendra bientôt." : (accents ? "Presque ! Attention aux accents." : "Parfait !") + " +" + earned + " XP";
+                ctx.drawText(textRenderer, head, ix, py + 70, ok ? (accents ? UI.AMBER : UI.GREEN) : UI.MUTED, false);
+                ctx.drawTextWrapped(textRenderer, ok ? UI.marked(result.wanted()) : Text.literal(result.expected()), ix, py + 84, iw, UI.WHITE);
+                ctx.drawTextWrapped(textRenderer, Text.literal(c.hint), ix, py + 120, iw, UI.MUTED);
+            }
         }
-
-        int fy = py + 140;
-        if (state == State.WRONG) {
-            ctx.drawText(textRenderer, "Pas tout à fait — les mots soulignés sont à revoir.", ix, fy, UI.RED, false);
-            fy += 12;
-        } else if (state == State.DONE) {
-            boolean accents = ok && result.verdict() == Grader.Verdict.ACCENTS;
-            String head = !ok ? "Solution (en vert : ce qui manquait) :" : (accents ? "Presque ! Attention aux accents." : "Parfait !") + " +" + earned + " XP";
-            ctx.drawText(textRenderer, head, ix, fy, ok ? (accents ? UI.AMBER : UI.GREEN) : UI.MUTED, false);
-            ctx.drawTextWrapped(textRenderer, ok ? Text.literal(result.expected()) : UI.marked(result != null ? result.wanted() : List.of()), ix, fy + 12, iw, UI.WHITE);
-        }
-        if (hinted && state != State.DONE)
-            ctx.drawTextWrapped(textRenderer, Text.literal("Indice : " + c.hint), ix, fy, iw, UI.AMBER);
     }
 
-    /** Lays out words as wrapping tiles and remembers their rectangles for clicks. */
-    private void tiles(DrawContext ctx, List<String> words, List<int[]> rects, int x, int y, int w, int color, int mx, int my) {
-        rects.clear();
+    /** The word bank for guided mode: every word you need (plus a couple you don't), shuffled. */
+    private void words(DrawContext ctx, int x, int y, int w) {
         int cx = x, cy = y;
-        for (String s : words) {
+        for (String s : bank) {
             int tw = textRenderer.getWidth(s) + 10;
-            if (cx + tw > x + w && cx > x) { cx = x; cy += 16; }
-            int[] r = {cx, cy, tw, 13};
-            rects.add(r);
-            UI.round(ctx, cx, cy, tw, 13, UI.in(r, mx, my) ? UI.TILE_HOVER : color);
+            if (cx + tw > x + w && cx > x) { cx = x; cy += 15; }
+            UI.round(ctx, cx, cy, tw, 13, UI.TILE);
             ctx.drawText(textRenderer, s, cx + 5, cy + 3, UI.WHITE, false);
             cx += tw + 3;
         }
     }
 
     @Override
-    public boolean mouseClicked(double mx, double my, int button) {
-        if (state == State.ASK && mode == Mode.BUILD) {
-            if (move(builtRects, built, pool, mx, my) || move(poolRects, pool, built, mx, my)) return true;
-        }
-        return super.mouseClicked(mx, my, button);
-    }
-
-    private boolean move(List<int[]> rects, List<String> from, List<String> to, double mx, double my) {
-        for (int i = 0; i < rects.size() && i < from.size(); i++) if (UI.in(rects.get(i), mx, my)) {
-            to.add(from.remove(i));
-            client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.2f));
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public boolean keyPressed(int key, int scan, int mods) {
         if (key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_KP_ENTER) {
-            switch (state) {
-                case ASK -> check();
-                case WRONG -> retry();
-                case DONE -> next();
-            }
-            return true;
-        }
-        if (key == GLFW.GLFW_KEY_BACKSPACE && state == State.ASK && mode == Mode.BUILD && !built.isEmpty()) {
-            pool.add(built.remove(built.size() - 1));
+            if (state == State.DONE) next(); else check();
             return true;
         }
         return super.keyPressed(key, scan, mods);

@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-/** "Carnet": mastery per grammar topic, recent mistakes to revisit, and the two settings. */
+/** "Carnet": mastery per grammar topic, recent mistakes to revisit, and how often challenges come. */
 final class NotebookScreen extends Screen {
     private static final int[] COOLDOWNS = {30, 60, 120, 300};
     private final List<Content.Topic> topics = new ArrayList<>(ParleClient.CONTENT.topics.values());
@@ -26,17 +26,14 @@ final class NotebookScreen extends Screen {
         ph = Math.min(40 + topics.size() * 12 + 38, height - 12);
         px = (width - pw) / 2;
         py = (height - ph) / 2;
-        int bw = (pw - 24 - 12) / 4, by = py + ph - 28, x = px + 12;
-        addDrawableChild(ButtonWidget.builder(Text.literal("Défis en jeu : " + (p().enabled ? "oui" : "non")), b -> {
-            p().enabled = !p().enabled; p().save(); clearAndInit();
-        }).dimensions(x, by, bw, 20).build());
-        addDrawableChild(ButtonWidget.builder(Text.literal("Pause : " + p().cooldown + " s"), b -> {
+        int bw = (pw - 24 - 8) / 3, by = py + ph - 28, x = px + 12;
+        addDrawableChild(ButtonWidget.builder(Text.literal("Un défi toutes les " + p().cooldown + " s"), b -> {
             int i = 0;
             while (i < COOLDOWNS.length && COOLDOWNS[i] <= p().cooldown) i++;
             p().cooldown = COOLDOWNS[i % COOLDOWNS.length]; p().save(); clearAndInit();
-        }).dimensions(x + bw + 4, by, bw, 20).build());
-        addDrawableChild(ButtonWidget.builder(Text.literal("Réviser"), b -> ParleClient.openNext(client)).dimensions(x + 2 * (bw + 4), by, bw, 20).build());
-        addDrawableChild(ButtonWidget.builder(Text.literal("Fermer"), b -> close()).dimensions(x + 3 * (bw + 4), by, bw, 20).build());
+        }).dimensions(x, by, bw, 20).build());
+        addDrawableChild(ButtonWidget.builder(Text.literal("Réviser"), b -> ParleClient.openNext(client)).dimensions(x + bw + 4, by, bw, 20).build());
+        addDrawableChild(ButtonWidget.builder(Text.literal("Fermer"), b -> close()).dimensions(x + 2 * (bw + 4), by, bw, 20).build());
     }
 
     @Override

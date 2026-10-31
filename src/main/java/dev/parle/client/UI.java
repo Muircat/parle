@@ -9,7 +9,7 @@ import java.util.List;
 
 /** Shared palette and drawing helpers for a flat, clean look. */
 final class UI {
-    static final int BG = 0xF2161A22, INSET = 0xFF0E1117, TILE = 0xFF2A3140, TILE_HOVER = 0xFF3A4458,
+    static final int BG = 0xF2161A22, INSET = 0xFF0E1117, TILE = 0xFF2A3140,
             BLUE = 0xFF2B59C3, RED = 0xFFE5484D, WHITE = 0xFFF1F3F7, MUTED = 0xFF8C96A8,
             GREEN = 0xFF3FB950, AMBER = 0xFFF5A524;
 

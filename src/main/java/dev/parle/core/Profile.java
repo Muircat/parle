@@ -17,12 +17,12 @@ public final class Profile {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final int MAX = 10;
 
-    /** Guided → spontaneous: arrange tiles, then fill the key part, then write the whole sentence. */
+    /** Guided → spontaneous: type it with a word bank, then type the key part, then type it all from scratch. */
     public enum Mode {
-        BUILD("Construire", 3), FILL("Compléter", 6), WRITE("Écrire", 10);
+        GUIDED("Guidé", 3), FILL("Compléter", 6), WRITE("Écrire", 10);
         public final String label; public final int xp;
         Mode(String label, int xp) { this.label = label; this.xp = xp; }
-        public static Mode of(int score) { return score < 4 ? BUILD : score < 8 ? FILL : WRITE; }
+        public static Mode of(int score) { return score < 4 ? GUIDED : score < 8 ? FILL : WRITE; }
     }
 
     public static final class Mistake {
@@ -34,7 +34,6 @@ public final class Profile {
     public Map<String, Long> seen = new HashMap<>();
     public List<Mistake> mistakes = new ArrayList<>();
     public int solved, streak, best, cooldown = 60;
-    public boolean enabled = true;
     private transient Path file;
 
     public static Profile load(Path file) {
