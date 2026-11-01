@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Reader;
 import java.util.*;
@@ -16,6 +17,26 @@ public final class Content {
     public record Topic(String id, String name, String rule) {}
 
     /**
+     * A typical wrong answer and why it's wrong. match uses the same markup as answers ({*} = any one word) and
+     * is compared without accents. On a challenge it must match the whole sentence; in a pack's shared "traps" list it may match
+     * anywhere in the sentence (e.g. "{ai|as|a} {allé|venu|tombé}"). skill tags the habit to practise.
+     */
+    public static final class Trap {
+        public String match, why, skill;
+        private transient Map<String, Pattern> patterns;
+
+        boolean test(String foldedLine, Map<String, List<String>> book, String reg, boolean anywhere) {
+            if (patterns == null) patterns = new HashMap<>();
+            Pattern p = patterns.computeIfAbsent(String.valueOf(reg), k -> {
+                StringJoiner all = new StringJoiner("|", "(?:", ")");
+                for (String r : Challenge.regs(reg)) all.add(regex(match, book, r, true));
+                return Pattern.compile(anywhere ? "(?:^|(?<= ))" + all : all.toString());
+            });
+            return anywhere ? p.matcher(foldedLine).find() : p.matcher(foldedLine).matches();
+        }
+    }
+
+    /**
      * One challenge. Answers support two bits of markup:
      * {a|b} lists alternatives (first one is canonical), [..] marks the part blanked out in "fill in" mode,
      * {@name} inserts every phrasing from the shared phrasebook (e.g. all the polite ways to ask for something).
@@ -24,14 +45,22 @@ public final class Content {
      */
     public static final class Challenge {
         public String id, topic, say, hint = "", npc; // npc: what a villager says first, for trade dialogues
+        /** sayFr: the same instruction in French; cue: a French question that doesn't give the answer away. */
+        @SerializedName("say_fr") public String sayFr;
+        public String cue;
         public int level = 1; // 1 beginner, 2 intermediate, 3 advanced
         public List<String> on = List.of(), answers = List.of(), extra = List.of();
+        /** next: follow-up challenges that rework this sentence (negate it, use a pronoun…). */
+        public List<String> next = List.of();
+        public List<Trap> traps = List.of();
         private transient Map<String, List<String>> book;
+        private transient List<Trap> shared;
         private transient Map<String, Pattern[]> patterns;
         private transient String prefix, focus, suffix;
 
-        void init(Map<String, List<String>> book) {
+        void init(Map<String, List<String>> book, List<Trap> shared) {
             this.book = book;
+            this.shared = shared;
             patterns = new HashMap<>();
             String c = expand(answers.get(0), book, "vous").get(0);
             int i = c.indexOf('['), j = c.indexOf(']');
@@ -53,20 +82,27 @@ public final class Content {
 
         private Pattern compile(String reg, boolean fold) {
             StringJoiner all = new StringJoiner("|", "(?:", ")");
-            for (String r : regs(reg)) for (String a : answers) {
-                StringBuilder sb = new StringBuilder();
-                int i = 0, a0;
-                while ((a0 = a.indexOf('{', i)) >= 0) {
-                    int b = a.indexOf('}', a0);
-                    StringJoiner alt = new StringJoiner("|", "(?:", ")");
-                    for (String o : options(a.substring(a0 + 1, b), book, r)) alt.add(Grader.line(o, fold, true));
-                    sb.append(Grader.line(a.substring(i, a0), fold, true)).append(alt);
-                    i = b + 1;
-                }
-                all.add(sb.append(Grader.line(a.substring(i), fold, true)).toString());
-            }
+            for (String r : regs(reg)) for (String a : answers) all.add(regex(a, book, r, fold));
             return Pattern.compile(all.toString());
         }
+
+        /** The first known mistake this (wrong) answer makes: this challenge's own traps, then the shared ones. */
+        public Trap trap(String input, String reg) {
+            String line = Grader.line(input, true, false);
+            for (Trap t : traps) if (t.match != null && t.test(line, book, reg, false)) return t;
+            if (shared != null) for (Trap t : shared) if (t.match != null && t.test(line, book, reg, true)) return t;
+            return null;
+        }
+
+        /** Skill tags this challenge exercises, from its traps. */
+        public Set<String> skills() {
+            Set<String> out = new HashSet<>();
+            for (Trap t : traps) if (t.skill != null) out.add(t.skill);
+            return out;
+        }
+
+        public boolean hasFrench() { return sayFr != null && !sayFr.isBlank(); }
+        public boolean hasCue() { return cue != null && !cue.isBlank(); }
 
         /** Builds, per answer, the phrasing closest to what the player typed, to explain mistakes against. */
         public List<String> nearest(String input, String reg) {
@@ -119,6 +155,7 @@ public final class Content {
     public final Map<String, Topic> topics = new LinkedHashMap<>();
     public final Map<String, List<String>> phrases = new HashMap<>();
     public final List<Challenge> challenges = new ArrayList<>();
+    public final List<Trap> traps = new ArrayList<>();
 
     /** Loads a pack. Later packs may add topics or replace challenges by id. */
     public void load(Reader r) {
@@ -132,10 +169,14 @@ public final class Content {
             e.getValue().getAsJsonArray().forEach(x -> list.add(x.getAsString()));
             phrases.put(e.getKey(), list);
         }
+        if (o.has("traps")) for (JsonElement e : o.getAsJsonArray("traps")) {
+            Trap t = GSON.fromJson(e, Trap.class);
+            if (t.match != null && t.why != null) traps.add(t);
+        }
         if (o.has("challenges")) for (JsonElement e : o.getAsJsonArray("challenges")) {
             Challenge c = GSON.fromJson(e, Challenge.class);
             if (c.id == null || c.answers.isEmpty()) continue;
-            c.init(phrases);
+            c.init(phrases, traps);
             challenges.removeIf(x -> x.id.equals(c.id));
             challenges.add(c);
         }
@@ -158,6 +199,13 @@ public final class Content {
         return pool.isEmpty() ? null : pool.get(pool.size() - 1);
     }
 
+    /** A follow-up that reworks c's sentence, if c has any the learner is ready for. */
+    public Challenge followUp(Challenge c, Profile p, Random rnd) {
+        List<Challenge> pool = new ArrayList<>();
+        for (String id : c.next) { Challenge n = byId(id); if (n != null && n != c && p.weight(n) > 0) pool.add(n); }
+        return pool.isEmpty() ? null : pool.get(rnd.nextInt(pool.size()));
+    }
+
     public Challenge byId(String id) {
         for (Challenge c : challenges) if (c.id.equals(id)) return c;
         return null;
@@ -165,6 +213,22 @@ public final class Content {
 
     static boolean glob(String pattern, String key) {
         return pattern.equals(key) || pattern.contains("*") && key.matches(Pattern.quote(pattern).replace("*", "\\E.*\\Q"));
+    }
+
+    /** An answer (with its {…} markup) as a regex over a word line from {@link Grader#line}. */
+    static String regex(String a, Map<String, List<String>> book, String reg, boolean fold) {
+        StringBuilder sb = new StringBuilder();
+        int i = 0, a0;
+        while ((a0 = a.indexOf('{', i)) >= 0) {
+            int b = a.indexOf('}', a0);
+            String in = a.substring(a0 + 1, b);
+            StringJoiner alt = new StringJoiner("|", "(?:", ")");
+            if (in.equals("*")) alt.add("\\S+ "); // any one word (for traps)
+            else for (String o : options(in, book, reg)) alt.add(Grader.line(o, fold, true));
+            sb.append(Grader.line(a.substring(i, a0), fold, true)).append(alt);
+            i = b + 1;
+        }
+        return sb.append(Grader.line(a.substring(i), fold, true)).toString();
     }
 
     public static List<String> expand(String s, Map<String, List<String>> book, String reg) {

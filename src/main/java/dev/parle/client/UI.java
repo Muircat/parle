@@ -11,7 +11,7 @@ import java.util.List;
 final class UI {
     static final int BG = 0xF2161A22, INSET = 0xFF0E1117, TILE = 0xFF2A3140,
             BLUE = 0xFF2B59C3, RED = 0xFFE5484D, WHITE = 0xFFF1F3F7, MUTED = 0xFF8C96A8,
-            GREEN = 0xFF3FB950, AMBER = 0xFFF5A524;
+            GREEN = 0xFF3FB950, AMBER = 0xFFF5A524, BLUE_LIGHT = 0xFF7DA2F0;
 
     static void round(DrawContext ctx, int x, int y, int w, int h, int color) {
         ctx.fill(x + 1, y, x + w - 1, y + h, color);
@@ -34,7 +34,7 @@ final class UI {
         MutableText out = Text.empty();
         for (int i = 0; i < toks.size(); i++) {
             Grader.Tok t = toks.get(i);
-            int c = switch (t.mark()) { case OK -> WHITE; case ACCENT -> AMBER; case BAD -> RED; case MISSING -> GREEN; };
+            int c = switch (t.mark()) { case OK -> WHITE; case ACCENT, TYPO -> AMBER; case BAD -> RED; case MISSING -> GREEN; };
             String s = t.text() + (t.text().endsWith("'") || i == toks.size() - 1 ? "" : " ");
             out.append(Text.literal(s).styled(st -> st.withColor(c).withUnderline(t.mark() != Grader.Mark.OK)));
         }

@@ -234,6 +234,27 @@
   "and_you.vous": [
    ", et vous ?",
    ". Et vous ?"
+  ],
+  "killed": [
+   "tué",
+   "vaincu",
+   "éliminé",
+   "battu"
+  ],
+  "oh": [
+   "",
+   "Ouf, ",
+   "Super, ",
+   "Génial, ",
+   "Enfin, ",
+   "Ah, ",
+   "Oh, ",
+   "Oh non, ",
+   "Youpi, ",
+   "Bon, ",
+   "Eh bien, ",
+   "Ça y est, ",
+   "Hé, "
   ]
  },
  "topics": {
@@ -313,14 +334,30 @@
    "topic": "pc_avoir",
    "level": 1,
    "say": "You just beat a zombie. Say that you killed a zombie.",
+   "say_fr": "Dis que tu as tué un zombie.",
+   "cue": "Qu'est-ce que tu viens de faire ?",
    "hint": "tuer → j'ai tué (avoir + participe passé).",
    "answers": [
     "J'[ai tué] {un|le|ce} zombie.",
-    "J'ai vaincu {un|le|ce} zombie."
+    "{@oh}J'ai tué {un|le|ce} zombie.",
+    "{@oh}J'ai vaincu {un|le|ce} zombie.",
+    "{@oh}J'ai {@killed} {un|le|ce} zombie."
    ],
    "extra": [
     "suis",
     "tuer"
+   ],
+   "next": [
+    "kill_zombie_pron",
+    "kill_zombie_pc_neg",
+    "kill_zombie_because"
+   ],
+   "traps": [
+    {
+     "match": "Je suis {tué|vaincu} {un|le|ce} zombie",
+     "why": "tuer takes avoir: j'ai tué.",
+     "skill": "aux_avoir"
+    }
    ]
   },
   {
@@ -333,13 +370,28 @@
    "topic": "pronoms",
    "level": 2,
    "say": "The zombie is gone. Say \"I killed it!\" without repeating \"the zombie\".",
+   "say_fr": "Dis « Je l'ai tué ! » sans répéter « le zombie ».",
+   "cue": "Et le zombie ? (Réponds sans le nommer.)",
    "hint": "le → l' before a vowel, placed before the helper verb: je l'ai…",
    "answers": [
-    "Je [l'ai tué]."
+    "Je [l'ai tué].",
+    "{@oh}Je l'ai tué."
    ],
    "extra": [
     "le",
     "suis"
+   ],
+   "traps": [
+    {
+     "match": "J'ai {le|l'|la} tué",
+     "why": "Object pronouns go before the helper verb: je l'ai tué.",
+     "skill": "pron_place"
+    },
+    {
+     "match": "Je le ai tué",
+     "why": "le becomes l' before a vowel: je l'ai tué.",
+     "skill": "elision"
+    }
    ]
   },
   {
@@ -352,10 +404,13 @@
    "topic": "liens",
    "level": 2,
    "say": "Explain that you killed the zombie because it was attacking you.",
+   "say_fr": "Explique que tu as tué le zombie parce qu'il t'attaquait.",
+   "cue": "Pourquoi as-tu tué ce zombie ?",
    "hint": "parce que + il → parce qu'il. 'Was attacking' is a background action: imparfait (attaquait).",
    "answers": [
     "J'ai tué {le|ce} zombie [parce qu'il] m'attaquait.",
-    "J'ai tué {le|ce} zombie car il m'attaquait."
+    "{@oh}J'ai tué {le|ce} zombie parce qu'il m'attaquait.",
+    "{@oh}J'ai tué {le|ce} zombie car il m'attaquait."
    ],
    "extra": [
     "que",
@@ -371,10 +426,13 @@
    "topic": "negation",
    "level": 1,
    "say": "A skeleton shot at you and missed. Say \"It didn't hit me.\"",
+   "say_fr": "Un squelette t'a tiré dessus et t'a raté. Dis qu'il ne t'a pas touché.",
+   "cue": "Le squelette t'a touché ?",
    "hint": "ne … pas wraps the helper and the pronoun: il ne m'a pas…",
    "answers": [
     "Il [ne m'a pas] touché.",
-    "Le squelette ne m'a pas touché."
+    "{@oh}Il ne m'a pas touché.",
+    "{@oh}Le squelette ne m'a pas touché."
    ],
    "extra": [
     "jamais",
@@ -390,10 +448,14 @@
    "topic": "pc_avoir",
    "level": 1,
    "say": "Say that you killed a skeleton with your bow.",
+   "say_fr": "Dis que tu as tué un squelette avec ton arc.",
+   "cue": "Comment as-tu tué ce squelette ?",
    "hint": "un arc is masculine: mon arc.",
    "answers": [
     "J'ai tué {un|le|ce} squelette [avec mon arc].",
-    "J'ai tué {un|le|ce} squelette à l'arc."
+    "{@oh}J'ai tué {un|le|ce} squelette avec mon arc.",
+    "{@oh}J'ai tué {un|le|ce} squelette à l'arc.",
+    "{@oh}J'ai {@killed} {un|le|ce} squelette {avec mon arc|à l'arc}."
    ],
    "extra": [
     "ma",
@@ -408,14 +470,24 @@
    "topic": "conditionnel",
    "level": 3,
    "say": "You stopped a creeper just in time. Say \"It would have exploded.\"",
+   "say_fr": "Tu as arrêté un creeper juste à temps. Dis qu'il aurait explosé.",
+   "cue": "Que se serait-il passé si tu n'avais rien fait ?",
    "hint": "Conditionnel passé: avoir in the conditional (aurait) + participle.",
    "answers": [
     "Il [aurait explosé].",
-    "Le creeper aurait explosé."
+    "{@oh}Il aurait explosé.",
+    "{@oh}Le creeper aurait explosé."
    ],
    "extra": [
     "serait",
     "avait"
+   ],
+   "traps": [
+    {
+     "match": "{Il|Le creeper} serait explosé",
+     "why": "exploser takes avoir: il aurait explosé.",
+     "skill": "aux_avoir"
+    }
    ]
   },
   {
@@ -426,15 +498,21 @@
    "topic": "liens",
    "level": 3,
    "say": "Say that you killed the creeper before it exploded.",
+   "say_fr": "Dis que tu as tué le creeper avant qu'il explose.",
+   "cue": "Le creeper a eu le temps d'exploser ?",
    "hint": "avant que + subjunctive: avant qu'il (n')explose. Or simply: avant son explosion.",
    "answers": [
     "J'ai tué {le|ce} creeper [avant qu'il] explose.",
-    "J'ai tué {le|ce} creeper avant qu'il n'explose.",
-    "J'ai tué {le|ce} creeper avant son explosion."
+    "{@oh}J'ai tué {le|ce} creeper avant qu'il explose.",
+    "{@oh}J'ai tué {le|ce} creeper avant qu'il n'explose.",
+    "{@oh}J'ai tué {le|ce} creeper avant son explosion."
    ],
    "extra": [
     "après",
     "que"
+   ],
+   "next": [
+    "kill_creeper_cond"
    ]
   },
   {
@@ -446,14 +524,35 @@
    "topic": "accord",
    "level": 1,
    "say": "Say that you killed a big spider.",
+   "say_fr": "Dis que tu as tué une grosse araignée.",
+   "cue": "Qu'est-ce que tu viens de tuer ? Elle était comment ?",
    "hint": "araignée is feminine: une grosse araignée (gros → grosse, placed before the noun).",
    "answers": [
     "J'ai tué une [grosse araignée].",
-    "J'ai tué une grande araignée."
+    "{@oh}J'ai tué une grosse araignée.",
+    "{@oh}J'ai tué une grande araignée.",
+    "{@oh}J'ai {@killed} une {grosse|grande|énorme} araignée.",
+    "{@oh}J'ai {@killed} une araignée {énorme|géante}."
    ],
    "extra": [
     "gros",
     "un"
+   ],
+   "next": [
+    "kill_spider_plural",
+    "kill_spider_imp"
+   ],
+   "traps": [
+    {
+     "match": "J'ai tué une {gros|grand} araignée",
+     "why": "araignée is feminine: une grosse (or grande) araignée.",
+     "skill": "accord_adj"
+    },
+    {
+     "match": "J'ai tué une araignée {grosse|grande}",
+     "why": "Short common adjectives (grand, gros, petit, beau) go before the noun: une grosse araignée.",
+     "skill": "adj_place"
+    }
    ]
   },
   {
@@ -465,14 +564,24 @@
    "topic": "imparfait",
    "level": 1,
    "say": "Describe the scene afterwards: \"The spider was hiding in the tree.\"",
+   "say_fr": "Décris la scène : l'araignée se cachait dans l'arbre.",
+   "cue": "Où était l'araignée avant le combat ?",
    "hint": "se cacher in the imparfait: elle se cachait.",
    "answers": [
     "L'araignée [se cachait] dans l'arbre.",
-    "L'araignée se cachait dans les arbres."
+    "{@oh}L'araignée se cachait dans l'arbre.",
+    "{@oh}L'araignée se cachait dans les arbres."
    ],
    "extra": [
     "cachait",
     "est"
+   ],
+   "traps": [
+    {
+     "match": "L'araignée s'est cachée dans {l'arbre|les arbres}",
+     "why": "This is background description, so imparfait: l'araignée se cachait.",
+     "skill": "imparfait"
+    }
    ]
   },
   {
@@ -483,9 +592,11 @@
    "topic": "negation",
    "level": 2,
    "say": "Say \"I didn't look it in the eyes.\"",
+   "say_fr": "Dis que tu ne l'as pas regardé dans les yeux.",
    "hint": "Pronoun + ne … pas around the helper: je ne l'ai pas regardé.",
    "answers": [
-    "Je [ne l'ai pas] regardé dans les yeux."
+    "Je [ne l'ai pas] regardé dans les yeux.",
+    "{@oh}Je ne l'ai pas regardé dans les yeux."
    ],
    "extra": [
     "jamais",
@@ -500,10 +611,13 @@
    "topic": "pc_avoir",
    "level": 1,
    "say": "You got an ender pearl. Say that the enderman dropped a pearl.",
+   "say_fr": "Tu as une perle de l'Ender. Dis que l'enderman a laissé tomber une perle.",
+   "cue": "Qu'est-ce que l'enderman a laissé derrière lui ?",
    "hint": "laisser tomber = to drop: il a laissé tomber.",
    "answers": [
     "L'enderman [a laissé tomber] une perle.",
-    "L'enderman a {lâché|donné} une perle."
+    "{@oh}L'enderman a laissé tomber une perle.",
+    "{@oh}L'enderman a {lâché|donné} une perle."
    ],
    "extra": [
     "est",
@@ -518,9 +632,14 @@
    "topic": "pc_avoir",
    "level": 1,
    "say": "You won a fight. Say \"I won the fight!\"",
+   "say_fr": "Dis que tu as gagné le combat.",
+   "cue": "Alors, ce combat ?",
    "hint": "gagner → j'ai gagné.",
    "answers": [
-    "J'[ai gagné] {le|ce} combat."
+    "J'[ai gagné] {le|ce} combat.",
+    "{@oh}J'ai gagné {le|ce} combat.",
+    "{@oh}J'ai {gagné|remporté} {le|ce} combat.",
+    "{@oh}C'est moi qui ai gagné{| le combat| ce combat}."
    ],
    "extra": [
     "suis",
@@ -535,11 +654,16 @@
    "topic": "il_faut",
    "level": 2,
    "say": "That was close. Say that you must be more careful next time.",
+   "say_fr": "C'était juste. Dis que tu dois être plus prudent la prochaine fois.",
+   "cue": "Qu'est-ce que tu feras différemment la prochaine fois ?",
    "hint": "devoir + infinitive: je dois être… prudent / prudente.",
    "answers": [
     "Je [dois être] plus {prudent|prudente} la prochaine fois.",
-    "Je devrais être plus {prudent|prudente} la prochaine fois.",
-    "Il faut que je sois plus {prudent|prudente} la prochaine fois."
+    "{@oh}Je dois être plus {prudent|prudente} la prochaine fois.",
+    "{@oh}Je devrais être plus {prudent|prudente} la prochaine fois.",
+    "{@oh}Il faut que je sois plus {prudent|prudente} la prochaine fois.",
+    "{@oh}La prochaine fois, je {dois|devrai|devrais} être plus {prudent|prudente}.",
+    "{@oh}La prochaine fois, il faut que je sois plus {prudent|prudente}."
    ],
    "extra": [
     "suis",
@@ -556,11 +680,14 @@
    "topic": "futur_proche",
    "level": 2,
    "say": "You got some meat (la viande). Say that you are going to cook it.",
+   "say_fr": "Tu as de la viande. Dis que tu vas la cuire.",
+   "cue": "Qu'est-ce que tu vas faire de cette viande ?",
    "hint": "aller + pronoun + infinitive: je vais la cuire.",
    "answers": [
     "Je [vais la cuire].",
-    "Je vais la faire cuire.",
-    "Je vais {cuire|faire cuire} la viande."
+    "{@oh}Je vais la cuire.",
+    "{@oh}Je vais la faire cuire.",
+    "{@oh}Je vais {cuire|faire cuire} la viande."
    ],
    "extra": [
     "cuis",
@@ -575,14 +702,25 @@
    "topic": "il_faut",
    "level": 1,
    "say": "Say that you need wool to make a bed.",
+   "say_fr": "Dis que tu as besoin de laine pour faire un lit.",
+   "cue": "Pourquoi tu chasses les moutons ?",
    "hint": "avoir besoin de + noun, with no article: j'ai besoin de laine.",
    "answers": [
     "J'[ai besoin de] laine pour {faire|fabriquer} un lit.",
-    "Il me faut de la laine pour {faire|fabriquer} un lit."
+    "{@oh}J'ai besoin de laine pour {faire|fabriquer} un lit.",
+    "{@oh}Il me faut de la laine pour {faire|fabriquer} un lit.",
+    "{@oh}J'ai besoin de laine pour {faire|fabriquer} un lit."
    ],
    "extra": [
     "du",
     "la"
+   ],
+   "traps": [
+    {
+     "match": "J'ai besoin {du|de la} laine pour {faire|fabriquer} un lit",
+     "why": "avoir besoin de + noun with no article: j'ai besoin de laine.",
+     "skill": "articles"
+    }
    ]
   },
   {
@@ -593,13 +731,30 @@
    "topic": "pc_avoir",
    "level": 1,
    "say": "Diamonds! Say \"I found diamonds!\"",
+   "say_fr": "Des diamants ! Dis que tu as trouvé des diamants.",
+   "cue": "Qu'est-ce que tu viens de trouver ?",
    "hint": "trouver → j'ai trouvé.",
    "answers": [
-    "J'[ai trouvé] {des|deux|trois|quelques} diamants."
+    "J'[ai trouvé] {des|deux|trois|quelques} diamants.",
+    "{@oh}J'ai trouvé {des|deux|trois|quelques} diamants.",
+    "{@oh}J'ai {trouvé|découvert} {des|deux|trois|quelques|plein de|beaucoup de} diamants.",
+    "{@oh}Je viens de trouver {des|deux|trois|quelques|plein de|beaucoup de} diamants."
    ],
    "extra": [
     "suis",
     "trouve"
+   ],
+   "next": [
+    "mine_dia_en",
+    "mine_dia_found_q",
+    "mine_dia_found_fut"
+   ],
+   "traps": [
+    {
+     "match": "Je suis trouvé {des|deux|trois|quelques} diamants",
+     "why": "trouver takes avoir: j'ai trouvé.",
+     "skill": "aux_avoir"
+    }
    ]
   },
   {
@@ -610,10 +765,13 @@
    "topic": "futur_proche",
    "level": 1,
    "say": "Say what you are going to make with them: a pickaxe.",
+   "say_fr": "Dis ce que tu vas fabriquer avec : une pioche.",
+   "cue": "Qu'est-ce que tu vas fabriquer avec ces diamants ?",
    "hint": "aller + infinitive: je vais fabriquer.",
    "answers": [
     "Je [vais fabriquer] une pioche{| en diamant}.",
-    "Je vais {faire|crafter} une pioche{| en diamant}."
+    "{@oh}Je vais fabriquer une pioche{| en diamant}.",
+    "{@oh}Je vais {faire|crafter} une pioche{| en diamant}."
    ],
    "extra": [
     "fabrique",
@@ -628,13 +786,23 @@
    "topic": "pronoms",
    "level": 2,
    "say": "Someone asks how many diamonds you have. Answer \"I have three (of them).\"",
+   "say_fr": "On te demande combien de diamants tu as. Réponds « J'en ai trois » sans répéter « diamants ».",
+   "cue": "Tu as combien de diamants ? (Tu en as trois.)",
    "hint": "en replaces 'of them' and goes before the verb: j'en ai…",
    "answers": [
-    "J'[en ai] trois."
+    "J'[en ai] trois.",
+    "{@oh}J'en ai trois."
    ],
    "extra": [
     "les",
     "y"
+   ],
+   "traps": [
+    {
+     "match": "J'ai trois",
+     "why": "With a number and no noun, French needs en: j'en ai trois.",
+     "skill": "pron_en"
+    }
    ]
   },
   {
@@ -645,10 +813,13 @@
    "topic": "conditionnel",
    "level": 2,
    "say": "Say \"If I had more diamonds, I would make armour.\"",
+   "say_fr": "Dis que si tu avais plus de diamants, tu ferais une armure.",
+   "cue": "Et si tu avais plus de diamants ?",
    "hint": "si + imparfait (j'avais) → conditionnel (je ferais).",
    "answers": [
     "Si j'avais plus de diamants, je [ferais] une armure.",
-    "Si j'avais plus de diamants, je fabriquerais une armure."
+    "{@oh}Si j'avais plus de diamants, je ferais une armure.",
+    "{@oh}Si j'avais plus de diamants, je fabriquerais une armure."
    ],
    "extra": [
     "fera",
@@ -663,10 +834,13 @@
    "topic": "futur_proche",
    "level": 1,
    "say": "Say that you are going to melt the iron in the furnace.",
+   "say_fr": "Dis que tu vas faire fondre le fer dans le four.",
+   "cue": "Qu'est-ce que tu vas faire de ce fer ?",
    "hint": "faire fondre = to melt (something).",
    "answers": [
     "Je vais [faire fondre] le fer dans le four.",
-    "Je vais {fondre|cuire} le fer dans le four."
+    "{@oh}Je vais faire fondre le fer dans le four.",
+    "{@oh}Je vais {fondre|cuire} le fer dans le four."
    ],
    "extra": [
     "fond",
@@ -681,15 +855,21 @@
    "topic": "il_faut",
    "level": 1,
    "say": "Say that you need more iron.",
+   "say_fr": "Dis que tu as besoin de plus de fer.",
+   "cue": "Tu as assez de fer ?",
    "hint": "avoir besoin de: j'ai besoin de plus de fer.",
    "answers": [
     "J'[ai besoin de] plus de fer.",
-    "J'ai besoin d'encore plus de fer.",
-    "Il me faut plus de fer."
+    "{@oh}J'ai besoin de plus de fer.",
+    "{@oh}J'ai besoin d'encore plus de fer.",
+    "{@oh}Il me faut plus de fer."
    ],
    "extra": [
     "du",
     "suis"
+   ],
+   "next": [
+    "mine_iron_neg_de"
    ]
   },
   {
@@ -700,13 +880,28 @@
    "topic": "pronoms",
    "level": 2,
    "say": "You found coal. Say \"I'm going to use it for torches.\"",
+   "say_fr": "Tu as trouvé du charbon. Dis que tu vas l'utiliser pour des torches.",
+   "cue": "Et ce charbon, tu vas en faire quoi ? (Sans répéter « le charbon ».)",
    "hint": "With aller + infinitive, the pronoun goes before the infinitive: je vais l'utiliser.",
    "answers": [
-    "Je vais [l'utiliser] pour {des|les|faire des} torches."
+    "Je vais [l'utiliser] pour {des|les|faire des} torches.",
+    "{@oh}Je vais l'utiliser pour {des|les|faire des} torches."
    ],
    "extra": [
     "le",
     "lui"
+   ],
+   "traps": [
+    {
+     "match": "Je vais utiliser pour {des|les|faire des} torches",
+     "why": "Say what you'll use: le → l' before the infinitive: je vais l'utiliser.",
+     "skill": "pron_place"
+    },
+    {
+     "match": "Je l'vais utiliser pour {des|les|faire des} torches",
+     "why": "The pronoun goes before the infinitive: je vais l'utiliser.",
+     "skill": "pron_place"
+    }
    ]
   },
   {
@@ -717,14 +912,22 @@
    "topic": "pc_avoir",
    "level": 1,
    "say": "Say that you mined a lot of coal.",
+   "say_fr": "Dis que tu as miné beaucoup de charbon.",
+   "cue": "Tu as miné quoi, aujourd'hui ?",
    "hint": "beaucoup de + noun, no article: beaucoup de charbon.",
    "answers": [
     "J'[ai miné] beaucoup de charbon.",
-    "J'ai {trouvé|récolté|extrait} beaucoup de charbon."
+    "{@oh}J'ai miné beaucoup de charbon.",
+    "{@oh}J'ai {trouvé|récolté|extrait} beaucoup de charbon.",
+    "{@oh}Je viens de miner beaucoup de charbon.",
+    "{@oh}J'ai {miné|trouvé|récolté|extrait} plein de charbon."
    ],
    "extra": [
     "du",
     "des"
+   ],
+   "next": [
+    "mine_coal_use"
    ]
   },
   {
@@ -736,11 +939,13 @@
    "topic": "questions",
    "level": 1,
    "say": "Ask yourself \"Where can I find more gold?\"",
+   "say_fr": "Demande-toi où tu peux trouver plus d'or.",
    "hint": "Où + est-ce que + subject + verb, or inversion: Où puis-je…?",
    "answers": [
     "Où [est-ce que] je peux trouver plus d'or ?",
-    "Où puis-je trouver plus d'or ?",
-    "Où je peux trouver plus d'or ?"
+    "{@oh}Où est-ce que je peux trouver plus d'or ?",
+    "{@oh}Où puis-je trouver plus d'or ?",
+    "{@oh}Où je peux trouver plus d'or ?"
    ],
    "extra": [
     "quand",
@@ -755,14 +960,21 @@
    "topic": "futur_proche",
    "level": 1,
    "say": "You're chopping wood. Say that you are going to build a house.",
+   "say_fr": "Tu coupes du bois. Dis que tu vas construire une maison.",
+   "cue": "Pourquoi tout ce bois ? Qu'est-ce que tu vas faire ?",
    "hint": "aller + infinitive: je vais construire.",
    "answers": [
     "Je [vais construire] une maison.",
-    "Je vais {bâtir|faire} une maison."
+    "{@oh}Je vais construire une maison.",
+    "{@oh}Je vais {bâtir|faire} une maison.",
+    "{@oh}Je vais {construire|bâtir|faire} une maison{| en bois}."
    ],
    "extra": [
     "construis",
     "un"
+   ],
+   "next": [
+    "mine_log_river"
    ]
   },
   {
@@ -773,11 +985,14 @@
    "topic": "liens",
    "level": 2,
    "say": "Say that you cut down a tree because you need wood.",
+   "say_fr": "Dis que tu as coupé un arbre parce que tu as besoin de bois.",
+   "cue": "Pourquoi as-tu coupé cet arbre ?",
    "hint": "parce que / car joins two full sentences.",
    "answers": [
     "J'ai coupé {un|cet|l'} arbre [parce que] j'ai besoin de bois.",
-    "J'ai coupé {un|cet|l'} arbre {parce que|car} j'avais besoin de bois.",
-    "J'ai coupé {un|cet|l'} arbre car j'ai besoin de bois."
+    "{@oh}J'ai coupé {un|cet|l'} arbre parce que j'ai besoin de bois.",
+    "{@oh}J'ai coupé {un|cet|l'} arbre {parce que|car} j'avais besoin de bois.",
+    "{@oh}J'ai coupé {un|cet|l'} arbre car j'ai besoin de bois."
    ],
    "extra": [
     "pour",
@@ -792,10 +1007,13 @@
    "topic": "lieu",
    "level": 1,
    "say": "Say that your house is going to be next to the river.",
+   "say_fr": "Dis que ta maison va être à côté de la rivière.",
+   "cue": "Où va être ta maison ?",
    "hint": "à côté de + la rivière (feminine, so no contraction).",
    "answers": [
     "Ma maison va être [à côté de] la rivière.",
-    "Ma maison {va être|sera} {à côté de|près de} la rivière."
+    "{@oh}Ma maison va être à côté de la rivière.",
+    "{@oh}Ma maison {va être|sera} {à côté de|près de} la rivière."
    ],
    "extra": [
     "du",
@@ -810,15 +1028,31 @@
    "topic": "reflexifs",
    "level": 1,
    "say": "Night has fallen. Say \"I'm going to bed.\"",
+   "say_fr": "La nuit est tombée. Dis que tu te couches.",
+   "cue": "Il fait nuit. Qu'est-ce que tu fais ?",
    "hint": "se coucher: je me couche.",
    "answers": [
     "Je [me couche].",
-    "Je vais me coucher.",
-    "Je vais dormir."
+    "{@oh}Je me couche.",
+    "{@oh}Je vais me coucher.",
+    "{@oh}Je vais dormir.",
+    "{@oh}Je vais au lit.",
+    "{@oh}Je me couche{| maintenant}.",
+    "{@oh}Je vais me coucher{| maintenant}."
    ],
    "extra": [
     "se",
     "couché"
+   ],
+   "next": [
+    "sleep_yesterday"
+   ],
+   "traps": [
+    {
+     "match": "{Je|Je vais} {couche|coucher}",
+     "why": "se coucher is reflexive: je me couche.",
+     "skill": "reflexif"
+    }
    ]
   },
   {
@@ -829,14 +1063,24 @@
    "topic": "imparfait",
    "level": 1,
    "say": "Describe the night: \"It was dark and I was tired.\"",
+   "say_fr": "Décris la nuit : il faisait nuit et tu étais fatigué.",
+   "cue": "C'était comment, hier soir ?",
    "hint": "Weather and states in the past use the imparfait: il faisait, j'étais.",
    "answers": [
     "Il [faisait nuit] et j'étais {fatigué|fatiguée}.",
-    "Il faisait noir et j'étais {fatigué|fatiguée}."
+    "{@oh}Il faisait nuit et j'étais {fatigué|fatiguée}.",
+    "{@oh}Il faisait noir et j'étais {fatigué|fatiguée}."
    ],
    "extra": [
     "était",
     "suis"
+   ],
+   "traps": [
+    {
+     "match": "Il a fait {nuit|noir} et j'ai été {fatigué|fatiguée}",
+     "why": "Describing a scene uses the imparfait: il faisait nuit, j'étais fatigué.",
+     "skill": "imparfait"
+    }
    ]
   },
   {
@@ -847,11 +1091,14 @@
    "topic": "futur_proche",
    "level": 1,
    "say": "Say what you'll do tomorrow: explore the caves.",
+   "say_fr": "Dis ce que tu vas faire demain : explorer les grottes.",
+   "cue": "Qu'est-ce que tu vas faire demain ?",
    "hint": "Demain, je vais + infinitive.",
    "answers": [
     "Demain, je [vais explorer] les grottes.",
-    "Demain, je vais explorer les cavernes.",
-    "Je vais explorer les {grottes|cavernes} demain."
+    "{@oh}Demain, je vais explorer les grottes.",
+    "{@oh}Demain, je vais explorer les cavernes.",
+    "{@oh}Je vais explorer les {grottes|cavernes} demain."
    ],
    "extra": [
     "explore",
@@ -866,10 +1113,13 @@
    "topic": "reflexifs",
    "level": 2,
    "say": "Say \"Yesterday I went to bed early.\"",
+   "say_fr": "Dis qu'hier, tu t'es couché tôt.",
+   "cue": "Tu t'es couché à quelle heure, hier ?",
    "hint": "Pronominal verbs use être in the passé composé: je me suis couché(e).",
    "answers": [
     "Hier, je [me suis couché] tôt.",
-    "Hier, je me suis couchée tôt."
+    "{@oh}Hier, je me suis couché tôt.",
+    "{@oh}Hier, je me suis couchée tôt."
    ],
    "extra": [
     "ai",
@@ -884,14 +1134,23 @@
    "topic": "pc_etre",
    "level": 1,
    "say": "Oops. Say \"I died.\"",
+   "say_fr": "Oups. Dis que tu es mort.",
+   "cue": "Qu'est-ce qui t'est arrivé ?",
    "hint": "mourir uses être: je suis mort / morte.",
    "answers": [
     "Je [suis mort].",
-    "Je suis morte."
+    "{@oh}Je suis mort.",
+    "{@oh}Je suis morte.",
+    "{@oh}Je viens de mourir.",
+    "{@oh}Je suis {mort|morte} !"
    ],
    "extra": [
     "ai",
     "mourir"
+   ],
+   "next": [
+    "death_died_neg",
+    "death_fell"
    ]
   },
   {
@@ -902,14 +1161,20 @@
    "topic": "pc_etre",
    "level": 1,
    "say": "Say what happened, for example that you fell into the lava.",
+   "say_fr": "Dis ce qui s'est passé : par exemple, que tu es tombé dans la lave.",
+   "cue": "Comment c'est arrivé ?",
    "hint": "tomber uses être: je suis tombé(e) dans…",
    "answers": [
     "Je [suis tombé] dans la lave.",
-    "Je suis tombée dans la lave."
+    "{@oh}Je suis tombé dans la lave.",
+    "{@oh}Je suis tombée dans la lave."
    ],
    "extra": [
     "ai",
     "sur"
+   ],
+   "next": [
+    "death_fell_nous"
    ]
   },
   {
@@ -920,11 +1185,14 @@
    "topic": "pronoms",
    "level": 2,
    "say": "Explain what killed you: \"A monster killed me.\"",
+   "say_fr": "Explique ce qui t'a tué : un monstre.",
+   "cue": "Qui t'a tué ?",
    "hint": "me → m' before the helper: il m'a tué.",
    "answers": [
     "Un monstre [m'a tué].",
-    "Un monstre m'a tuée.",
-    "Je me suis fait tuer par un monstre."
+    "{@oh}Un monstre m'a tué.",
+    "{@oh}Un monstre m'a tuée.",
+    "{@oh}Je me suis fait tuer par un monstre."
    ],
    "extra": [
     "me",
@@ -939,12 +1207,15 @@
    "topic": "il_faut",
    "level": 2,
    "say": "Say \"I must go back to get my things.\"",
+   "say_fr": "Dis que tu dois retourner chercher tes affaires.",
+   "cue": "Et maintenant, tes affaires ?",
    "hint": "devoir + infinitive + infinitive: je dois retourner chercher…",
    "answers": [
     "Je [dois retourner] chercher mes affaires.",
-    "Je dois {aller|revenir} chercher mes affaires.",
-    "Il faut que je retourne chercher mes affaires.",
-    "Il faut {retourner|aller} chercher mes affaires."
+    "{@oh}Je dois retourner chercher mes affaires.",
+    "{@oh}Je dois {aller|revenir} chercher mes affaires.",
+    "{@oh}Il faut que je retourne chercher mes affaires.",
+    "{@oh}Il faut {retourner|aller} chercher mes affaires."
    ],
    "extra": [
     "retourne",
@@ -959,9 +1230,12 @@
    "topic": "conditionnel",
    "level": 3,
    "say": "Reflect: \"If I had had armour, I wouldn't have died.\"",
+   "say_fr": "Dis que si tu avais eu une armure, tu ne serais pas mort.",
+   "cue": "Qu'est-ce qui aurait pu changer les choses ?",
    "hint": "si + plus-que-parfait (j'avais eu) → conditionnel passé (je ne serais pas mort).",
    "answers": [
-    "Si j'avais eu une armure, je [ne serais pas] {mort|morte}."
+    "Si j'avais eu une armure, je [ne serais pas] {mort|morte}.",
+    "{@oh}Si j'avais eu une armure, je ne serais pas {mort|morte}."
    ],
    "extra": [
     "aurais",
@@ -976,16 +1250,24 @@
    "topic": "il_faut",
    "level": 1,
    "say": "You're badly hurt. Say \"I need to eat something.\"",
+   "say_fr": "Tu es gravement blessé. Dis que tu dois manger quelque chose.",
+   "cue": "Tu n'as presque plus de vie ! Qu'est-ce que tu dois faire ?",
    "hint": "devoir / il faut / avoir besoin de + infinitive.",
    "answers": [
     "Je [dois manger] quelque chose.",
-    "Il faut que je mange quelque chose.",
-    "J'ai besoin de manger quelque chose.",
-    "Il faut manger quelque chose."
+    "{@oh}Je dois manger quelque chose.",
+    "{@oh}Il faut que je mange quelque chose.",
+    "{@oh}J'ai besoin de manger quelque chose.",
+    "{@oh}Il faut manger quelque chose.",
+    "{@oh}Je dois manger{| quelque chose| vite}.",
+    "{@oh}Il faut que je mange{| quelque chose| vite}."
    ],
    "extra": [
     "mange",
     "faut"
+   ],
+   "next": [
+    "low_si_eaten"
    ]
   },
   {
@@ -996,9 +1278,14 @@
    "topic": "futur_proche",
    "level": 1,
    "say": "Say \"I'm going to die!\"",
+   "say_fr": "Dis que tu vas mourir !",
+   "cue": "Ça va ?",
    "hint": "aller + infinitive: je vais mourir.",
    "answers": [
-    "Je [vais mourir] !"
+    "Je [vais mourir] !",
+    "{@oh}Je vais mourir !",
+    "{@oh}Je vais mourir{| bientôt}.",
+    "{@oh}Je vais bientôt mourir."
    ],
    "extra": [
     "meurs",
@@ -1013,10 +1300,13 @@
    "topic": "conditionnel",
    "level": 2,
    "say": "Ask a friend politely: \"Could you help me?\"",
+   "say_fr": "Demande poliment à un ami s'il pourrait t'aider.",
+   "cue": "Tu es en danger. Demande de l'aide à ton ami !",
    "hint": "pouvoir in the conditional (pourrais) is more polite than peux.",
    "answers": [
     "[Pourrais-tu] m'aider ?",
-    "{Peux-tu|Tu peux|Tu pourrais|Est-ce que tu peux|Est-ce que tu pourrais|Pourriez-vous|Pouvez-vous} m'aider ?"
+    "{@oh}Pourrais-tu m'aider ?",
+    "{@oh}{Peux-tu|Tu peux|Tu pourrais|Est-ce que tu peux|Est-ce que tu pourrais|Pourriez-vous|Pouvez-vous} m'aider ?"
    ],
    "extra": [
     "aide",
@@ -1031,16 +1321,26 @@
    "topic": "reflexifs",
    "level": 2,
    "say": "Say \"I need to hide.\"",
+   "say_fr": "Dis que tu dois te cacher.",
+   "cue": "Les monstres arrivent ! Qu'est-ce que tu dois faire ?",
    "hint": "se cacher keeps its pronoun with the infinitive: je dois me cacher.",
    "answers": [
     "Je [dois me cacher].",
-    "Il faut que je me cache.",
-    "Il faut me cacher.",
-    "Je vais me cacher."
+    "{@oh}Je dois me cacher.",
+    "{@oh}Il faut que je me cache.",
+    "{@oh}Il faut me cacher.",
+    "{@oh}Je vais me cacher."
    ],
    "extra": [
     "cache",
     "te"
+   ],
+   "traps": [
+    {
+     "match": "{Je dois|Il faut que je|Je vais} {cacher|cache}",
+     "why": "se cacher is reflexive: je dois me cacher.",
+     "skill": "reflexif"
+    }
    ]
   },
   {
@@ -1051,14 +1351,22 @@
    "topic": "futur_proche",
    "level": 1,
    "say": "A new day. Say your plan: \"Today I'm going to look for iron.\"",
+   "say_fr": "Un nouveau jour. Dis ton plan : aujourd'hui, tu vas chercher du fer.",
+   "cue": "Quel est ton plan pour aujourd'hui ?",
    "hint": "chercher du fer (du = some).",
    "answers": [
     "Aujourd'hui, je [vais chercher] du fer.",
-    "Je vais chercher du fer aujourd'hui."
+    "{@oh}Aujourd'hui, je vais chercher du fer.",
+    "{@oh}Je vais chercher du fer aujourd'hui.",
+    "{@oh}Aujourd'hui, je vais {chercher|trouver|miner} du fer.",
+    "{@oh}Je vais {chercher|trouver|miner} du fer aujourd'hui."
    ],
    "extra": [
     "cherche",
     "de"
+   ],
+   "next": [
+    "dawn_plan_past"
    ]
   },
   {
@@ -1069,14 +1377,24 @@
    "topic": "reflexifs",
    "level": 2,
    "say": "Say \"I woke up early.\"",
+   "say_fr": "Dis que tu t'es réveillé tôt.",
+   "cue": "Tu t'es réveillé quand ?",
    "hint": "se réveiller uses être: je me suis réveillé(e).",
    "answers": [
     "Je [me suis réveillé] tôt.",
-    "Je me suis réveillée tôt."
+    "{@oh}Je me suis réveillé tôt.",
+    "{@oh}Je me suis réveillée tôt."
    ],
    "extra": [
     "ai",
     "réveille"
+   ],
+   "traps": [
+    {
+     "match": "J'ai {réveillé|réveillée} tôt",
+     "why": "se réveiller is reflexive, so it takes être: je me suis réveillé(e).",
+     "skill": "reflexif"
+    }
    ]
   },
   {
@@ -1087,13 +1405,23 @@
    "topic": "imparfait",
    "level": 1,
    "say": "Describe the morning: \"The sun was rising and it was cold.\"",
+   "say_fr": "Décris le matin : le soleil se levait et il faisait froid.",
+   "cue": "C'était comment, ce matin ?",
    "hint": "Background description: imparfait (se levait, faisait).",
    "answers": [
-    "Le soleil [se levait] et il faisait {froid|frais}."
+    "Le soleil [se levait] et il faisait {froid|frais}.",
+    "{@oh}Le soleil se levait et il faisait {froid|frais}."
    ],
    "extra": [
     "levé",
     "était"
+   ],
+   "traps": [
+    {
+     "match": "Le soleil se levait et il {était|est} {froid|frais}",
+     "why": "Weather and temperature use faire: il faisait froid.",
+     "skill": "faire_meteo"
+    }
    ]
   },
   {
@@ -1104,11 +1432,13 @@
    "topic": "questions",
    "level": 1,
    "say": "Ask yourself \"What am I going to do today?\"",
+   "say_fr": "Demande-toi ce que tu vas faire aujourd'hui.",
    "hint": "Qu'est-ce que + subject + verb, or inversion: Que vais-je faire ?",
    "answers": [
     "[Qu'est-ce que] je vais faire aujourd'hui ?",
-    "Que vais-je faire aujourd'hui ?",
-    "Je vais faire quoi aujourd'hui ?"
+    "{@oh}Qu'est-ce que je vais faire aujourd'hui ?",
+    "{@oh}Que vais-je faire aujourd'hui ?",
+    "{@oh}Je vais faire quoi aujourd'hui ?"
    ],
    "extra": [
     "quoi",
@@ -1123,14 +1453,29 @@
    "topic": "liens",
    "level": 2,
    "say": "Say \"Before exploring, I'm going to eat.\"",
+   "say_fr": "Dis qu'avant d'explorer, tu vas manger.",
+   "cue": "Tu pars explorer tout de suite ?",
    "hint": "avant de + infinitive (d' before a vowel): avant d'explorer.",
    "answers": [
     "[Avant d'explorer], je vais manger.",
-    "Je vais manger avant d'explorer."
+    "{@oh}Avant d'explorer, je vais manger.",
+    "{@oh}Je vais manger avant d'explorer."
    ],
    "extra": [
     "après",
     "de"
+   ],
+   "traps": [
+    {
+     "match": "Avant explorer, je vais manger",
+     "why": "avant de + infinitive: avant d'explorer.",
+     "skill": "prep_inf"
+    },
+    {
+     "match": "Je vais manger avant explorer",
+     "why": "avant de + infinitive: avant d'explorer.",
+     "skill": "prep_inf"
+    }
    ]
   },
   {
@@ -1141,14 +1486,22 @@
    "topic": "pc_etre",
    "level": 1,
    "say": "You went through the portal. Say \"I went into the Nether.\"",
+   "say_fr": "Tu as traversé le portail. Dis que tu es entré dans le Nether.",
+   "cue": "Où es-tu allé ?",
    "hint": "entrer uses être: je suis entré(e).",
    "answers": [
     "Je [suis entré] dans le Nether.",
-    "Je suis {entrée|allé|allée} dans le Nether."
+    "{@oh}Je suis entré dans le Nether.",
+    "{@oh}Je suis {entrée|allé|allée} dans le Nether.",
+    "{@oh}Je suis {entré|entrée|allé|allée|arrivé|arrivée} dans le Nether."
    ],
    "extra": [
     "ai",
     "au"
+   ],
+   "next": [
+    "nether_stay",
+    "nether_hot"
    ]
   },
   {
@@ -1159,13 +1512,23 @@
    "topic": "imparfait",
    "level": 2,
    "say": "Describe it in your diary: \"It was very hot and there was lava everywhere.\"",
+   "say_fr": "Écris dans ton journal qu'il faisait très chaud et qu'il y avait de la lave partout.",
+   "cue": "C'était comment, le Nether ?",
    "hint": "il faisait chaud, il y avait (imparfait of il y a).",
    "answers": [
-    "Il [faisait très chaud] et il y avait de la lave partout."
+    "Il [faisait très chaud] et il y avait de la lave partout.",
+    "{@oh}Il faisait très chaud et il y avait de la lave partout."
    ],
    "extra": [
     "était",
     "a"
+   ],
+   "traps": [
+    {
+     "match": "Il {était|est} très chaud et il y avait de la lave partout",
+     "why": "Weather and temperature use faire: il faisait très chaud.",
+     "skill": "faire_meteo"
+    }
    ]
   },
   {
@@ -1176,11 +1539,14 @@
    "topic": "negation",
    "level": 1,
    "say": "Say \"I'm not staying here for long.\"",
+   "say_fr": "Dis que tu ne restes pas ici longtemps.",
+   "cue": "Tu restes longtemps ici ?",
    "hint": "ne + verb + pas: je ne reste pas.",
    "answers": [
     "Je [ne reste pas] ici longtemps.",
-    "Je ne reste pas longtemps ici.",
-    "Je ne vais pas rester ici longtemps."
+    "{@oh}Je ne reste pas ici longtemps.",
+    "{@oh}Je ne reste pas longtemps ici.",
+    "{@oh}Je ne vais pas rester ici longtemps."
    ],
    "extra": [
     "plus",
@@ -1195,10 +1561,15 @@
    "topic": "pc_etre",
    "level": 1,
    "say": "Say \"I have arrived in the End!\"",
+   "say_fr": "Dis que tu es arrivé dans l'End !",
+   "cue": "Où es-tu ?",
    "hint": "arriver uses être: je suis arrivé(e).",
    "answers": [
     "Je [suis arrivé] dans l'End.",
-    "Je suis arrivée dans l'End."
+    "{@oh}Je suis arrivé dans l'End.",
+    "{@oh}Je suis arrivée dans l'End.",
+    "{@oh}Je suis {arrivé|arrivée} dans l'End{| enfin}.",
+    "{@oh}Je suis enfin {arrivé|arrivée} dans l'End."
    ],
    "extra": [
     "ai",
@@ -1213,14 +1584,20 @@
    "topic": "conditionnel",
    "level": 1,
    "say": "Say \"I would like to defeat the dragon.\"",
+   "say_fr": "Dis que tu voudrais vaincre le dragon.",
+   "cue": "Qu'est-ce que tu voudrais faire ici ?",
    "hint": "vouloir in the conditional: je voudrais.",
    "answers": [
     "Je [voudrais] vaincre le dragon.",
-    "{Je voudrais|Je veux|J'aimerais} {vaincre|tuer|battre} le dragon."
+    "{@oh}Je voudrais vaincre le dragon.",
+    "{@oh}{Je voudrais|Je veux|J'aimerais} {vaincre|tuer|battre} le dragon."
    ],
    "extra": [
     "veut",
     "voulais"
+   ],
+   "next": [
+    "end_dragon_pc"
    ]
   },
   {
@@ -1231,10 +1608,13 @@
    "topic": "pc_etre",
    "level": 1,
    "say": "You're back in the Overworld. Say \"I came back alive!\"",
+   "say_fr": "Tu es de retour dans l'Overworld. Dis que tu es revenu vivant !",
+   "cue": "Alors, ce voyage ?",
    "hint": "revenir uses être: je suis revenu(e).",
    "answers": [
     "Je [suis revenu] vivant.",
-    "Je suis {revenu|revenue|rentré|rentrée} {vivant|vivante|en vie}."
+    "{@oh}Je suis revenu vivant.",
+    "{@oh}Je suis {revenu|revenue|rentré|rentrée} {vivant|vivante|en vie}."
    ],
    "extra": [
     "ai",
@@ -1249,11 +1629,14 @@
    "topic": "negation",
    "level": 2,
    "say": "Describe it: \"There's nothing here but sand.\"",
+   "say_fr": "Décris le désert : il n'y a que du sable ici.",
+   "cue": "Qu'est-ce qu'il y a ici ?",
    "hint": "ne … que = only: il n'y a que…",
    "answers": [
     "Il [n'y a que] du sable ici.",
-    "Il n'y a que du sable.",
-    "Ici, il n'y a que du sable."
+    "{@oh}Il n'y a que du sable ici.",
+    "{@oh}Il n'y a que du sable.",
+    "{@oh}Ici, il n'y a que du sable."
    ],
    "extra": [
     "pas",
@@ -1269,11 +1652,16 @@
    "topic": "il_faut",
    "level": 1,
    "say": "Say \"I must find water.\"",
+   "say_fr": "Dis que tu dois trouver de l'eau.",
+   "cue": "Qu'est-ce qu'il te faut, dans ce désert ?",
    "hint": "de l'eau = some water.",
    "answers": [
     "Je [dois trouver] de l'eau.",
-    "Il faut que je trouve de l'eau.",
-    "Il faut trouver de l'eau."
+    "{@oh}Je dois trouver de l'eau.",
+    "{@oh}Il faut que je trouve de l'eau.",
+    "{@oh}Il faut trouver de l'eau.",
+    "{@oh}Je dois trouver de l'eau{| vite}.",
+    "{@oh}Il me faut de l'eau."
    ],
    "extra": [
     "trouve",
@@ -1288,10 +1676,12 @@
    "topic": "questions",
    "level": 1,
    "say": "Ask yourself \"How am I going to cross the ocean?\"",
+   "say_fr": "Demande-toi comment tu vas traverser l'océan.",
    "hint": "Comment + question: Comment est-ce que je vais… / Comment vais-je…",
    "answers": [
     "[Comment] je vais traverser l'océan ?",
-    "Comment {est-ce que je vais|vais-je} traverser l'océan ?"
+    "{@oh}Comment je vais traverser l'océan ?",
+    "{@oh}Comment {est-ce que je vais|vais-je} traverser l'océan ?"
    ],
    "extra": [
     "pourquoi",
@@ -1306,14 +1696,21 @@
    "topic": "futur_proche",
    "level": 1,
    "say": "Say that you are going to build a boat.",
+   "say_fr": "Dis que tu vas construire un bateau.",
+   "cue": "Comment vas-tu traverser l'océan ?",
    "hint": "aller + infinitive.",
    "answers": [
     "Je [vais construire] un bateau.",
-    "Je vais {fabriquer|faire} un bateau."
+    "{@oh}Je vais construire un bateau.",
+    "{@oh}Je vais {fabriquer|faire} un bateau.",
+    "{@oh}Je vais {construire|fabriquer|faire} un bateau{| pour traverser l'océan}."
    ],
    "extra": [
     "construit",
     "une"
+   ],
+   "next": [
+    "ocean_doubt"
    ]
   },
   {
@@ -1324,9 +1721,12 @@
    "topic": "lieu",
    "level": 1,
    "say": "Say \"There's a cave behind the trees.\"",
+   "say_fr": "Dis qu'il y a une grotte derrière les arbres.",
+   "cue": "Tu vois quelque chose derrière les arbres ?",
    "hint": "derrière = behind, devant = in front of.",
    "answers": [
-    "Il y a une {grotte|caverne} [derrière] les arbres."
+    "Il y a une {grotte|caverne} [derrière] les arbres.",
+    "{@oh}Il y a une {grotte|caverne} derrière les arbres."
    ],
    "extra": [
     "devant",
@@ -1341,10 +1741,13 @@
    "topic": "negation",
    "level": 2,
    "say": "Say \"I can't see anything, the forest is too dark.\"",
+   "say_fr": "Dis que tu ne vois rien parce que la forêt est trop sombre.",
+   "cue": "Tu vois quelque chose ?",
    "hint": "ne … rien = nothing: je ne vois rien.",
    "answers": [
     "Je [ne vois rien], la forêt est trop {sombre|noire}.",
-    "Je ne vois rien parce que la forêt est trop {sombre|noire}."
+    "{@oh}Je ne vois rien, la forêt est trop {sombre|noire}.",
+    "{@oh}Je ne vois rien parce que la forêt est trop {sombre|noire}."
    ],
    "extra": [
     "pas",
@@ -1361,14 +1764,29 @@
    "topic": "accord",
    "level": 1,
    "say": "Describe it: \"The grass is green and the flowers are pretty.\"",
+   "say_fr": "Décris la plaine : l'herbe est verte et les fleurs sont jolies.",
+   "cue": "Décris l'herbe et les fleurs.",
    "hint": "l'herbe is feminine (verte); les fleurs is feminine plural (jolies).",
    "answers": [
     "L'herbe est verte et les fleurs sont [jolies].",
-    "L'herbe est verte et les fleurs sont belles."
+    "{@oh}L'herbe est verte et les fleurs sont jolies.",
+    "{@oh}L'herbe est verte et les fleurs sont belles."
    ],
    "extra": [
     "joli",
     "vert"
+   ],
+   "traps": [
+    {
+     "match": "L'herbe est {vert|verts|vertes} et les fleurs sont {jolies|belles|joli|jolis|jolie|belle|beaux|beau}",
+     "why": "L'herbe is feminine singular: verte.",
+     "skill": "accord_adj"
+    },
+    {
+     "match": "L'herbe est verte et les fleurs sont {joli|jolis|jolie|belle|beaux|beau}",
+     "why": "Les fleurs is feminine plural: jolies (or belles).",
+     "skill": "accord_adj"
+    }
    ]
   },
   {
@@ -1380,10 +1798,13 @@
    "topic": "lieu",
    "level": 1,
    "say": "Say \"I'm going to build my farm near the village.\"",
+   "say_fr": "Dis que tu vas construire ta ferme près du village.",
+   "cue": "Où vas-tu construire ta ferme ?",
    "hint": "près de + le village → près du village.",
    "answers": [
     "Je vais construire ma ferme [près du] village.",
-    "Je vais {construire|faire} ma ferme {près du|à côté du} village."
+    "{@oh}Je vais construire ma ferme près du village.",
+    "{@oh}Je vais {construire|faire} ma ferme {près du|à côté du} village."
    ],
    "extra": [
     "de",
@@ -1400,13 +1821,23 @@
    "topic": "conditionnel",
    "level": 3,
    "say": "Say \"It's cold, I should have brought a coat.\"",
+   "say_fr": "Dis qu'il fait froid et que tu aurais dû apporter un manteau.",
+   "cue": "Tu as froid ? Qu'est-ce que tu aurais dû faire ?",
    "hint": "j'aurais dû + infinitive = I should have…",
    "answers": [
-    "Il fait froid, j'[aurais dû] {apporter|prendre} un manteau."
+    "Il fait froid, j'[aurais dû] {apporter|prendre} un manteau.",
+    "{@oh}Il fait froid, j'aurais dû {apporter|prendre} un manteau."
    ],
    "extra": [
     "devais",
     "ai"
+   ],
+   "traps": [
+    {
+     "match": "Il est froid, j'aurais dû {apporter|prendre} un manteau",
+     "why": "Weather and temperature use faire: il fait froid.",
+     "skill": "faire_meteo"
+    }
    ]
   },
   {
@@ -1419,13 +1850,28 @@
    "topic": "accord",
    "level": 1,
    "say": "Describe it: \"The mountains are white and very high.\"",
+   "say_fr": "Décris-les : les montagnes sont blanches et très hautes.",
+   "cue": "Comment sont les montagnes ?",
    "hint": "les montagnes is feminine plural: blanches, hautes.",
    "answers": [
-    "Les montagnes sont [blanches] et très hautes."
+    "Les montagnes sont [blanches] et très hautes.",
+    "{@oh}Les montagnes sont blanches et très hautes."
    ],
    "extra": [
     "blancs",
     "haut"
+   ],
+   "traps": [
+    {
+     "match": "Les montagnes sont {blanc|blancs|blanche} et très {haut|hauts|haute|hautes}",
+     "why": "Les montagnes is feminine plural: blanches, hautes.",
+     "skill": "accord_adj"
+    },
+    {
+     "match": "Les montagnes sont blanches et très {haut|hauts|haute}",
+     "why": "Les montagnes is feminine plural: hautes.",
+     "skill": "accord_adj"
+    }
    ]
   },
   {
@@ -1436,10 +1882,12 @@
    "topic": "questions",
    "level": 2,
    "say": "Ask \"Is there a temple in this jungle?\"",
+   "say_fr": "Demande s'il y a un temple dans cette jungle.",
    "hint": "Est-ce qu'il y a… ? or inversion: Y a-t-il… ?",
    "answers": [
     "[Est-ce qu'il y a] un temple dans cette jungle ?",
-    "{Y a-t-il|Il y a} un temple dans cette jungle ?"
+    "{@oh}Est-ce qu'il y a un temple dans cette jungle ?",
+    "{@oh}{Y a-t-il|Il y a} un temple dans cette jungle ?"
    ],
    "extra": [
     "où",
@@ -1454,14 +1902,24 @@
    "topic": "imparfait",
    "level": 1,
    "say": "Later, in your diary: \"The jungle was huge and full of parrots.\"",
+   "say_fr": "Plus tard, dans ton journal : la jungle était immense et pleine de perroquets.",
+   "cue": "C'était comment, la jungle ?",
    "hint": "Description in the past: était. pleine agrees with la jungle.",
    "answers": [
     "La jungle [était] immense et pleine de perroquets.",
-    "La jungle était {énorme|très grande} et pleine de perroquets."
+    "{@oh}La jungle était immense et pleine de perroquets.",
+    "{@oh}La jungle était {énorme|très grande} et pleine de perroquets."
    ],
    "extra": [
     "est",
     "plein"
+   ],
+   "traps": [
+    {
+     "match": "La jungle a été {immense|énorme|très grande} et pleine de perroquets",
+     "why": "Describing how things were uses the imparfait: la jungle était.",
+     "skill": "imparfait"
+    }
    ]
   },
   {
@@ -1472,11 +1930,14 @@
    "topic": "negation",
    "level": 1,
    "say": "Say \"I never want to come back here.\"",
+   "say_fr": "Dis que tu ne veux jamais revenir ici.",
+   "cue": "Tu aimes ce marais ? Tu vas revenir ?",
    "hint": "ne … jamais = never: je ne veux jamais…",
    "answers": [
     "Je [ne veux jamais] revenir ici.",
-    "Je ne veux plus jamais revenir ici.",
-    "Je ne veux plus revenir ici."
+    "{@oh}Je ne veux jamais revenir ici.",
+    "{@oh}Je ne veux plus jamais revenir ici.",
+    "{@oh}Je ne veux plus revenir ici."
    ],
    "extra": [
     "pas",
@@ -1491,13 +1952,23 @@
    "topic": "reflexifs",
    "level": 1,
    "say": "Say \"The wolves are hiding behind the trees.\"",
+   "say_fr": "Dis que les loups se cachent derrière les arbres.",
+   "cue": "Où sont les loups ?",
    "hint": "se cacher with a plural subject: ils se cachent.",
    "answers": [
-    "Les loups [se cachent] derrière les arbres."
+    "Les loups [se cachent] derrière les arbres.",
+    "{@oh}Les loups se cachent derrière les arbres."
    ],
    "extra": [
     "cache",
     "sous"
+   ],
+   "traps": [
+    {
+     "match": "Les loups cachent derrière les arbres",
+     "why": "se cacher is reflexive: les loups se cachent.",
+     "skill": "reflexif"
+    }
    ]
   },
   {
@@ -1508,9 +1979,11 @@
    "topic": "liens",
    "level": 2,
    "say": "Say \"I'm going to swim, but first I'm going to take off my armour.\"",
+   "say_fr": "Dis que tu vas nager, mais que d'abord, tu vas enlever ton armure.",
    "hint": "mais d'abord = but first.",
    "answers": [
-    "Je vais nager, [mais d'abord] je vais {enlever|retirer} mon armure."
+    "Je vais nager, [mais d'abord] je vais {enlever|retirer} mon armure.",
+    "{@oh}Je vais nager, mais d'abord je vais {enlever|retirer} mon armure."
    ],
    "extra": [
     "donc",
@@ -1525,13 +1998,23 @@
    "topic": "accord",
    "level": 2,
    "say": "Describe it: \"The rocks are red and orange.\"",
+   "say_fr": "Décris les roches : elles sont rouges et orange.",
+   "cue": "De quelle couleur sont les roches ici ?",
    "hint": "rouge takes an -s in the plural, but orange (named after a fruit) never changes.",
    "answers": [
-    "Les {rochers|roches|pierres} sont rouges et [orange]."
+    "Les {rochers|roches|pierres} sont rouges et [orange].",
+    "{@oh}Les {rochers|roches|pierres} sont rouges et orange."
    ],
    "extra": [
     "oranges",
     "rouge"
+   ],
+   "traps": [
+    {
+     "match": "Les {rochers|roches|pierres} sont rouges et {oranges|orangés|orangées}",
+     "why": "Colours named after things (orange, marron) never change: orange.",
+     "skill": "accord_adj"
+    }
    ]
   },
   {
@@ -1542,10 +2025,13 @@
    "topic": "conditionnel",
    "level": 2,
    "say": "Say \"This would be a beautiful place for a house.\"",
+   "say_fr": "Dis que ce serait un bel endroit pour une maison.",
+   "cue": "Tu aimes cet endroit ?",
    "hint": "être in the conditional: ce serait. beau → bel before a vowel: un bel endroit.",
    "answers": [
     "Ce [serait] un bel endroit pour {une|ma} maison.",
-    "{Ce|Ça} serait un {bel|bon|joli} endroit pour {une|ma} maison."
+    "{@oh}Ce serait un bel endroit pour {une|ma} maison.",
+    "{@oh}{Ce|Ça} serait un {bel|bon|joli} endroit pour {une|ma} maison."
    ],
    "extra": [
     "sera",
@@ -1558,10 +2044,12 @@
    "topic": "questions",
    "level": 1,
    "say": "Ask a villager \"How much does this cost?\"",
+   "say_fr": "Demande à un villageois combien ça coûte.",
    "hint": "Combien ça coûte ? or Ça coûte combien ? (informal), C'est combien ?",
    "answers": [
     "[Combien] ça coûte ?",
-    "{Ça coûte combien|Combien est-ce que ça coûte|C'est combien} ?"
+    "{@oh}Combien ça coûte ?",
+    "{@oh}{Ça coûte combien|Combien est-ce que ça coûte|C'est combien} ?"
    ],
    "extra": [
     "comment",
@@ -1574,14 +2062,29 @@
    "topic": "pc_etre",
    "level": 1,
    "say": "Tell a friend \"We went down into the mine together.\"",
+   "say_fr": "Dis à un ami que vous êtes descendus ensemble dans la mine.",
+   "cue": "Qu'est-ce que vous avez fait ensemble, toi et ton ami ?",
    "hint": "descendre uses être; with nous the participle is plural: descendus.",
    "answers": [
     "Nous [sommes descendus] dans la mine ensemble.",
-    "{Nous sommes descendues|On est descendus|On est descendu|On est descendues} dans la mine ensemble."
+    "{@oh}Nous sommes descendus dans la mine ensemble.",
+    "{@oh}{Nous sommes descendues|On est descendus|On est descendu|On est descendues} dans la mine ensemble."
    ],
    "extra": [
     "avons",
     "descendre"
+   ],
+   "traps": [
+    {
+     "match": "{Nous avons|On a} {descendu|descendus|descendue|descendues} dans la mine ensemble",
+     "why": "descendre (without an object) takes être: nous sommes descendus.",
+     "skill": "aux_etre"
+    },
+    {
+     "match": "Nous sommes descendu dans la mine ensemble",
+     "why": "With être, the participle agrees with nous: descendus.",
+     "skill": "accord_pp"
+    }
    ]
   },
   {
@@ -1590,13 +2093,23 @@
    "topic": "liens",
    "level": 3,
    "say": "Say \"After building my house, I made a garden.\"",
+   "say_fr": "Dis qu'après avoir construit ta maison, tu as fait un jardin.",
+   "cue": "Qu'est-ce que tu as fait après avoir construit ta maison ?",
    "hint": "après avoir + past participle: après avoir construit.",
    "answers": [
-    "[Après avoir construit] ma maison, j'ai {fait|créé} un jardin."
+    "[Après avoir construit] ma maison, j'ai {fait|créé} un jardin.",
+    "{@oh}Après avoir construit ma maison, j'ai {fait|créé} un jardin."
    ],
    "extra": [
     "avant",
     "construire"
+   ],
+   "traps": [
+    {
+     "match": "Après {construire|construit|avoir construire} ma maison, j'ai {fait|créé} un jardin",
+     "why": "après avoir + participe passé: après avoir construit.",
+     "skill": "prep_inf"
+    }
    ]
   },
   {
@@ -1605,10 +2118,13 @@
    "topic": "il_faut",
    "level": 2,
    "say": "Warn a new player: \"You must never dig straight down.\"",
+   "say_fr": "Préviens un nouveau joueur : il ne faut jamais creuser tout droit vers le bas.",
+   "cue": "Un conseil pour un nouveau joueur ?",
    "hint": "il ne faut jamais + infinitive.",
    "answers": [
     "Il [ne faut jamais] creuser tout droit vers le bas.",
-    "Il ne faut jamais creuser droit vers le bas."
+    "{@oh}Il ne faut jamais creuser tout droit vers le bas.",
+    "{@oh}Il ne faut jamais creuser droit vers le bas."
    ],
    "extra": [
     "pas",
@@ -1621,14 +2137,29 @@
    "topic": "pronoms",
    "level": 2,
    "say": "A friend asks if you're going to the village. Answer \"Yes, I'm going there tomorrow.\"",
+   "say_fr": "Un ami te demande si tu vas au village. Réponds « Oui, j'y vais demain. »",
+   "cue": "Tu vas au village ? (Oui, demain.)",
    "hint": "y replaces a place (à + place): j'y vais.",
    "answers": [
     "Oui, j'[y vais] demain.",
-    "Oui, j'y irai demain."
+    "{@oh}Oui, j'y vais demain.",
+    "{@oh}Oui, j'y irai demain."
    ],
    "extra": [
     "en",
     "le"
+   ],
+   "traps": [
+    {
+     "match": "Oui, j'en {vais|irai} demain",
+     "why": "For a place, use y (not en): j'y vais.",
+     "skill": "pron_y"
+    },
+    {
+     "match": "Oui, je vais demain",
+     "why": "aller needs a place: use y for 'there': j'y vais.",
+     "skill": "pron_y"
+    }
    ]
   },
   {
@@ -1637,13 +2168,28 @@
    "topic": "pronoms",
    "level": 2,
    "say": "Say \"I gave him an emerald\" (him = the villager).",
+   "say_fr": "Dis que tu lui as donné une émeraude (lui = le villageois).",
+   "cue": "Qu'est-ce que tu as donné au villageois ? (Une émeraude, sans répéter « au villageois ».)",
    "hint": "lui = to him/her, placed before the helper: je lui ai donné.",
    "answers": [
-    "Je [lui ai donné] une émeraude."
+    "Je [lui ai donné] une émeraude.",
+    "{@oh}Je lui ai donné une émeraude."
    ],
    "extra": [
     "le",
     "l'ai"
+   ],
+   "traps": [
+    {
+     "match": "Je l'ai donné une émeraude",
+     "why": "You give TO someone, so lui (indirect): je lui ai donné.",
+     "skill": "pron_lui"
+    },
+    {
+     "match": "J'ai lui donné une émeraude",
+     "why": "Object pronouns go before the helper verb: je lui ai donné.",
+     "skill": "pron_place"
+    }
    ]
   },
   {
@@ -1656,13 +2202,23 @@
    "topic": "subjonctif",
    "level": 3,
    "say": "Say \"I'm afraid that other zombies will come.\"",
+   "say_fr": "Dis que tu as peur que d'autres zombies viennent.",
+   "cue": "De quoi as-tu peur ?",
    "hint": "avoir peur que + subjunctive: venir → qu'ils viennent.",
    "answers": [
-    "J'ai peur que d'autres zombies [viennent]."
+    "J'ai peur que d'autres zombies [viennent].",
+    "{@oh}J'ai peur que d'autres zombies viennent."
    ],
    "extra": [
     "viendront",
     "vient"
+   ],
+   "traps": [
+    {
+     "match": "J'ai peur que d'autres zombies {viendront|vont venir|venir|vient|venaient}",
+     "why": "avoir peur que + subjonctif: qu'ils viennent.",
+     "skill": "subjonctif"
+    }
    ]
   },
   {
@@ -1673,13 +2229,28 @@
    "topic": "relatifs",
    "level": 2,
    "say": "Say \"The creeper that exploded destroyed my house.\"",
+   "say_fr": "Dis que le creeper qui a explosé a détruit ta maison.",
+   "cue": "Qu'est-ce qui est arrivé à ta maison ?",
    "hint": "qui is the subject of the second verb: le creeper qui a explosé.",
    "answers": [
-    "Le creeper [qui a explosé] a détruit ma maison."
+    "Le creeper [qui a explosé] a détruit ma maison.",
+    "{@oh}Le creeper qui a explosé a détruit ma maison."
    ],
    "extra": [
     "que",
     "est"
+   ],
+   "traps": [
+    {
+     "match": "Le creeper que a explosé a détruit ma maison",
+     "why": "qui for the subject (the creeper exploded); que is for objects.",
+     "skill": "relatif"
+    },
+    {
+     "match": "Le creeper qui est explosé a détruit ma maison",
+     "why": "exploser takes avoir: qui a explosé.",
+     "skill": "aux_avoir"
+    }
    ]
   },
   {
@@ -1690,14 +2261,24 @@
    "topic": "relatifs",
    "level": 2,
    "say": "Say \"This is the cave where I found my first diamonds.\"",
+   "say_fr": "Dis que c'est la grotte où tu as trouvé tes premiers diamants.",
+   "cue": "Pourquoi cette grotte est spéciale ?",
    "hint": "où for a place: la grotte où…",
    "answers": [
     "C'est la grotte [où] j'ai trouvé mes premiers diamants.",
-    "C'est la caverne où j'ai trouvé mes premiers diamants."
+    "{@oh}C'est la grotte où j'ai trouvé mes premiers diamants.",
+    "{@oh}C'est la caverne où j'ai trouvé mes premiers diamants."
    ],
    "extra": [
     "que",
     "dont"
+   ],
+   "traps": [
+    {
+     "match": "C'est la {grotte|caverne} {que|qui|dans que} j'ai trouvé mes premiers diamants",
+     "why": "For a place, use où: la grotte où j'ai trouvé…",
+     "skill": "relatif"
+    }
    ]
   },
   {
@@ -1708,9 +2289,12 @@
    "topic": "imparfait",
    "level": 3,
    "say": "Explain why: \"I had forgotten my armour.\"",
+   "say_fr": "Explique pourquoi : tu avais oublié ton armure.",
+   "cue": "Pourquoi es-tu mort si vite ?",
    "hint": "Plus-que-parfait (a past before the past): avoir in the imparfait + participle: j'avais oublié.",
    "answers": [
-    "J'[avais oublié] mon armure."
+    "J'[avais oublié] mon armure.",
+    "{@oh}J'avais oublié mon armure."
    ],
    "extra": [
     "ai",
@@ -1725,14 +2309,24 @@
    "topic": "subjonctif",
    "level": 3,
    "say": "Say \"I want the night to be short.\"",
+   "say_fr": "Dis que tu veux que la nuit soit courte.",
+   "cue": "Qu'est-ce que tu veux pour cette nuit ?",
    "hint": "vouloir que + subjunctive: être → qu'elle soit.",
    "answers": [
     "Je veux que la nuit [soit] courte.",
-    "Je voudrais que la nuit soit courte."
+    "{@oh}Je veux que la nuit soit courte.",
+    "{@oh}Je voudrais que la nuit soit courte."
    ],
    "extra": [
     "est",
     "sera"
+   ],
+   "traps": [
+    {
+     "match": "Je {veux|voudrais} que la nuit {est|sera|être|serait} courte",
+     "why": "vouloir que + subjonctif: que la nuit soit.",
+     "skill": "subjonctif"
+    }
    ]
   },
   {
@@ -1743,13 +2337,28 @@
    "topic": "relatifs",
    "level": 2,
    "say": "Say \"The house I'm building is almost finished.\"",
+   "say_fr": "Dis que la maison que tu construis est presque finie.",
+   "cue": "Elle avance, ta maison ?",
    "hint": "que is the object: la maison que je construis.",
    "answers": [
-    "La maison [que je construis] est presque {finie|terminée}."
+    "La maison [que je construis] est presque {finie|terminée}.",
+    "{@oh}La maison que je construis est presque {finie|terminée}."
    ],
    "extra": [
     "qui",
     "construit"
+   ],
+   "traps": [
+    {
+     "match": "La maison qui je construis est presque {finie|terminée}",
+     "why": "que: la maison is the object of construis.",
+     "skill": "relatif"
+    },
+    {
+     "match": "La maison que je construis est presque {fini|terminé|finis|terminés}",
+     "why": "La maison is feminine: finie / terminée.",
+     "skill": "accord_adj"
+    }
    ]
   },
   {
@@ -1760,13 +2369,22 @@
    "topic": "subjonctif",
    "level": 2,
    "say": "Say \"I have to be careful here\" using il faut que.",
+   "say_fr": "Dis que tu dois faire attention ici, avec « il faut que ».",
    "hint": "il faut que + subjunctive: faire → que je fasse.",
    "answers": [
-    "Il faut que je [fasse] attention ici."
+    "Il faut que je [fasse] attention ici.",
+    "{@oh}Il faut que je fasse attention ici."
    ],
    "extra": [
     "fais",
     "ferai"
+   ],
+   "traps": [
+    {
+     "match": "Il faut que je {fais|fait|faire|ferai} attention ici",
+     "why": "il faut que + subjonctif: que je fasse.",
+     "skill": "subjonctif"
+    }
    ]
   },
   {
@@ -1777,9 +2395,11 @@
    "topic": "conditionnel",
    "level": 3,
    "say": "Say \"If I had eaten earlier, I wouldn't be in danger.\"",
+   "say_fr": "Dis que si tu avais mangé plus tôt, tu ne serais pas en danger.",
    "hint": "si + plus-que-parfait → present conditional for a present result: je ne serais pas.",
    "answers": [
-    "Si j'avais mangé plus tôt, je [ne serais pas] en danger."
+    "Si j'avais mangé plus tôt, je [ne serais pas] en danger.",
+    "{@oh}Si j'avais mangé plus tôt, je ne serais pas en danger."
    ],
    "extra": [
     "suis",
@@ -1794,13 +2414,22 @@
    "topic": "relatifs",
    "level": 3,
    "say": "Say \"This is the forest I told you about.\"",
+   "say_fr": "Dis que c'est la forêt dont tu m'as parlé (« je t'ai parlé »).",
    "hint": "parler de → dont: la forêt dont je t'ai parlé.",
    "answers": [
-    "C'est la forêt [dont] je t'ai parlé."
+    "C'est la forêt [dont] je t'ai parlé.",
+    "{@oh}C'est la forêt dont je t'ai parlé."
    ],
    "extra": [
     "que",
     "où"
+   ],
+   "traps": [
+    {
+     "match": "C'est la forêt {que|qui|où} je t'ai parlé",
+     "why": "parler DE quelque chose → dont: la forêt dont je t'ai parlé.",
+     "skill": "relatif"
+    }
    ]
   },
   {
@@ -1811,13 +2440,23 @@
    "topic": "subjonctif",
    "level": 3,
    "say": "Say \"I doubt there's land nearby.\"",
+   "say_fr": "Dis que tu doutes qu'il y ait de la terre près d'ici.",
+   "cue": "Tu crois qu'il y a de la terre près d'ici ?",
    "hint": "douter que + subjunctive: il y a → qu'il y ait.",
    "answers": [
-    "Je doute qu'il y [ait] de la terre {près d'ici|à proximité}."
+    "Je doute qu'il y [ait] de la terre {près d'ici|à proximité}.",
+    "{@oh}Je doute qu'il y ait de la terre {près d'ici|à proximité}."
    ],
    "extra": [
     "a",
     "aura"
+   ],
+   "traps": [
+    {
+     "match": "Je doute qu'il y {a|aura|avait} de la terre {près d'ici|à proximité}",
+     "why": "douter que + subjonctif: qu'il y ait.",
+     "skill": "subjonctif"
+    }
    ]
   },
   {
@@ -1828,14 +2467,24 @@
    "topic": "articles",
    "level": 2,
    "say": "Say \"I don't have any iron left.\"",
+   "say_fr": "Dis que tu n'as plus de fer.",
+   "cue": "Il te reste du fer ?",
    "hint": "After ne … plus, du becomes de: je n'ai plus de fer.",
    "answers": [
     "Je n'ai plus [de fer].",
-    "Je n'ai plus de fer{| du tout}."
+    "{@oh}Je n'ai plus de fer.",
+    "{@oh}Je n'ai plus de fer{| du tout}."
    ],
    "extra": [
     "du",
     "pas"
+   ],
+   "traps": [
+    {
+     "match": "Je n'ai plus {du|le|de le} fer{| du tout}",
+     "why": "After a negation, du/de la/des becomes de: je n'ai plus de fer.",
+     "skill": "neg_de"
+    }
    ]
   },
   {
@@ -1847,10 +2496,13 @@
    "topic": "pc_etre",
    "level": 3,
    "say": "Say \"I was hit by an arrow.\"",
+   "say_fr": "Dis que tu as été touché par une flèche.",
+   "cue": "Qu'est-ce qui t'est arrivé ?",
    "hint": "Passive voice: être + participle (+ par): j'ai été touché(e) par une flèche.",
    "answers": [
     "J'[ai été touché] par une flèche.",
-    "J'ai été {touchée|blessé|blessée} par une flèche."
+    "{@oh}J'ai été touché par une flèche.",
+    "{@oh}J'ai été {touchée|blessé|blessée} par une flèche."
    ],
    "extra": [
     "suis",
@@ -1865,6 +2517,8 @@
    "topic": "conditionnel",
    "level": 1,
    "say": "Greet them back politely and say you'd like to trade.",
+   "say_fr": "Salue-le poliment et dis que tu voudrais faire un échange.",
+   "cue": "(Réponds-lui poliment.)",
    "hint": "Formal: je voudrais (politer than je veux), s'il vous plaît.",
    "answers": [
     "Bonjour, je [voudrais] faire un échange.",
@@ -1885,6 +2539,7 @@
    "topic": "conditionnel",
    "level": 2,
    "say": "Say yes, you're looking for something, and politely ask if they could show you their goods.",
+   "say_fr": "Dis oui, que tu cherches quelque chose, et demande poliment s'il pourrait te montrer ses marchandises.",
    "hint": "pouvoir in the conditional with vous: pourriez-vous.",
    "answers": [
     "Oui. [Pourriez-vous] me montrer vos marchandises ?",
@@ -1905,6 +2560,7 @@
    "topic": "conditionnel",
    "level": 3,
    "say": "Say \"I would be grateful if you could show me what you sell.\"",
+   "say_fr": "Dis que tu lui serais reconnaissant de te montrer ce qu'il vend.",
    "hint": "Je vous serais reconnaissant(e) de + infinitive; ce que = what.",
    "answers": [
     "Je vous [serais reconnaissant] de me montrer ce que vous vendez.",
@@ -1924,6 +2580,8 @@
    "topic": "questions",
    "level": 1,
    "say": "Say you're fine, and ask how they are.",
+   "say_fr": "Dis que ça va, et demande-lui comment il va.",
+   "cue": "(Réponds-lui.)",
    "hint": "Informal: et toi ?",
    "answers": [
     "[Ça va bien], et toi ?",
@@ -1944,6 +2602,7 @@
    "topic": "liens",
    "level": 2,
    "say": "Say you'd like to see what they have, because you need a few things.",
+   "say_fr": "Dis que tu aimerais voir ce qu'il a, parce que tu as besoin de quelques choses.",
    "hint": "ce que = what; parce que joins the reason.",
    "answers": [
     "J'aimerais voir ce que tu as [parce que] j'ai besoin de quelques choses.",
@@ -1963,6 +2622,7 @@
    "topic": "pc_etre",
    "level": 3,
    "say": "Say \"Yes, I came back because you had the best prices.\"",
+   "say_fr": "Dis que oui, tu es revenu parce qu'il avait les meilleurs prix.",
    "hint": "revenir uses être (je suis revenu·e); description in the past: tu avais.",
    "answers": [
     "Oui, je [suis revenu] parce que tu avais les meilleurs prix.",
@@ -1982,6 +2642,8 @@
    "topic": "conditionnel",
    "level": 1,
    "say": "Say \"I'd like to trade, please.\"",
+   "say_fr": "Dis que tu voudrais faire un échange, s'il vous plaît.",
+   "cue": "(Dis-lui ce que tu veux.)",
    "hint": "je voudrais + infinitive.",
    "answers": [
     "Je [voudrais] échanger.",
@@ -2001,6 +2663,7 @@
    "topic": "articles",
    "level": 1,
    "say": "Ask for some bread.",
+   "say_fr": "Demande du pain.",
    "hint": "Some bread = du pain (partitive).",
    "answers": [
     "Je voudrais [du pain], s'il te plaît.",
@@ -2011,7 +2674,14 @@
     "le",
     "de"
    ],
-   "npc": "J'ai des carottes, du pain et des pommes."
+   "npc": "J'ai des carottes, du pain et des pommes.",
+   "traps": [
+    {
+     "match": "{@hi}{@want}pain{@please}",
+     "why": "French needs an article with food: du pain.",
+     "skill": "articles"
+    }
+   ]
   },
   {
    "id": "trade_farmer_2",
@@ -2021,6 +2691,7 @@
    "topic": "pronoms",
    "level": 2,
    "say": "Answer that you'll take five (of them).",
+   "say_fr": "Réponds que tu en prends cinq.",
    "hint": "en replaces 'of them': j'en prends cinq.",
    "answers": [
     "J'[en prends] cinq.",
@@ -2031,7 +2702,14 @@
     "les",
     "y"
    ],
-   "npc": "Tu en veux combien, des pommes ?"
+   "npc": "Tu en veux combien, des pommes ?",
+   "traps": [
+    {
+     "match": "{@hi}{Je prends|Je veux|Je voudrais|Je vais prendre|J'aimerais|J'achète} cinq{@please}",
+     "why": "With a number and no noun, French needs en: j'en prends cinq.",
+     "skill": "pron_en"
+    }
+   ]
   },
   {
    "id": "trade_librarian_1",
@@ -2041,6 +2719,7 @@
    "topic": "questions",
    "level": 1,
    "say": "Ask if they have a book with Mending (Raccommodage).",
+   "say_fr": "Demande s'il a un livre avec Raccommodage.",
    "hint": "Formal question with inversion: Avez-vous… ?",
    "answers": [
     "[Avez-vous] un livre avec Raccommodage ?",
@@ -2061,6 +2740,7 @@
    "topic": "conditionnel",
    "level": 3,
    "say": "Say \"If it cost less, I would buy it.\"",
+   "say_fr": "Dis que s'il coûtait moins cher, tu l'achèterais.",
    "hint": "si + imparfait → conditionnel: s'il coûtait, je l'achèterais.",
    "answers": [
     "S'il [coûtait] moins cher, je l'achèterais.",
@@ -2081,6 +2761,7 @@
    "topic": "questions",
    "level": 1,
    "say": "Ask politely whether they sell redstone.",
+   "say_fr": "Demande poliment s'il vend de la redstone.",
    "hint": "Est-ce que vous vendez… ? or Vendez-vous… ?",
    "answers": [
     "[Est-ce que vous vendez] de la redstone ?",
@@ -2101,6 +2782,7 @@
    "topic": "subjonctif",
    "level": 3,
    "say": "Say \"I need you to give me an ender pearl\" (il faut que…).",
+   "say_fr": "Dis qu'il faut qu'il te donne une perle de l'Ender.",
    "hint": "il faut que + subjunctive: que vous me donniez.",
    "answers": [
     "Il faut que vous me [donniez] une perle de l'Ender.",
@@ -2110,7 +2792,14 @@
     "donnez",
     "donnerez"
    ],
-   "npc": "Que cherchez-vous ?"
+   "npc": "Que cherchez-vous ?",
+   "traps": [
+    {
+     "match": "{@hi}{Il faut|J'ai besoin|Il est nécessaire} que vous me {donnez|vendez|donnerez} une perle {de l'Ender|d'Ender}{@please}",
+     "why": "il faut que + subjonctif: que vous me donniez.",
+     "skill": "subjonctif"
+    }
+   ]
   },
   {
    "id": "trade_armorer_1",
@@ -2120,6 +2809,7 @@
    "topic": "conditionnel",
    "level": 1,
    "say": "Say you'd like to buy an iron chestplate.",
+   "say_fr": "Dis que tu voudrais acheter un plastron en fer.",
    "hint": "je voudrais + infinitive; en fer = made of iron.",
    "answers": [
     "Je voudrais acheter un [plastron en fer].",
@@ -2139,6 +2829,7 @@
    "topic": "relatifs",
    "level": 3,
    "say": "Say yes, you're interested, because the sword you have is broken.",
+   "say_fr": "Dis que oui, ça t'intéresse, parce que l'épée que tu as est cassée.",
    "hint": "que is the object: l'épée que j'ai.",
    "answers": [
     "Oui, ça m'intéresse, car l'épée [que j'ai] est cassée.",
@@ -2158,6 +2849,7 @@
    "topic": "reflexifs",
    "level": 2,
    "say": "Answer \"Yes, I need one, mine broke yesterday.\"",
+   "say_fr": "Réponds que oui, tu en as besoin : la tienne s'est cassée hier.",
    "hint": "se casser uses être; la mienne is feminine so: s'est cassée.",
    "answers": [
     "Oui, j'en ai besoin, la mienne [s'est cassée] hier.",
@@ -2177,6 +2869,7 @@
    "topic": "questions",
    "level": 1,
    "say": "Ask how much the salmon costs.",
+   "say_fr": "Demande combien coûte le saumon.",
    "hint": "Combien coûte… ? or C'est combien… ?",
    "answers": [
     "[Combien coûte] le saumon ?",
@@ -2200,6 +2893,7 @@
    "topic": "accord",
    "level": 2,
    "say": "Say you'd like the blue wool, not the white one.",
+   "say_fr": "Dis que tu voudrais la laine bleue, pas la blanche.",
    "hint": "la laine is feminine: bleue, la blanche.",
    "answers": [
     "Je voudrais la laine [bleue], pas la blanche.",
@@ -2220,6 +2914,7 @@
    "topic": "negation",
    "level": 2,
    "say": "Say you haven't eaten anything since this morning.",
+   "say_fr": "Dis que tu n'as rien mangé depuis ce matin.",
    "hint": "ne … rien wraps the helper verb: je n'ai rien mangé.",
    "answers": [
     "Je [n'ai rien mangé] depuis ce matin.",
@@ -2240,6 +2935,7 @@
    "topic": "relatifs",
    "level": 2,
    "say": "Ask \"Do you have a map that leads to a mansion?\"",
+   "say_fr": "Demande s'il a une carte qui mène à un manoir.",
    "hint": "qui is the subject: une carte qui mène…",
    "answers": [
     "Avez-vous une carte [qui mène] à un manoir ?",
@@ -2260,6 +2956,7 @@
    "topic": "pronoms",
    "level": 2,
    "say": "Say you need some, because you're going to fight pillagers.",
+   "say_fr": "Dis que tu en as besoin parce que tu vas combattre des pillards.",
    "hint": "avoir besoin de → en: j'en ai besoin.",
    "answers": [
     "J'[en ai besoin] parce que je vais combattre des pillards.",
@@ -2280,6 +2977,7 @@
    "topic": "relatifs",
    "level": 3,
    "say": "Say you're building a castle that will be bigger than the church.",
+   "say_fr": "Dis que tu construis un château qui sera plus grand que l'église.",
    "hint": "qui + futur, and the comparative plus … que.",
    "answers": [
     "Je construis un château [qui sera] plus grand que l'église.",
@@ -2300,6 +2998,7 @@
    "topic": "conditionnel",
    "level": 2,
    "say": "Say you'd rather have the boots.",
+   "say_fr": "Dis que tu préférerais les bottes.",
    "hint": "préférer in the conditional: je préférerais.",
    "answers": [
     "Je [préférerais] les bottes.",
@@ -2311,6 +3010,241 @@
     "botte"
    ],
    "npc": "Ce chapeau t'irait bien."
+  },
+  {
+   "id": "kill_zombie_pc_neg",
+   "on": [],
+   "topic": "negation",
+   "level": 2,
+   "say": "Now say the opposite: you did NOT kill a zombie.",
+   "say_fr": "Maintenant, dis le contraire : tu n'as pas tué de zombie.",
+   "hint": "ne…pas goes around the helper verb, and un becomes de after a negation: je n'ai pas tué de zombie.",
+   "answers": [
+    "Je [n'ai pas tué] de zombie.",
+    "{@oh}Je n'ai pas tué de zombie.",
+    "{@oh}Je n'ai pas {tué|vaincu} {de|le|ce} zombie."
+   ],
+   "extra": [
+    "un",
+    "pas"
+   ],
+   "traps": [
+    {
+     "match": "Je n'ai pas {tué|vaincu} un zombie",
+     "why": "After a negation, un/une/des becomes de: je n'ai pas tué de zombie.",
+     "skill": "neg_de"
+    }
+   ]
+  },
+  {
+   "id": "mine_dia_found_q",
+   "on": [],
+   "topic": "questions",
+   "level": 1,
+   "say": "Turn it into a question for a friend: have you found diamonds?",
+   "say_fr": "Transforme-la en question pour un ami : est-ce qu'il a trouvé des diamants ?",
+   "hint": "Three ways to ask: Tu as… ? / Est-ce que tu as… ? / As-tu… ?",
+   "answers": [
+    "[Est-ce que tu as] trouvé des diamants ?",
+    "{@oh}Est-ce que tu as trouvé des diamants ?",
+    "{@oh}{Tu as|As-tu|Est-ce que tu as|Vous avez|Avez-vous|Est-ce que vous avez} {trouvé|découvert} des diamants ?"
+   ],
+   "extra": [
+    "es",
+    "trouver"
+   ]
+  },
+  {
+   "id": "mine_dia_found_fut",
+   "on": [],
+   "topic": "futur_proche",
+   "level": 1,
+   "say": "Now move it into the near future: I'm going to find diamonds.",
+   "say_fr": "Mets-la au futur proche : tu vas trouver des diamants.",
+   "hint": "aller + infinitif: je vais trouver.",
+   "answers": [
+    "Je [vais trouver] des diamants.",
+    "{@oh}Je vais trouver des diamants.",
+    "{@oh}Je vais {trouver|découvrir|miner} {des|d'autres|plus de} diamants."
+   ],
+   "extra": [
+    "trouvé",
+    "suis"
+   ]
+  },
+  {
+   "id": "death_died_neg",
+   "on": [],
+   "topic": "pc_etre",
+   "level": 2,
+   "say": "Next time will be different. Say \"I didn't die this time\".",
+   "say_fr": "Dis que cette fois, tu n'es pas mort.",
+   "hint": "mourir takes être; ne…pas goes around the helper verb: je ne suis pas mort(e).",
+   "answers": [
+    "Cette fois, je [ne suis pas] mort.",
+    "{@oh}Cette fois, je ne suis pas mort.",
+    "{@oh}{Cette fois|Cette fois-ci}, je ne suis pas {mort|morte}.",
+    "{@oh}Je ne suis pas {mort|morte} {cette fois|cette fois-ci}."
+   ],
+   "extra": [
+    "ai",
+    "pas"
+   ]
+  },
+  {
+   "id": "death_fell_nous",
+   "on": [],
+   "topic": "pc_etre",
+   "level": 2,
+   "say": "Now say it about you and a friend: we fell into the lava.",
+   "say_fr": "Maintenant, dis-le pour toi et un ami : vous êtes tombés dans la lave.",
+   "hint": "With être, the participle agrees with nous: nous sommes tombés (or tombées).",
+   "answers": [
+    "Nous [sommes tombés] dans la lave.",
+    "{@oh}Nous sommes tombés dans la lave.",
+    "{@oh}{Nous sommes tombés|Nous sommes tombées|On est tombés|On est tombé|On est tombées} dans la lave."
+   ],
+   "extra": [
+    "avons",
+    "tombé"
+   ],
+   "traps": [
+    {
+     "match": "Nous sommes tombé dans la lave",
+     "why": "With être, the participle agrees with nous: nous sommes tombés.",
+     "skill": "accord_pp"
+    }
+   ]
+  },
+  {
+   "id": "dawn_plan_past",
+   "on": [],
+   "topic": "pc_avoir",
+   "level": 1,
+   "say": "Evening comes. Say that today you looked for iron.",
+   "say_fr": "Le soir arrive. Dis qu'aujourd'hui, tu as cherché du fer.",
+   "hint": "chercher takes avoir: j'ai cherché.",
+   "answers": [
+    "Aujourd'hui, j'[ai cherché] du fer.",
+    "{@oh}Aujourd'hui, j'ai cherché du fer.",
+    "{@oh}{Aujourd'hui, j'ai|J'ai} {cherché|trouvé|miné} du fer{| aujourd'hui}."
+   ],
+   "extra": [
+    "suis",
+    "chercher"
+   ]
+  },
+  {
+   "id": "end_dragon_pc",
+   "on": [],
+   "topic": "pc_avoir",
+   "level": 2,
+   "say": "Imagine you did it. Say \"I defeated the dragon!\"",
+   "say_fr": "Imagine que c'est fait. Dis que tu as vaincu le dragon !",
+   "hint": "vaincre → vaincu; battre → battu; tuer → tué. All take avoir.",
+   "answers": [
+    "J'[ai vaincu] le dragon.",
+    "{@oh}J'ai vaincu le dragon.",
+    "{@oh}J'ai {vaincu|tué|battu} le dragon{| de l'End}."
+   ],
+   "extra": [
+    "vaincre",
+    "suis"
+   ],
+   "traps": [
+    {
+     "match": "J'ai {vaincre|vaincé|vainqu|battre|batté} le dragon{| de l'End}",
+     "why": "The past participle of vaincre is vaincu, of battre is battu.",
+     "skill": "pp_form"
+    }
+   ]
+  },
+  {
+   "id": "kill_spider_plural",
+   "on": [],
+   "topic": "accord",
+   "level": 2,
+   "say": "There were two of them. Say you killed two big spiders.",
+   "say_fr": "Il y en avait deux. Dis que tu as tué deux grosses araignées.",
+   "hint": "araignée is feminine: the adjective and noun both take the plural: deux grosses araignées.",
+   "answers": [
+    "J'ai tué deux [grosses araignées].",
+    "{@oh}J'ai tué deux grosses araignées.",
+    "{@oh}J'ai {@killed} deux {grosses|grandes|énormes} araignées."
+   ],
+   "extra": [
+    "gros",
+    "grosse"
+   ],
+   "traps": [
+    {
+     "match": "J'ai {@killed} deux {gros|grosse|grand|grande|énorme} {araignée|araignées}",
+     "why": "Two spiders, feminine plural: deux grosses araignées.",
+     "skill": "accord_adj"
+    },
+    {
+     "match": "J'ai {@killed} deux {grosses|grandes} araignée",
+     "why": "The noun takes the plural too: araignées.",
+     "skill": "accord_adj"
+    }
+   ]
+  }
+ ],
+ "traps": [
+  {
+   "match": "{ai|as|a|avons|avez|ont} {|pas |jamais |plus |déjà |encore }{allé|allée|allés|allées|venu|venue|venus|venues|tombé|tombée|tombés|tombées|arrivé|arrivée|arrivés|arrivées|mort|morte|morts|mortes|parti|partie|partis|parties|revenu|revenue|revenus|revenues|resté|restée|restés}",
+   "why": "Aller, venir, revenir, tomber, arriver, partir, rester and mourir take être in the passé composé: je suis allé(e).",
+   "skill": "aux_etre"
+  },
+  {
+   "match": "{je m'|tu t'|il s'|elle s'|on s'} {ai|as|a}",
+   "why": "Reflexive verbs take être in the passé composé: je me suis couché(e).",
+   "skill": "aux_etre"
+  },
+  {
+   "match": "{ai|as|a|avons|avez|ont} {|pas }{tuer|trouver|gagner|manger|miner|couper|chercher|fabriquer|construire|donner|explorer|oublier|vaincre|battre|lâcher|toucher}",
+   "why": "After avoir, use the past participle, not the infinitive: j'ai tué, j'ai construit.",
+   "skill": "pp_form"
+  },
+  {
+   "match": "{suis|es|est|sommes|êtes|sont} {|pas }{aller|tomber|arriver|entrer|rester|partir|venir|revenir|mourir|mouru|mourru|descendre}",
+   "why": "After être, use the past participle: je suis allé, tombé, venu, mort.",
+   "skill": "pp_form"
+  },
+  {
+   "match": "{ai|as|a|suis|es|est} {mouru|mourru|mouri}",
+   "why": "The past participle of mourir is mort: je suis mort(e).",
+   "skill": "pp_form"
+  },
+  {
+   "match": "{vais|vas|va|allons|allez|vont} {|pas |jamais }{construis|construit|fabrique|fabriqué|cherche|cherché|explore|exploré|trouve|trouvé|mange|mangé|fais|fait|nage|nagé|meurs|cuis|cuit|utilise|utilisé|traverse|traversé|reste|resté}",
+   "why": "In the futur proche the second verb stays in the infinitive: je vais construire, je vais manger.",
+   "skill": "futur_inf"
+  },
+  {
+   "match": "{n'|ne} {ai|as|a|avons|avez|ont|suis|es|est|sommes|êtes|sont} {*} pas",
+   "why": "ne…pas goes around the helper verb: je n'ai pas tué, je ne suis pas tombé.",
+   "skill": "neg_place"
+  },
+  {
+   "match": "pas {rien|jamais|personne}",
+   "why": "rien, jamais and personne replace pas: je ne vois rien, je ne veux jamais.",
+   "skill": "neg_place"
+  },
+  {
+   "match": "{si|s'} {j'|je|tu|il|elle|on} {aurais|aurait|serais|serait|ferais|ferait|pourrais|pourrait|voudrais|coûterait}",
+   "why": "Never the conditional right after si: si j'avais…, je ferais.",
+   "skill": "si_cond"
+  },
+  {
+   "match": "{je|me|te|se|ne} {ai|avais|aurais|aime|aimerais|étais|y|en|a|attaquait}",
+   "why": "Before a vowel, je/me/te/se/ne drop their e: j'ai, m'attaquait, n'ai.",
+   "skill": "elision"
+  },
+  {
+   "match": "que {il|ils|elle|elles|on}",
+   "why": "que + il → qu'il (que drops its e before a vowel).",
+   "skill": "elision"
   }
  ]
 }
