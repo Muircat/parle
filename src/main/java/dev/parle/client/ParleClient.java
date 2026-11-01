@@ -136,7 +136,7 @@ public final class ParleClient implements ClientModInitializer {
         return switch (source.substring(0, source.indexOf(':') < 0 ? source.length() : source.indexOf(':'))) {
             case "kill" -> "Combat"; case "mine" -> "Minage"; case "sleep" -> "Au lit";
             case "death" -> "Aïe…"; case "biome" -> "Exploration"; case "dim" -> "Voyage";
-            case "lowhp" -> "Danger"; case "dawn" -> "Le matin"; case "trade" -> "Échange"; default -> "Révision";
+            case "lowhp" -> "Danger"; case "dawn" -> "Le matin"; case "trade" -> "Échange"; case "suite" -> "Et ensuite"; default -> "Révision";
         };
     }
 }

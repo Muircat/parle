@@ -10,9 +10,17 @@ challenge opens: you type the sentence in French, and you can't carry on until y
 - **Not optional.** When a gameplay moment triggers a challenge it opens straight away (as soon as no other
   menu is open), Esc does nothing, and there is no skip button. Get it right, or press *Solution* and type the
   correct sentence out yourself before you can play on. In singleplayer the game pauses while you answer.
-- **Guided → spontaneous.** Each grammar topic has a mastery score. Low mastery: type the sentence with a
-  shuffled word bank in view (*Guidé*). Medium: type the key part of the sentence (*Compléter*). High: type the
-  whole sentence from scratch (*Écrire*). "Plus facile" steps down a level (still typed).
+- **Guided → spontaneous, per challenge.** Every challenge climbs its own five-step ladder: type it with a shuffled
+  word bank (*Guidé*), type the key part (*Compléter*), write it all from an English instruction (*Écrire*), from a
+  French instruction (*En français*), and finally just answer a French question about what happened, with no hint of
+  the answer (*Spontané*: "Qu'est-ce que tu viens de faire ?"). A clean answer moves that challenge up a step, a miss
+  moves it down. "Plus facile" steps down for this one try (still typed).
+- **Hints in small steps.** *Indice* gives a little more each press: the grammar rule, the English instruction (on
+  the French steps), the first words, then the word bank. Each step costs a quarter of the XP, so asking for a little
+  help no longer costs as much as asking for a lot.
+- **Rework your own sentence.** After a correct answer the game often pushes further, straight away: negate what you
+  just said, turn it into a question, swap the noun for a pronoun, or move it to another tense. Your sentence stays
+  on screen while you rework it.
 - **Adapts to you.** Every challenge is Débutant, Intermédiaire or Avancé. Harder ones unlock per topic as its
   mastery grows (and across the board once your overall level rises), and the picker favours challenges right at
   the edge of what you can do. Your level shows in the notebook.
@@ -28,8 +36,17 @@ challenge opens: you type the sentence in French, and you can't carry on until y
 - **Revisits weak spots.** Spaced repetition per challenge (Leitner boxes); missed challenges and weak topics
   come back more often. Mistakes are listed in the notebook.
 - **Helpful marking.** Word-by-word feedback: wrong words underlined in red, missing words shown in green,
-  accent-only slips accepted with a warning. Accent buttons (é è ê à ç …) under the text box.
-- **Curated content.** 109 challenges across 16 topics (passé composé avec avoir/être, futur proche, négation,
+  accent-only slips and one-letter typos in longer words accepted with a warning (never in a word's ending, where the
+  grammar lives). Accent buttons (é è ê à ç …) under the text box.
+- **Knows the classic mistakes.** "J'ai allé" gets "aller takes être: je suis allé", not just red words; so do
+  "je m'ai", "si j'aurais", "je vais fabrique", "je ne vois pas rien", "j'ai trois" (needs en), adjective
+  agreement, subjunctive triggers and more. Each mistake is tagged with a habit (auxiliary, agreement, pronoun
+  placement…), and challenges that practise your shakiest habits come back more often. The notebook shows why each
+  recent mistake was wrong.
+- **Says it your way.** Event challenges accept synonyms (tué, vaincu, battu…), different word orders and an
+  interjection first ("Ouf, je suis revenu vivant !"); when you use a different phrasing the game shows you its own
+  as another way to say it.
+- **Curated content.** 117 challenges across 16 topics (passé composé avec avoir/être, futur proche, négation,
   pronoms, imparfait, conditionnel, il faut/devoir, questions, prépositions de lieu, accords, verbes
   pronominaux, connecteurs, articles partitifs, pronoms relatifs, subjonctif). No AI generation during play.
 - Solving a challenge gives vanilla XP (3 / 6 / 10 by level, halved after a hint or a wrong try, none if you
@@ -62,10 +79,16 @@ Drop `.json` files into `config/parle/packs/` using the same format as
 ```json
 { "challenges": [ {
   "id": "my_first", "on": ["kill:zombie"], "topic": "pc_avoir",
-  "say": "Say that you killed a zombie.", "hint": "avoir + participe passé",
+  "say": "Say that you killed a zombie.", "say_fr": "Dis que tu as tué un zombie.",
+  "cue": "Qu'est-ce que tu viens de faire ?", "hint": "avoir + participe passé",
   "answers": ["J'[ai tué] {un|le} zombie.", "J'ai vaincu {un|le} zombie."],
-  "extra": ["suis", "tuer"] } ] }
+  "extra": ["suis", "tuer"], "next": ["kill_zombie_pron"],
+  "traps": [ { "match": "Je suis tué {un|le} zombie", "why": "tuer takes avoir: j'ai tué.", "skill": "aux_avoir" } ] } ] }
 ```
+`say_fr` (a French instruction) and `cue` (a French question that doesn't give the answer away) unlock the top two
+steps of the ladder. `next` lists follow-up challenges that rework the sentence. `traps` are known wrong answers
+(same markup, compared without accents) with an explanation and a habit tag; a pack's top-level `"traps"` list is
+shared and may match anywhere in a sentence, and `{*}` there stands for any one word.
 `{a|b}` lists accepted alternatives (the first one is shown), `[...]` marks the part blanked in *Compléter* mode,
 `{@name}` inserts a phrasebook entry (see `"phrases"` in content.json; `name.tu` / `name.vous` lists only apply in
 that register),
