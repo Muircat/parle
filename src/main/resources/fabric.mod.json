@@ -3,7 +3,7 @@
   "id": "parle",
   "version": "${version}",
   "name": "Parle!",
-  "description": "Practise speaking French while you play: short, hand-written sentence challenges tied to what just happened in your world.",
+  "description": "Learn French while you play. Moments in your world, like killing a creeper or finding diamonds, open short French sentence challenges you type yourself. It adapts to your level, and villagers only trade once you ask in French.",
   "authors": ["Frek"],
   "license": "MIT",
   "icon": "assets/parle/icon.png",
