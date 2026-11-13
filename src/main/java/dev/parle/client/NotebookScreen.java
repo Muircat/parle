@@ -73,7 +73,9 @@ final class NotebookScreen extends Screen {
                 if (c == null) continue;
                 if ((y += 12) > py + ph - 62) break;
                 ctx.drawText(textRenderer, textRenderer.trimToWidth("✗ " + m.given, rw), rx, y, UI.RED, false);
-                ctx.drawText(textRenderer, textRenderer.trimToWidth("✓ " + c.sentence(), rw), rx, y += 10, UI.GREEN, false);
+                ctx.drawText(textRenderer, textRenderer.trimToWidth("✓ " + (m.want != null ? m.want : c.sentence()), rw), rx, y += 10, UI.GREEN, false);
+                if (m.why != null && y + 22 <= py + ph - 62)
+                    ctx.drawText(textRenderer, textRenderer.trimToWidth("⚠ " + m.why, rw), rx, y += 10, UI.AMBER, false);
             }
         }
         if (hover != null)

@@ -84,11 +84,16 @@ public final class ParleClient implements ClientModInitializer {
         });
     }
 
+    /** How many times each moment has happened since dawn (zombies killed, coal mined…), for templates. */
+    private static final Map<String, Integer> TODAY = new HashMap<>();
+
     private static void onTrigger(String key) {
+        if (key.equals("dawn")) TODAY.clear();
+        int count = TODAY.merge(key, 1, Integer::sum);
         long now = System.currentTimeMillis();
         if (QUEUE.size() >= 3 || now - lastQueued < profile.cooldown * 1000L) return;
-        Challenge c = CONTENT.pick(key, null, profile, RND);
-        if (c == null || QUEUE.stream().anyMatch(p -> p.c == c)) return;
+        Challenge c = CONTENT.pick(key, null, profile, RND, count);
+        if (c == null || QUEUE.stream().anyMatch(p -> p.c.id.equals(c.id))) return;
         QUEUE.add(new Pending(c, key, now));
         lastQueued = now;
     }
@@ -136,7 +141,7 @@ public final class ParleClient implements ClientModInitializer {
         return switch (source.substring(0, source.indexOf(':') < 0 ? source.length() : source.indexOf(':'))) {
             case "kill" -> "Combat"; case "mine" -> "Minage"; case "sleep" -> "Au lit";
             case "death" -> "Aïe…"; case "biome" -> "Exploration"; case "dim" -> "Voyage";
-            case "lowhp" -> "Danger"; case "dawn" -> "Le matin"; case "trade" -> "Échange"; default -> "Révision";
+            case "lowhp" -> "Danger"; case "dawn" -> "Le matin"; case "trade" -> "Échange"; case "suite" -> "Et ensuite"; default -> "Révision";
         };
     }
 }
