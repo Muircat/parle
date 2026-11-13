@@ -3188,6 +3188,1146 @@
      "skill": "accord_adj"
     }
    ]
+  },
+  {
+   "id": "t_kill_pc",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "pc_avoir",
+   "level": 1,
+   "say": "You just beat {$a_en}. Say that you killed {$a_en}.",
+   "say_fr": "Dis que tu as tué {$un}.",
+   "cue": "Qu'est-ce que tu viens de faire ?",
+   "hint": "tuer → j'ai tué (avoir + participe passé). {$n} is {$g_en}: {$un}.",
+   "answers": [
+    "J'[ai tué] {$un}.",
+    "{@oh}J'ai tué {$un}.",
+    "{@oh}J'ai {@killed} {$un}.",
+    "{@oh}J'ai {@killed} {$le}.",
+    "{@oh}J'ai {@killed} {$ce}.",
+    "{@oh}Je viens de {tuer|vaincre|battre} {$un}."
+   ],
+   "extra": [
+    "suis",
+    "tuer"
+   ],
+   "next": [
+    "t_kill_pron",
+    "t_kill_because",
+    "t_kill_neg_de"
+   ],
+   "traps": [
+    {
+     "match": "J'ai {@killed} {$x_un}",
+     "why": "{$n} is {$g_en}: {$un}.",
+     "skill": "genre"
+    },
+    {
+     "match": "Je suis {@killed} {$un}",
+     "why": "tuer takes avoir: j'ai tué.",
+     "skill": "aux_avoir"
+    }
+   ]
+  },
+  {
+   "id": "t_kill_pron",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "pronoms",
+   "level": 2,
+   "say": "Say \"I killed it!\" without repeating \"the {$en}\".",
+   "say_fr": "Dis « Je l'ai tué{$e} ! » sans répéter « {$le} ».",
+   "cue": "Et {$ce} ? (Réponds sans le nommer.)",
+   "hint": "The pronoun goes before the helper verb, and the participle agrees with it: {$n} is {$g_en}, so je l'ai tué{$e}.",
+   "answers": [
+    "Je [l'ai tué{$e}].",
+    "{@oh}Je l'ai tué{$e}.",
+    "{@oh}Je l'ai vaincu{$e}.",
+    "{@oh}Je l'ai battu{$e}.",
+    "{@oh}Je l'ai eu{$e}."
+   ],
+   "extra": [
+    "le",
+    "suis"
+   ],
+   "needs": "hostile",
+   "traps": [
+    {
+     "match": "Je l'ai {tué{$x_e}|vaincu{$x_e}|battu{$x_e}|eu{$x_e}}",
+     "why": "With the pronoun l' before the verb, the participle agrees: {$n} is {$g_en}, so je l'ai tué{$e}.",
+     "skill": "accord_pp"
+    },
+    {
+     "match": "J'ai {le|la|l'} {tué|tuée|vaincu|vaincue|battu|battue}",
+     "why": "Object pronouns go before the helper verb: je l'ai tué{$e}.",
+     "skill": "pron_place"
+    }
+   ]
+  },
+  {
+   "id": "t_kill_because",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "liens",
+   "level": 2,
+   "say": "Explain that you killed the {$en} because it was attacking you.",
+   "say_fr": "Explique que tu as tué {$le} parce qu'{$il} t'attaquait.",
+   "cue": "Pourquoi as-tu tué {$ce} ?",
+   "hint": "parce que + {$il} → parce qu'{$il}. 'Was attacking' is background: imparfait (attaquait).",
+   "answers": [
+    "J'ai tué {$le} [parce qu'{$il}] m'attaquait.",
+    "{@oh}J'ai tué {$le} parce qu'{$il} m'attaquait.",
+    "{@oh}J'ai {@killed} {$ce} {parce qu'|car }{$il} m'attaquait.",
+    "{@oh}J'ai {@killed} {$le} {parce qu'|car }{$il} m'attaquait."
+   ],
+   "extra": [
+    "que",
+    "attaque"
+   ],
+   "needs": "hostile",
+   "traps": [
+    {
+     "match": "J'ai {@killed} {$le} {parce qu'|car }{$il} m'a attaqué",
+     "why": "It was attacking you over time (background): imparfait, m'attaquait.",
+     "skill": "imparfait"
+    }
+   ]
+  },
+  {
+   "id": "t_kill_neg_de",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "negation",
+   "level": 2,
+   "say": "Now say the opposite: you did NOT kill {$a_en}.",
+   "say_fr": "Maintenant, dis le contraire : tu n'as pas tué {$un}.",
+   "hint": "ne…pas goes around the helper verb, and un/une becomes de after a negation: je n'ai pas tué {$de}.",
+   "answers": [
+    "Je [n'ai pas tué] {$de}.",
+    "{@oh}Je n'ai pas tué {$de}.",
+    "{@oh}Je n'ai pas {tué|vaincu|battu} {$de}.",
+    "{@oh}Je n'ai pas {tué|vaincu|battu} {$le}."
+   ],
+   "extra": [
+    "un",
+    "une"
+   ],
+   "traps": [
+    {
+     "match": "Je n'ai pas {tué|vaincu|battu} {$un}",
+     "why": "After a negation, un/une/des becomes de: je n'ai pas tué {$de}.",
+     "skill": "neg_de"
+    }
+   ]
+  },
+  {
+   "id": "t_kill_neg",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "negation",
+   "level": 1,
+   "say": "Say that the {$en} didn't hit you.",
+   "say_fr": "Dis que {$le} ne t'a pas touché.",
+   "cue": "{$le} t'a touché ?",
+   "hint": "ne…pas goes around the helper verb: il ne m'a pas touché.",
+   "answers": [
+    "{$le} [ne m'a pas] touché.",
+    "{@oh}{$le} ne m'a pas touché.",
+    "{@oh}{$il} ne m'a pas touché.",
+    "{@oh}{$le} ne m'a même pas touché.",
+    "{@oh}{$il} ne m'a même pas touché."
+   ],
+   "extra": [
+    "pas",
+    "me"
+   ],
+   "needs": "hostile"
+  },
+  {
+   "id": "t_kill_count",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "accord",
+   "level": 1,
+   "say": "Busy day! Say you've killed {$count} {$en_pl} today.",
+   "say_fr": "Dis que tu as tué {$count_n} aujourd'hui.",
+   "cue": "Combien de {$pl} as-tu tués aujourd'hui ?",
+   "hint": "More than one: the noun takes the plural, {$count_n}.",
+   "answers": [
+    "J'ai tué [{$count_n}] aujourd'hui.",
+    "{@oh}J'ai tué {$count_n} aujourd'hui.",
+    "{@oh}J'ai {@killed} {$count_n} aujourd'hui.",
+    "{@oh}Aujourd'hui, j'ai {@killed} {$count_n}.",
+    "{@oh}Ça fait {$count_n} aujourd'hui."
+   ],
+   "min_count": 3,
+   "traps": [
+    {
+     "match": "{|Aujourd'hui, }J'ai {@killed} {$count} {$n}{| aujourd'hui}",
+     "why": "More than one: plural, {$count_n}.",
+     "skill": "accord_pl"
+    }
+   ]
+  },
+  {
+   "id": "t_kill_more",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "futur_proche",
+   "level": 1,
+   "say": "Say you're going to look for other {$en_pl}.",
+   "say_fr": "Dis que tu vas chercher d'autres {$pl}.",
+   "cue": "Et maintenant, tu fais quoi ?",
+   "hint": "aller + infinitif: je vais chercher. Plural after d'autres: {$pl}.",
+   "answers": [
+    "Je [vais chercher] d'autres {$pl}.",
+    "{@oh}Je vais chercher d'autres {$pl}.",
+    "{@oh}Je vais {chercher|trouver|chasser} d'autres {$pl}.",
+    "{@oh}Je vais {chercher|trouver|chasser} encore {$des}."
+   ],
+   "extra": [
+    "cherche",
+    "autre"
+   ],
+   "needs": "hostile"
+  },
+  {
+   "id": "t_kill_nearby",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "questions",
+   "level": 1,
+   "say": "Ask yourself if there are other {$en_pl} nearby.",
+   "say_fr": "Demande-toi s'il y a d'autres {$pl} près d'ici.",
+   "hint": "Est-ce qu'il y a… ? / Y a-t-il… ? / Il y a… ?",
+   "answers": [
+    "[Est-ce qu'il y a] d'autres {$pl} près d'ici ?",
+    "{@oh}Est-ce qu'il y a d'autres {$pl} près d'ici ?",
+    "{@oh}{Est-ce qu'il y a|Y a-t-il|Il y a} d'autres {$pl} {près d'ici|ici|dans le coin|autour de moi}{| ?}"
+   ],
+   "extra": [
+    "est",
+    "autre"
+   ],
+   "needs": "hostile"
+  },
+  {
+   "id": "t_kill_hid",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "imparfait",
+   "level": 2,
+   "say": "Describe the scene afterwards: the {$en} was hiding in the dark.",
+   "say_fr": "Décris la scène : {$le} se cachait dans le noir.",
+   "cue": "Où était {$le} avant le combat ?",
+   "hint": "Background description: imparfait. se cacher → il se cachait.",
+   "answers": [
+    "{$le} [se cachait] dans le noir.",
+    "{@oh}{$le} se cachait dans le noir.",
+    "{@oh}{$le} se cachait dans {le noir|l'obscurité|l'ombre}.",
+    "{@oh}{$il} se cachait dans {le noir|l'obscurité|l'ombre}."
+   ],
+   "extra": [
+    "cache",
+    "s'est"
+   ],
+   "needs": "hostile",
+   "traps": [
+    {
+     "match": "{$le} s'est {caché|cachée} dans {le noir|l'obscurité|l'ombre}",
+     "why": "This is background description, so imparfait: se cachait.",
+     "skill": "imparfait"
+    },
+    {
+     "match": "{$le} cachait dans {le noir|l'obscurité|l'ombre}",
+     "why": "se cacher is reflexive: {$il} se cachait.",
+     "skill": "reflexif"
+    }
+   ]
+  },
+  {
+   "id": "t_kill_could",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "conditionnel",
+   "level": 2,
+   "say": "Say that the {$en} could have killed you.",
+   "say_fr": "Dis que {$le} aurait pu te tuer.",
+   "cue": "C'était dangereux ?",
+   "hint": "'Could have' = conditionnel passé of pouvoir: aurait pu + infinitif.",
+   "answers": [
+    "{$le} [aurait pu] me tuer.",
+    "{@oh}{$le} aurait pu me tuer.",
+    "{@oh}{$il} aurait pu me tuer."
+   ],
+   "extra": [
+    "pourrait",
+    "tué"
+   ],
+   "needs": "hostile",
+   "traps": [
+    {
+     "match": "{$le} pourrait me tuer",
+     "why": "For the past ('could have'), use the past conditional: aurait pu.",
+     "skill": "cond_passe"
+    },
+    {
+     "match": "{$le} aurait pu me tué",
+     "why": "After pu, use the infinitive: aurait pu me tuer.",
+     "skill": "pp_form"
+    }
+   ]
+  },
+  {
+   "id": "t_kill_big",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "accord",
+   "level": 2,
+   "say": "Say it was a really big {$en}.",
+   "say_fr": "Dis que c'était {$det_un} très {$gros} {$n}.",
+   "cue": "Il était comment, {$ce} ?",
+   "hint": "{$n} is {$g_en}, so gros agrees: {$det_un} très {$gros} {$n}. Gros goes before the noun.",
+   "answers": [
+    "C'était {$det_un} très [{$gros}] {$n}.",
+    "{@oh}C'était {$det_un} très {$gros} {$n}.",
+    "{@oh}C'était {$det_un} {très|vraiment|super} {$gros} {$n}.",
+    "{@oh}C'était {$det_un} {$n} énorme."
+   ],
+   "extra": [
+    "{$x_gros}",
+    "était"
+   ],
+   "needs": "hostile",
+   "traps": [
+    {
+     "match": "C'était {$det_un} {très |vraiment |super |}{$x_gros} {$n}",
+     "why": "{$n} is {$g_en}: {$det_un} {$gros} {$n}.",
+     "skill": "accord_adj"
+    },
+    {
+     "match": "C'était {$det_un} {$n} {très |vraiment |}{$gros}",
+     "why": "Gros, grand, petit and beau usually go before the noun: {$det_un} {$gros} {$n}.",
+     "skill": "adj_place"
+    }
+   ]
+  },
+  {
+   "id": "t_kill_came",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "pc_etre",
+   "level": 2,
+   "say": "Say that the {$en} came towards you.",
+   "say_fr": "Dis que {$le} est venu{$e} vers toi.",
+   "cue": "Qu'est-ce que {$le} a fait ?",
+   "hint": "venir takes être, so the participle agrees: {$n} is {$g_en}, so venu{$e}.",
+   "answers": [
+    "{$le} [est venu{$e}] vers moi.",
+    "{@oh}{$le} est venu{$e} vers moi.",
+    "{@oh}{$il} est venu{$e} vers moi.",
+    "{@oh}{$le} s'est approché{$e} de moi.",
+    "{@oh}{$il} s'est approché{$e} de moi."
+   ],
+   "extra": [
+    "a",
+    "venir"
+   ],
+   "needs": "hostile",
+   "traps": [
+    {
+     "match": "{$le} est venu{$x_e} vers moi",
+     "why": "With être the participle agrees: {$n} is {$g_en}, so venu{$e}.",
+     "skill": "accord_pp"
+    },
+    {
+     "match": "{$il} est venu{$x_e} vers moi",
+     "why": "With être the participle agrees: {$n} is {$g_en}, so venu{$e}.",
+     "skill": "accord_pp"
+    }
+   ]
+  },
+  {
+   "id": "t_kill_que",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "relatifs",
+   "level": 3,
+   "say": "Say: the {$en} that I killed was huge.",
+   "say_fr": "Dis que {$le} que tu as tué{$e} était énorme.",
+   "hint": "que = the thing you killed (object). An object placed before avoir makes the participle agree: tué{$e}.",
+   "answers": [
+    "{$le} [que j'ai tué{$e}] était énorme.",
+    "{@oh}{$le} que j'ai tué{$e} était énorme.",
+    "{@oh}{$le} que j'ai {vaincu{$e}|battu{$e}} était {énorme|immense|gigantesque}.",
+    "{@oh}{$le} que j'ai tué{$e} était {immense|gigantesque}."
+   ],
+   "extra": [
+    "qui",
+    "tué"
+   ],
+   "needs": "hostile",
+   "traps": [
+    {
+     "match": "{$le} qui j'ai {tué|tuée} était {énorme|immense|gigantesque}",
+     "why": "que, not qui: {$le} is the object of tué.",
+     "skill": "relatif"
+    },
+    {
+     "match": "{$le} que j'ai {tué{$x_e}|vaincu{$x_e}|battu{$x_e}} était {énorme|immense|gigantesque}",
+     "why": "The object que comes before avoir, so the participle agrees: {$n} is {$g_en}, so tué{$e}.",
+     "skill": "accord_pp"
+    }
+   ]
+  },
+  {
+   "id": "t_kill_leave",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "subjonctif",
+   "level": 3,
+   "say": "Say you want the {$en_pl} to leave.",
+   "say_fr": "Dis que tu veux que les {$pl} partent.",
+   "hint": "vouloir que + subjonctif: qu'ils partent.",
+   "answers": [
+    "Je veux que {$les} [partent].",
+    "{@oh}Je veux que {$les} partent.",
+    "{@oh}Je {veux|voudrais|souhaite|aimerais} que {$les} {partent|s'en aillent|disparaissent}."
+   ],
+   "extra": [
+    "partiront",
+    "partir"
+   ],
+   "needs": "hostile",
+   "traps": [
+    {
+     "match": "Je {veux|voudrais|souhaite|aimerais} que {$les} {partiront|partir|part|partaient|vont partir}",
+     "why": "vouloir que + subjonctif: qu'ils partent.",
+     "skill": "subjonctif"
+    }
+   ]
+  },
+  {
+   "id": "t_kill_cook",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "futur_proche",
+   "level": 1,
+   "say": "You got some {$meat_en}. Say you're going to cook it.",
+   "say_fr": "Tu as {$meat}. Dis que tu vas le faire cuire.",
+   "cue": "Qu'est-ce que tu vas faire de {$meat} ?",
+   "hint": "aller + infinitif: je vais cuire / je vais faire cuire.",
+   "answers": [
+    "Je [vais faire cuire] {$meat}.",
+    "{@oh}Je vais faire cuire {$meat}.",
+    "{@oh}Je vais {cuire|faire cuire|griller} {$meat}.",
+    "{@oh}Je vais le {cuire|faire cuire}."
+   ],
+   "extra": [
+    "cuit",
+    "suis"
+   ],
+   "needs": "animal"
+  },
+  {
+   "id": "t_kill_animal",
+   "on": [
+    "kill:*"
+   ],
+   "topic": "pc_avoir",
+   "level": 1,
+   "say": "Say that you killed {$a_en} for food.",
+   "say_fr": "Dis que tu as tué {$un} pour manger.",
+   "cue": "Pourquoi as-tu tué {$ce} ?",
+   "hint": "{$n} is {$g_en}: {$un}. pour + infinitif: pour manger.",
+   "answers": [
+    "J'ai tué {$un} [pour manger].",
+    "{@oh}J'ai tué {$un} pour manger.",
+    "{@oh}J'ai tué {$un} pour {manger|avoir à manger|la nourriture|la viande}."
+   ],
+   "extra": [
+    "mangé",
+    "{$x_un}"
+   ],
+   "needs": "animal",
+   "traps": [
+    {
+     "match": "J'ai tué {$x_un} pour {manger|avoir à manger|la nourriture|la viande}",
+     "why": "{$n} is {$g_en}: {$un}.",
+     "skill": "genre"
+    }
+   ]
+  },
+  {
+   "id": "t_mine_found",
+   "on": [
+    "mine:*"
+   ],
+   "topic": "pc_avoir",
+   "level": 1,
+   "say": "You found {$some_en}! Say so.",
+   "say_fr": "Dis que tu as trouvé {$du}.",
+   "cue": "Qu'est-ce que tu viens de trouver ?",
+   "hint": "trouver → j'ai trouvé. {$n} is {$g_en}: {$du}.",
+   "answers": [
+    "J'[ai trouvé] {$du}.",
+    "{@oh}J'ai trouvé {$du}.",
+    "{@oh}J'ai {trouvé|découvert|miné} {$du}.",
+    "{@oh}Je viens de {trouver|découvrir|miner} {$du}."
+   ],
+   "extra": [
+    "suis",
+    "trouver"
+   ],
+   "needs": "ore",
+   "next": [
+    "t_mine_lot",
+    "t_mine_enough"
+   ],
+   "traps": [
+    {
+     "match": "J'ai {trouvé|découvert|miné} {$x_du}",
+     "why": "{$n} is {$g_en}: {$du}.",
+     "skill": "genre"
+    },
+    {
+     "match": "J'ai {trouvé|découvert|miné} {$n}",
+     "why": "French needs an article here: {$du}.",
+     "skill": "articles"
+    }
+   ]
+  },
+  {
+   "id": "t_mine_lot",
+   "on": [
+    "mine:*"
+   ],
+   "topic": "articles",
+   "level": 2,
+   "say": "Say you have a lot of {$en} now.",
+   "say_fr": "Dis que tu as beaucoup {$de} maintenant.",
+   "cue": "Tu en as combien maintenant ?",
+   "hint": "After beaucoup, du/de la/des become de: beaucoup {$de}.",
+   "answers": [
+    "J'ai beaucoup [{$de}] maintenant.",
+    "{@oh}J'ai beaucoup {$de} maintenant.",
+    "{@oh}{|Maintenant, }j'ai {beaucoup|plein} {$de}{| maintenant}."
+   ],
+   "extra": [
+    "{$du}",
+    "des"
+   ],
+   "needs": "ore",
+   "traps": [
+    {
+     "match": "{|Maintenant, }j'ai {beaucoup|plein} {$du}{| maintenant}",
+     "why": "After beaucoup, du/de la/des become de: beaucoup {$de}.",
+     "skill": "quantite"
+    }
+   ]
+  },
+  {
+   "id": "t_mine_enough",
+   "on": [
+    "mine:*"
+   ],
+   "topic": "negation",
+   "level": 2,
+   "say": "Say you don't have enough {$en} yet.",
+   "say_fr": "Dis que tu n'as pas encore assez {$de}.",
+   "cue": "Tu en as assez ?",
+   "hint": "ne…pas around the verb, and assez + de: pas assez {$de}.",
+   "answers": [
+    "Je [n'ai pas encore assez] {$de}.",
+    "{@oh}Je n'ai pas encore assez {$de}.",
+    "{@oh}Je n'ai pas {encore assez|assez} {$de}{| pour l'instant}.",
+    "{@oh}Je n'en ai pas encore assez."
+   ],
+   "extra": [
+    "du",
+    "pas"
+   ],
+   "needs": "ore",
+   "traps": [
+    {
+     "match": "Je n'ai pas {encore assez|assez} {$du}{| pour l'instant}",
+     "why": "After assez, du/de la/des become de: assez {$de}.",
+     "skill": "quantite"
+    }
+   ]
+  },
+  {
+   "id": "t_mine_more",
+   "on": [
+    "mine:*"
+   ],
+   "topic": "futur_proche",
+   "level": 1,
+   "say": "Say you're going to mine more {$en}.",
+   "say_fr": "Dis que tu vas miner encore {$du}.",
+   "cue": "Et ensuite ?",
+   "hint": "aller + infinitif: je vais miner. plus de / encore du.",
+   "answers": [
+    "Je [vais miner] encore {$du}.",
+    "{@oh}Je vais miner encore {$du}.",
+    "{@oh}Je vais {miner|chercher|trouver|extraire} encore {$du}.",
+    "{@oh}Je vais {miner|chercher|trouver|extraire} plus {$de}."
+   ],
+   "extra": [
+    "mine",
+    "miné"
+   ],
+   "needs": "ore"
+  },
+  {
+   "id": "t_mine_need",
+   "on": [
+    "mine:*"
+   ],
+   "topic": "il_faut",
+   "level": 1,
+   "say": "Say you need {$en} to make {$use_en}.",
+   "say_fr": "Dis que tu as besoin {$de} pour fabriquer {$use}.",
+   "cue": "Pourquoi tu as besoin {$de} ?",
+   "hint": "avoir besoin de + noun with no article: j'ai besoin {$de}. pour + infinitif.",
+   "answers": [
+    "J'ai besoin {$de} [pour fabriquer] {$use}.",
+    "{@oh}J'ai besoin {$de} pour fabriquer {$use}.",
+    "{@oh}J'ai besoin {$de} pour {fabriquer|faire|crafter} {$use}.",
+    "{@oh}Il me faut {$du} pour {fabriquer|faire|crafter} {$use}."
+   ],
+   "extra": [
+    "fabrique",
+    "pour"
+   ],
+   "needs": "ore"
+  },
+  {
+   "id": "t_mine_where",
+   "on": [
+    "mine:*"
+   ],
+   "topic": "questions",
+   "level": 1,
+   "say": "Ask yourself where you can find more {$en}.",
+   "say_fr": "Demande-toi où tu peux trouver plus {$de}.",
+   "hint": "Où est-ce que je peux… ? / Où puis-je… ? / Où je peux… ?",
+   "answers": [
+    "Où [est-ce que] je peux trouver plus {$de} ?",
+    "{@oh}Où est-ce que je peux trouver plus {$de} ?",
+    "{@oh}{Où est-ce que je peux|Où puis-je|Où je peux|Où est-ce que je pourrais|Où pourrais-je} trouver {plus|encore plus} {$de} ?",
+    "{@oh}{Où est-ce que je peux|Où puis-je|Où je peux|Où est-ce que je pourrais|Où pourrais-je} trouver encore {$du} ?"
+   ],
+   "extra": [
+    "est",
+    "trouvé"
+   ],
+   "needs": "ore"
+  },
+  {
+   "id": "t_mine_everywhere",
+   "on": [
+    "mine:*"
+   ],
+   "topic": "imparfait",
+   "level": 2,
+   "say": "Describe it in your diary: there was {$en} everywhere in the cave.",
+   "say_fr": "Écris dans ton journal qu'il y avait {$du} partout dans la grotte.",
+   "cue": "C'était comment, dans la grotte ?",
+   "hint": "Description in the past: il y avait (imparfait).",
+   "answers": [
+    "Il [y avait] {$du} partout dans la grotte.",
+    "{@oh}Il y avait {$du} partout dans la grotte.",
+    "{@oh}Il y avait {$du} partout dans {la grotte|la caverne|la mine}.",
+    "{@oh}Dans {la grotte|la caverne|la mine}, il y avait {$du} partout."
+   ],
+   "extra": [
+    "a eu",
+    "avait"
+   ],
+   "needs": "mass",
+   "traps": [
+    {
+     "match": "Il y a eu {$du} partout dans {la grotte|la caverne|la mine}",
+     "why": "Describing how things were: imparfait, il y avait.",
+     "skill": "imparfait"
+    }
+   ]
+  },
+  {
+   "id": "t_mine_rich",
+   "on": [
+    "mine:*"
+   ],
+   "topic": "conditionnel",
+   "level": 2,
+   "say": "Say: if I had more {$en}, I would be rich.",
+   "say_fr": "Dis que si tu avais plus {$de}, tu serais riche.",
+   "hint": "si + imparfait, then conditionnel: si j'avais…, je serais.",
+   "answers": [
+    "Si j'avais plus {$de}, je [serais] riche.",
+    "{@oh}Si j'avais plus {$de}, je serais riche.",
+    "{@oh}Si j'avais {plus|encore plus|beaucoup} {$de}, je serais {riche|très riche}.",
+    "{@oh}Je serais riche si j'avais {plus|encore plus|beaucoup} {$de}."
+   ],
+   "extra": [
+    "serai",
+    "aurais"
+   ],
+   "needs": "ore"
+  },
+  {
+   "id": "t_mine_count",
+   "on": [
+    "mine:*"
+   ],
+   "topic": "accord",
+   "level": 1,
+   "say": "Say you've mined {$count} blocks of {$en} today.",
+   "say_fr": "Dis que tu as miné {$count} blocs {$de} aujourd'hui.",
+   "cue": "Combien de blocs {$de} as-tu minés aujourd'hui ?",
+   "hint": "Plural: des blocs. de + noun: blocs {$de}.",
+   "answers": [
+    "J'ai miné {$count} [blocs] {$de} aujourd'hui.",
+    "{@oh}J'ai miné {$count} blocs {$de} aujourd'hui.",
+    "{@oh}{|Aujourd'hui, }j'ai {miné|récolté|extrait} {$count} {blocs|minerais} {$de}{| aujourd'hui}."
+   ],
+   "needs": "mass",
+   "min_count": 3,
+   "traps": [
+    {
+     "match": "{|Aujourd'hui, }j'ai {miné|récolté|extrait} {$count} {bloc|minerai} {$de}{| aujourd'hui}",
+     "why": "More than one block: plural, blocs.",
+     "skill": "accord_pl"
+    }
+   ]
+  },
+  {
+   "id": "t_mine_count_gems",
+   "on": [
+    "mine:*"
+   ],
+   "topic": "accord",
+   "level": 1,
+   "say": "Say you've found {$count} {$en_pl} today.",
+   "say_fr": "Dis que tu as trouvé {$count_n} aujourd'hui.",
+   "cue": "Combien de {$pl} as-tu trouvés aujourd'hui ?",
+   "hint": "More than one: plural, {$count_n}.",
+   "answers": [
+    "J'ai trouvé [{$count_n}] aujourd'hui.",
+    "{@oh}J'ai trouvé {$count_n} aujourd'hui.",
+    "{@oh}{|Aujourd'hui, }j'ai {trouvé|miné|découvert} {$count_n}{| aujourd'hui}."
+   ],
+   "needs": "countable",
+   "min_count": 2
+  },
+  {
+   "id": "t_wood_count",
+   "on": [
+    "mine:log"
+   ],
+   "topic": "pc_avoir",
+   "level": 1,
+   "say": "Say you've chopped {$count} blocks of wood today.",
+   "say_fr": "Dis que tu as coupé {$count} blocs de bois aujourd'hui.",
+   "cue": "Combien de blocs de bois as-tu coupés aujourd'hui ?",
+   "hint": "couper → j'ai coupé. Plural: des blocs.",
+   "answers": [
+    "J'[ai coupé] {$count} blocs de bois aujourd'hui.",
+    "{@oh}J'ai coupé {$count} blocs de bois aujourd'hui.",
+    "{@oh}{|Aujourd'hui, }j'ai {coupé|récolté} {$count} blocs de bois{| aujourd'hui}."
+   ],
+   "needs": "wood",
+   "min_count": 4
+  },
+  {
+   "id": "t_wood_planks",
+   "on": [
+    "mine:log"
+   ],
+   "topic": "futur_proche",
+   "level": 1,
+   "say": "Say you're going to make planks with this wood.",
+   "say_fr": "Dis que tu vas faire des planches avec ce bois.",
+   "cue": "Qu'est-ce que tu vas faire de ce bois ?",
+   "hint": "aller + infinitif: je vais faire.",
+   "answers": [
+    "Je [vais faire] des planches avec ce bois.",
+    "{@oh}Je vais faire des planches avec ce bois.",
+    "{@oh}Je vais {faire|fabriquer|crafter} des planches {avec ce bois|avec le bois|}."
+   ],
+   "extra": [
+    "fais",
+    "planche"
+   ],
+   "needs": "wood"
+  },
+  {
+   "id": "t_wood_need",
+   "on": [
+    "mine:log"
+   ],
+   "topic": "il_faut",
+   "level": 1,
+   "say": "Say you still need wood to finish your house.",
+   "say_fr": "Dis qu'il te faut encore du bois pour finir ta maison.",
+   "cue": "Ta maison est finie ?",
+   "hint": "il me faut + du bois; j'ai besoin de bois.",
+   "answers": [
+    "Il me faut [encore] du bois pour finir ma maison.",
+    "{@oh}Il me faut encore du bois pour finir ma maison.",
+    "{@oh}{Il me faut encore du|J'ai encore besoin de|Il me faut plus de|J'ai besoin de plus de} bois pour {finir|terminer} ma maison."
+   ],
+   "extra": [
+    "besoin",
+    "le"
+   ],
+   "needs": "wood"
+  },
+  {
+   "id": "t_bio_arrive",
+   "on": [
+    "biome:*"
+   ],
+   "topic": "pc_etre",
+   "level": 1,
+   "say": "Say you've arrived {$in_en}.",
+   "say_fr": "Dis que tu es arrivé {$dans}.",
+   "cue": "Où es-tu ?",
+   "hint": "arriver takes être: je suis arrivé (arrivée if you're a girl).",
+   "answers": [
+    "Je [suis arrivé] {$dans}.",
+    "{@oh}Je suis arrivé {$dans}.",
+    "{@oh}Je suis {arrivé|arrivée|entré|entrée} {$dans}.",
+    "{@oh}J'arrive {$dans}.",
+    "{@oh}Me voilà {$dans}."
+   ],
+   "extra": [
+    "ai",
+    "arriver"
+   ],
+   "needs": "biome",
+   "next": [
+    "t_bio_describe",
+    "t_bio_never"
+   ]
+  },
+  {
+   "id": "t_bio_describe",
+   "on": [
+    "biome:*"
+   ],
+   "topic": "accord",
+   "level": 1,
+   "say": "Describe it: the {$en} is {$adj_en}.",
+   "say_fr": "Décris : {$le} est {$adj}.",
+   "cue": "Comment est {$le} ?",
+   "hint": "The adjective agrees with the noun: {$n} is {$g_en}, so {$adj}.",
+   "answers": [
+    "{$le} est [{$adj}].",
+    "{@oh}{$le} est {$adj}.",
+    "{@oh}{$le} est {très|vraiment|super|} {$adj}.",
+    "{@oh}{$il} est {très |vraiment |}{$adj}."
+   ],
+   "extra": [
+    "{$x_adj}",
+    "sont"
+   ],
+   "needs": "biome",
+   "next": [
+    "t_bio_diary"
+   ],
+   "traps": [
+    {
+     "match": "{$le} est {très |vraiment |super |}{$x_adj}",
+     "why": "The adjective agrees: {$n} is {$g_en}, so {$adj}.",
+     "skill": "accord_adj"
+    }
+   ]
+  },
+  {
+   "id": "t_bio_diary",
+   "on": [
+    "biome:*"
+   ],
+   "topic": "imparfait",
+   "level": 2,
+   "say": "Later, in your diary: the {$en} was {$adj_en}.",
+   "say_fr": "Plus tard, dans ton journal : {$le} était {$adj}.",
+   "cue": "C'était comment ?",
+   "hint": "Describing how something was: imparfait (était).",
+   "answers": [
+    "{$le} [était] {$adj}.",
+    "{@oh}{$le} était {$adj}.",
+    "{@oh}{$le} était {très |vraiment |}{$adj}."
+   ],
+   "extra": [
+    "a été",
+    "est"
+   ],
+   "needs": "biome",
+   "traps": [
+    {
+     "match": "{$le} a été {très |vraiment |}{$adj}",
+     "why": "Describing how something was: imparfait, était.",
+     "skill": "imparfait"
+    }
+   ]
+  },
+  {
+   "id": "t_bio_explore",
+   "on": [
+    "biome:*"
+   ],
+   "topic": "futur_proche",
+   "level": 1,
+   "say": "Say you're going to explore the {$en}.",
+   "say_fr": "Dis que tu vas explorer {$le}.",
+   "cue": "Qu'est-ce que tu vas faire ici ?",
+   "hint": "aller + infinitif: je vais explorer.",
+   "answers": [
+    "Je [vais explorer] {$le}.",
+    "{@oh}Je vais explorer {$le}.",
+    "{@oh}Je vais {explorer|visiter|découvrir} {$le}{| maintenant}.",
+    "{@oh}Maintenant, je vais {explorer|visiter|découvrir} {$le}."
+   ],
+   "extra": [
+    "explore",
+    "exploré"
+   ],
+   "needs": "biome"
+  },
+  {
+   "id": "t_bio_see",
+   "on": [
+    "biome:*"
+   ],
+   "topic": "questions",
+   "level": 1,
+   "say": "Ask yourself what there is to see {$in_en}.",
+   "say_fr": "Demande-toi ce qu'il y a à voir {$dans}.",
+   "hint": "Qu'est-ce qu'il y a… ? / Qu'y a-t-il… ?",
+   "answers": [
+    "[Qu'est-ce qu'il y a] à voir {$dans} ?",
+    "{@oh}Qu'est-ce qu'il y a à voir {$dans} ?",
+    "{@oh}{Qu'est-ce qu'il y a|Qu'y a-t-il|Il y a quoi} à {voir|faire} {$dans}{| ?}"
+   ],
+   "extra": [
+    "est",
+    "quoi"
+   ],
+   "needs": "biome"
+  },
+  {
+   "id": "t_bio_house",
+   "on": [
+    "biome:*"
+   ],
+   "topic": "lieu",
+   "level": 1,
+   "say": "Say you're going to build a house near the {$en}.",
+   "say_fr": "Dis que tu vas construire une maison près {$du}.",
+   "hint": "près de + le → près du; près de la; près de l'.",
+   "answers": [
+    "Je vais construire une maison [près {$du}].",
+    "{@oh}Je vais construire une maison près {$du}.",
+    "{@oh}Je vais {construire|bâtir|faire} {une|ma} maison {près|à côté} {$du}."
+   ],
+   "extra": [
+    "de le",
+    "à"
+   ],
+   "needs": "biome"
+  },
+  {
+   "id": "t_bio_never",
+   "on": [
+    "biome:*"
+   ],
+   "topic": "negation",
+   "level": 2,
+   "say": "Say you've never seen {$a_en} like this.",
+   "say_fr": "Dis que tu n'as jamais vu {$un} comme ça.",
+   "cue": "Tu as déjà vu ça ?",
+   "hint": "ne…jamais around the helper verb, and un/une becomes de after it: jamais vu {$de}.",
+   "answers": [
+    "Je n'ai jamais vu [{$de}] comme ça.",
+    "{@oh}Je n'ai jamais vu {$de} comme ça.",
+    "{@oh}Je n'ai jamais vu {$de} {comme ça|aussi beau|pareil}.",
+    "{@oh}Je n'ai jamais rien vu de pareil."
+   ],
+   "extra": [
+    "{$un}",
+    "pas"
+   ],
+   "needs": "biome",
+   "traps": [
+    {
+     "match": "Je n'ai jamais vu {$un} {comme ça|aussi beau|pareil}",
+     "why": "After a negation, un/une becomes de: jamais vu {$de}.",
+     "skill": "neg_de"
+    }
+   ]
+  },
+  {
+   "id": "t_bio_live",
+   "on": [
+    "biome:*"
+   ],
+   "topic": "conditionnel",
+   "level": 2,
+   "say": "Say you'd like to live here.",
+   "say_fr": "Dis que tu aimerais habiter ici.",
+   "cue": "Tu aimes cet endroit ?",
+   "hint": "Polite wish: j'aimerais / je voudrais + infinitif.",
+   "answers": [
+    "[J'aimerais] habiter ici.",
+    "{@oh}J'aimerais habiter ici.",
+    "{@oh}{J'aimerais|Je voudrais|Je souhaiterais} {habiter|vivre} {ici|{$dans}}.",
+    "{@oh}{J'aimerais|Je voudrais|Je souhaiterais} {habiter|vivre} {$dans}."
+   ],
+   "extra": [
+    "aime",
+    "veux"
+   ],
+   "needs": "biome"
+  },
+  {
+   "id": "t_trade_want",
+   "on": [
+    "trade:*"
+   ],
+   "topic": "articles",
+   "level": 1,
+   "say": "Ask for {$some_en}.",
+   "say_fr": "Demande {$du}.",
+   "hint": "{$n} is {$g_en}: {$du}.",
+   "npc": "Bonjour ! J'ai de bonnes affaires aujourd'hui.",
+   "answers": [
+    "Je voudrais [{$du}], s'il vous plaît.",
+    "{@hi}{@want}{$du}{@please}"
+   ],
+   "needs": "item",
+   "traps": [
+    {
+     "match": "{@hi}{@want}{$x_du}{@please}",
+     "why": "{$n} is {$g_en}: {$du}.",
+     "skill": "genre"
+    },
+    {
+     "match": "{@hi}{@want}{$n}{@please}",
+     "why": "French needs an article here: {$du}.",
+     "skill": "articles"
+    }
+   ]
+  },
+  {
+   "id": "t_trade_have",
+   "on": [
+    "trade:*"
+   ],
+   "topic": "questions",
+   "level": 1,
+   "say": "Ask whether they have {$some_en}.",
+   "say_fr": "Demande s'il a {$du}.",
+   "hint": "Avez-vous… ? / Est-ce que tu as… ? / Tu as… ?",
+   "npc": "Bienvenue dans ma boutique !",
+   "answers": [
+    "[Avez-vous] {$du} ?",
+    "{@hi}{@have}{$du}{@please}"
+   ],
+   "needs": "item",
+   "traps": [
+    {
+     "match": "{@hi}{@have}{$x_du}{@please}",
+     "why": "{$n} is {$g_en}: {$du}.",
+     "skill": "genre"
+    }
+   ]
+  },
+  {
+   "id": "t_trade_price",
+   "on": [
+    "trade:*"
+   ],
+   "topic": "questions",
+   "level": 1,
+   "say": "Ask the price of {$the_en}.",
+   "say_fr": "Demande combien coûte {$le}.",
+   "hint": "Combien coûte… ? / Ça coûte combien ? (plural: coûtent)",
+   "npc": "Tout est à vendre ici.",
+   "answers": [
+    "[Combien {$coute}] {$le} ?",
+    "{@hi}Combien {$coute} {$le}{@please}",
+    "{@hi}{$le}, {ça coûte|c'est} combien{@please}",
+    "{@hi}C'est combien, {$le}{@please}",
+    "{@hi}{Ça coûte|C'est} combien, {$le}{@please}"
+   ],
+   "needs": "item"
+  },
+  {
+   "id": "t_trade_en",
+   "on": [
+    "trade:*"
+   ],
+   "topic": "pronoms",
+   "level": 2,
+   "say": "Say you'll take three (of them).",
+   "say_fr": "Réponds que tu en prends trois.",
+   "hint": "With a number and no noun, French needs en: j'en prends trois.",
+   "npc": "J'ai plein {$de}. Combien ?",
+   "answers": [
+    "J'[en prends] trois.",
+    "{@hi}{J'en prends|J'en veux|J'en voudrais|J'en prendrai|J'en prendrais|Je vais en prendre|Je voudrais en prendre|J'aimerais en prendre|J'en achète|Je vais en acheter} trois{@please}",
+    "{@hi}{Je prends|Je veux|Je voudrais|Je vais prendre|J'aimerais} trois {$pl}{@please}"
+   ],
+   "needs": "countable",
+   "traps": [
+    {
+     "match": "{@hi}{Je prends|Je veux|Je voudrais|Je vais prendre|J'aimerais|J'achète} trois{@please}",
+     "why": "With a number and no noun, French needs en: j'en prends trois.",
+     "skill": "pron_en"
+    }
+   ]
+  },
+  {
+   "id": "t_trade_none",
+   "on": [
+    "trade:*"
+   ],
+   "topic": "negation",
+   "level": 2,
+   "say": "Politely say you don't want {$some_en} today.",
+   "say_fr": "Dis poliment que tu ne veux pas {$de} aujourd'hui.",
+   "hint": "After pas, un/une/du/de la/des become de: pas {$de}.",
+   "npc": "Et {$du} ? C'est très bon marché !",
+   "answers": [
+    "Merci, mais je ne veux pas [{$de}] aujourd'hui.",
+    "{|Merci, mais |Non merci, |Désolé, |Désolée, }je ne {veux|voudrais} pas {$de}{| aujourd'hui}{|, merci}"
+   ],
+   "needs": "item",
+   "traps": [
+    {
+     "match": "{|Merci, mais |Non merci, |Désolé, |Désolée, }je ne {veux|voudrais} pas {$du}{| aujourd'hui}{|, merci}",
+     "why": "After pas, un/une/du/de la/des become de: pas {$de}.",
+     "skill": "neg_de"
+    }
+   ]
   }
  ],
  "traps": [
@@ -3245,6 +4385,1358 @@
    "match": "que {il|ils|elle|elles|on}",
    "why": "que + il → qu'il (que drops its e before a vowel).",
    "skill": "elision"
+  }
+ ],
+ "lexicon": [
+  {
+   "on": [
+    "kill:zombie"
+   ],
+   "n": "zombie",
+   "g": "m",
+   "en": "zombie",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:husk"
+   ],
+   "n": "zombie momifié",
+   "g": "m",
+   "en": "husk",
+   "tags": [
+    "hostile"
+   ],
+   "pl": "zombies momifiés"
+  },
+  {
+   "on": [
+    "kill:drowned"
+   ],
+   "n": "noyé",
+   "g": "m",
+   "en": "drowned",
+   "tags": [
+    "hostile"
+   ],
+   "en_pl": "drowned"
+  },
+  {
+   "on": [
+    "kill:zombie_villager"
+   ],
+   "n": "zombie villageois",
+   "g": "m",
+   "en": "zombie villager",
+   "tags": [
+    "hostile"
+   ],
+   "pl": "zombies villageois"
+  },
+  {
+   "on": [
+    "kill:skeleton"
+   ],
+   "n": "squelette",
+   "g": "m",
+   "en": "skeleton",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:stray"
+   ],
+   "n": "vagabond",
+   "g": "m",
+   "en": "stray",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:wither_skeleton"
+   ],
+   "n": "squelette wither",
+   "g": "m",
+   "en": "wither skeleton",
+   "tags": [
+    "hostile"
+   ],
+   "pl": "squelettes withers"
+  },
+  {
+   "on": [
+    "kill:creeper"
+   ],
+   "n": "creeper",
+   "g": "m",
+   "en": "creeper",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:spider"
+   ],
+   "n": "araignée",
+   "g": "f",
+   "en": "spider",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:cave_spider"
+   ],
+   "n": "araignée venimeuse",
+   "g": "f",
+   "en": "cave spider",
+   "tags": [
+    "hostile"
+   ],
+   "pl": "araignées venimeuses"
+  },
+  {
+   "on": [
+    "kill:enderman"
+   ],
+   "n": "enderman",
+   "g": "m",
+   "en": "enderman",
+   "tags": [
+    "hostile"
+   ],
+   "pl": "endermen",
+   "en_pl": "endermen"
+  },
+  {
+   "on": [
+    "kill:witch"
+   ],
+   "n": "sorcière",
+   "g": "f",
+   "en": "witch",
+   "tags": [
+    "hostile"
+   ],
+   "en_pl": "witches"
+  },
+  {
+   "on": [
+    "kill:slime"
+   ],
+   "n": "slime",
+   "g": "m",
+   "en": "slime",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:phantom"
+   ],
+   "n": "phantom",
+   "g": "m",
+   "en": "phantom",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:pillager"
+   ],
+   "n": "pillard",
+   "g": "m",
+   "en": "pillager",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:vindicator"
+   ],
+   "n": "vindicateur",
+   "g": "m",
+   "en": "vindicator",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:blaze"
+   ],
+   "n": "blaze",
+   "g": "m",
+   "en": "blaze",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:ghast"
+   ],
+   "n": "ghast",
+   "g": "m",
+   "en": "ghast",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:piglin"
+   ],
+   "n": "piglin",
+   "g": "m",
+   "en": "piglin",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:zombified_piglin"
+   ],
+   "n": "piglin zombifié",
+   "g": "m",
+   "en": "zombified piglin",
+   "tags": [
+    "hostile"
+   ],
+   "pl": "piglins zombifiés"
+  },
+  {
+   "on": [
+    "kill:hoglin"
+   ],
+   "n": "hoglin",
+   "g": "m",
+   "en": "hoglin",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:magma_cube"
+   ],
+   "n": "cube de magma",
+   "g": "m",
+   "en": "magma cube",
+   "tags": [
+    "hostile"
+   ],
+   "pl": "cubes de magma"
+  },
+  {
+   "on": [
+    "kill:guardian"
+   ],
+   "n": "gardien",
+   "g": "m",
+   "en": "guardian",
+   "tags": [
+    "hostile"
+   ]
+  },
+  {
+   "on": [
+    "kill:silverfish"
+   ],
+   "n": "poisson d'argent",
+   "g": "m",
+   "en": "silverfish",
+   "tags": [
+    "hostile"
+   ],
+   "pl": "poissons d'argent",
+   "en_pl": "silverfish"
+  },
+  {
+   "on": [
+    "kill:cow"
+   ],
+   "n": "vache",
+   "g": "f",
+   "en": "cow",
+   "tags": [
+    "animal"
+   ],
+   "meat": "du bœuf",
+   "meat_en": "beef"
+  },
+  {
+   "on": [
+    "kill:pig"
+   ],
+   "n": "cochon",
+   "g": "m",
+   "en": "pig",
+   "tags": [
+    "animal"
+   ],
+   "meat": "du porc",
+   "meat_en": "pork"
+  },
+  {
+   "on": [
+    "kill:chicken"
+   ],
+   "n": "poulet",
+   "g": "m",
+   "en": "chicken",
+   "tags": [
+    "animal"
+   ],
+   "meat": "du poulet",
+   "meat_en": "chicken"
+  },
+  {
+   "on": [
+    "kill:sheep"
+   ],
+   "n": "mouton",
+   "g": "m",
+   "en": "sheep",
+   "tags": [
+    "animal"
+   ],
+   "meat": "du mouton",
+   "meat_en": "mutton",
+   "en_pl": "sheep"
+  },
+  {
+   "on": [
+    "kill:rabbit"
+   ],
+   "n": "lapin",
+   "g": "m",
+   "en": "rabbit",
+   "tags": [
+    "animal"
+   ],
+   "meat": "du lapin",
+   "meat_en": "rabbit"
+  },
+  {
+   "on": [
+    "mine:coal_ore"
+   ],
+   "n": "charbon",
+   "g": "m",
+   "en": "coal",
+   "tags": [
+    "ore",
+    "mass"
+   ],
+   "use": "des torches",
+   "use_en": "torches"
+  },
+  {
+   "on": [
+    "mine:iron_ore"
+   ],
+   "n": "fer",
+   "g": "m",
+   "en": "iron",
+   "tags": [
+    "ore",
+    "mass"
+   ],
+   "use": "une armure",
+   "use_en": "armour"
+  },
+  {
+   "on": [
+    "mine:copper_ore"
+   ],
+   "n": "cuivre",
+   "g": "m",
+   "en": "copper",
+   "tags": [
+    "ore",
+    "mass"
+   ],
+   "use": "un paratonnerre",
+   "use_en": "a lightning rod"
+  },
+  {
+   "on": [
+    "mine:gold_ore",
+    "mine:nether_gold_ore"
+   ],
+   "n": "or",
+   "g": "m",
+   "en": "gold",
+   "tags": [
+    "ore",
+    "mass"
+   ],
+   "use": "des pommes dorées",
+   "use_en": "golden apples"
+  },
+  {
+   "on": [
+    "mine:redstone_ore"
+   ],
+   "n": "redstone",
+   "g": "f",
+   "en": "redstone",
+   "tags": [
+    "ore",
+    "mass"
+   ],
+   "use": "un circuit",
+   "use_en": "a circuit"
+  },
+  {
+   "on": [
+    "mine:lapis_ore"
+   ],
+   "n": "lapis",
+   "g": "m",
+   "en": "lapis",
+   "tags": [
+    "ore",
+    "mass"
+   ],
+   "pl": "lapis",
+   "use": "des enchantements",
+   "use_en": "enchantments"
+  },
+  {
+   "on": [
+    "mine:nether_quartz_ore"
+   ],
+   "n": "quartz",
+   "g": "m",
+   "en": "quartz",
+   "tags": [
+    "ore",
+    "mass"
+   ],
+   "pl": "quartz",
+   "use": "des comparateurs",
+   "use_en": "comparators"
+  },
+  {
+   "on": [
+    "mine:diamond_ore"
+   ],
+   "n": "diamant",
+   "g": "m",
+   "en": "diamond",
+   "tags": [
+    "ore",
+    "countable"
+   ],
+   "du": "des diamants",
+   "de": "de diamants",
+   "le": "les diamants",
+   "some_en": "diamonds",
+   "use": "une pioche en diamant",
+   "use_en": "a diamond pickaxe"
+  },
+  {
+   "on": [
+    "mine:emerald_ore"
+   ],
+   "n": "émeraude",
+   "g": "f",
+   "en": "emerald",
+   "tags": [
+    "ore",
+    "countable"
+   ],
+   "du": "des émeraudes",
+   "de": "d'émeraudes",
+   "le": "les émeraudes",
+   "some_en": "emeralds",
+   "use": "des échanges",
+   "use_en": "trading"
+  },
+  {
+   "on": [
+    "mine:log"
+   ],
+   "n": "bois",
+   "g": "m",
+   "en": "wood",
+   "tags": [
+    "wood"
+   ],
+   "pl": "bois"
+  },
+  {
+   "on": [
+    "biome:forest",
+    "biome:birch_forest",
+    "biome:flower_forest",
+    "biome:old_growth_birch_forest",
+    "biome:windswept_forest"
+   ],
+   "n": "forêt",
+   "g": "f",
+   "en": "forest",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans la forêt",
+   "in_en": "in the forest",
+   "adj": "magnifique",
+   "adj_en": "beautiful"
+  },
+  {
+   "on": [
+    "biome:dark_forest"
+   ],
+   "n": "forêt sombre",
+   "g": "f",
+   "en": "dark forest",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans la forêt sombre",
+   "in_en": "in the dark forest",
+   "adj": "inquiétante",
+   "adj_en": "creepy",
+   "x_adj": "inquiétant"
+  },
+  {
+   "on": [
+    "biome:desert"
+   ],
+   "n": "désert",
+   "g": "m",
+   "en": "desert",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans le désert",
+   "in_en": "in the desert",
+   "adj": "chaud",
+   "adj_en": "hot",
+   "x_adj": "chaude"
+  },
+  {
+   "on": [
+    "biome:plains",
+    "biome:sunflower_plains"
+   ],
+   "n": "plaine",
+   "g": "f",
+   "en": "plain",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans la plaine",
+   "in_en": "on the plain",
+   "adj": "immense",
+   "adj_en": "huge"
+  },
+  {
+   "on": [
+    "biome:jungle",
+    "biome:sparse_jungle",
+    "biome:bamboo_jungle"
+   ],
+   "n": "jungle",
+   "g": "f",
+   "en": "jungle",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans la jungle",
+   "in_en": "in the jungle",
+   "adj": "humide",
+   "adj_en": "humid"
+  },
+  {
+   "on": [
+    "biome:ocean",
+    "biome:deep_ocean",
+    "biome:warm_ocean",
+    "biome:lukewarm_ocean",
+    "biome:cold_ocean",
+    "biome:deep_cold_ocean"
+   ],
+   "n": "océan",
+   "g": "m",
+   "en": "ocean",
+   "tags": [
+    "biome"
+   ],
+   "dans": "sur l'océan",
+   "in_en": "on the ocean",
+   "adj": "immense",
+   "adj_en": "huge"
+  },
+  {
+   "on": [
+    "biome:beach"
+   ],
+   "n": "plage",
+   "g": "f",
+   "en": "beach",
+   "tags": [
+    "biome"
+   ],
+   "dans": "sur la plage",
+   "in_en": "on the beach",
+   "adj": "calme",
+   "adj_en": "quiet"
+  },
+  {
+   "on": [
+    "biome:swamp",
+    "biome:mangrove_swamp"
+   ],
+   "n": "marais",
+   "g": "m",
+   "en": "swamp",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans le marais",
+   "in_en": "in the swamp",
+   "adj": "boueux",
+   "adj_en": "muddy",
+   "x_adj": "boueuse"
+  },
+  {
+   "on": [
+    "biome:taiga",
+    "biome:old_growth_pine_taiga",
+    "biome:old_growth_spruce_taiga"
+   ],
+   "n": "taïga",
+   "g": "f",
+   "en": "taiga",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans la taïga",
+   "in_en": "in the taiga",
+   "adj": "froide",
+   "adj_en": "cold",
+   "x_adj": "froid"
+  },
+  {
+   "on": [
+    "biome:snowy_plains",
+    "biome:snowy_taiga",
+    "biome:ice_spikes"
+   ],
+   "n": "neige",
+   "g": "f",
+   "en": "snow",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans la neige",
+   "in_en": "in the snow",
+   "adj": "glaciale",
+   "adj_en": "freezing",
+   "x_adj": "glacial"
+  },
+  {
+   "on": [
+    "biome:savanna",
+    "biome:savanna_plateau"
+   ],
+   "n": "savane",
+   "g": "f",
+   "en": "savanna",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans la savane",
+   "in_en": "in the savanna",
+   "adj": "sèche",
+   "adj_en": "dry",
+   "x_adj": "sec"
+  },
+  {
+   "on": [
+    "biome:meadow",
+    "biome:grove",
+    "biome:snowy_slopes",
+    "biome:jagged_peaks",
+    "biome:frozen_peaks",
+    "biome:stony_peaks"
+   ],
+   "n": "montagne",
+   "g": "f",
+   "en": "mountain",
+   "tags": [
+    "biome"
+   ],
+   "dans": "à la montagne",
+   "in_en": "in the mountains",
+   "adj": "haute",
+   "adj_en": "high",
+   "x_adj": "haut"
+  },
+  {
+   "on": [
+    "biome:cherry_grove"
+   ],
+   "n": "cerisaie",
+   "g": "f",
+   "en": "cherry grove",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans la cerisaie",
+   "in_en": "in the cherry grove",
+   "adj": "magnifique",
+   "adj_en": "beautiful"
+  },
+  {
+   "on": [
+    "biome:mushroom_fields"
+   ],
+   "n": "île aux champignons",
+   "g": "f",
+   "en": "mushroom island",
+   "tags": [
+    "biome"
+   ],
+   "dans": "sur l'île aux champignons",
+   "in_en": "on the mushroom island",
+   "adj": "bizarre",
+   "adj_en": "strange"
+  },
+  {
+   "on": [
+    "biome:river"
+   ],
+   "n": "rivière",
+   "g": "f",
+   "en": "river",
+   "tags": [
+    "biome"
+   ],
+   "dans": "au bord de la rivière",
+   "in_en": "by the river",
+   "adj": "calme",
+   "adj_en": "calm"
+  },
+  {
+   "on": [
+    "biome:lush_caves",
+    "biome:dripstone_caves"
+   ],
+   "n": "grotte",
+   "g": "f",
+   "en": "cave",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans la grotte",
+   "in_en": "in the cave",
+   "adj": "sombre",
+   "adj_en": "dark"
+  },
+  {
+   "on": [
+    "biome:deep_dark"
+   ],
+   "n": "abîme",
+   "g": "m",
+   "en": "deep dark",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans l'abîme",
+   "in_en": "in the deep dark",
+   "adj": "dangereux",
+   "adj_en": "dangerous",
+   "x_adj": "dangereuse"
+  },
+  {
+   "on": [
+    "biome:badlands",
+    "biome:eroded_badlands",
+    "biome:wooded_badlands"
+   ],
+   "n": "canyon",
+   "g": "m",
+   "en": "badlands",
+   "tags": [
+    "biome"
+   ],
+   "dans": "dans le canyon",
+   "in_en": "in the badlands",
+   "adj": "rouge",
+   "adj_en": "red"
+  },
+  {
+   "on": [
+    "trade:farmer"
+   ],
+   "n": "pain",
+   "g": "m",
+   "en": "bread",
+   "tags": [
+    "item"
+   ],
+   "some_en": "some bread",
+   "the_en": "the bread"
+  },
+  {
+   "on": [
+    "trade:farmer"
+   ],
+   "n": "carotte",
+   "g": "f",
+   "en": "carrot",
+   "tags": [
+    "item",
+    "countable"
+   ],
+   "some_en": "carrots",
+   "the_en": "the carrots",
+   "du": "des carottes",
+   "de": "de carottes",
+   "le": "les carottes",
+   "coute": "coûtent",
+   "pl": "carottes"
+  },
+  {
+   "on": [
+    "trade:farmer"
+   ],
+   "n": "pomme",
+   "g": "f",
+   "en": "apple",
+   "tags": [
+    "item",
+    "countable"
+   ],
+   "some_en": "apples",
+   "the_en": "the apples",
+   "du": "des pommes",
+   "de": "de pommes",
+   "le": "les pommes",
+   "coute": "coûtent",
+   "pl": "pommes"
+  },
+  {
+   "on": [
+    "trade:farmer"
+   ],
+   "n": "citrouille",
+   "g": "f",
+   "en": "pumpkin",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a pumpkin",
+   "the_en": "the pumpkin",
+   "du": "une citrouille",
+   "x_du": "un citrouille",
+   "de": "de citrouille"
+  },
+  {
+   "on": [
+    "trade:librarian"
+   ],
+   "n": "livre",
+   "g": "m",
+   "en": "book",
+   "tags": [
+    "item",
+    "countable"
+   ],
+   "some_en": "books",
+   "the_en": "the books",
+   "du": "des livres",
+   "de": "de livres",
+   "le": "les livres",
+   "coute": "coûtent",
+   "pl": "livres"
+  },
+  {
+   "on": [
+    "trade:librarian"
+   ],
+   "n": "boussole",
+   "g": "f",
+   "en": "compass",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a compass",
+   "the_en": "the compass",
+   "du": "une boussole",
+   "x_du": "un boussole",
+   "de": "de boussole"
+  },
+  {
+   "on": [
+    "trade:librarian"
+   ],
+   "n": "lanterne",
+   "g": "f",
+   "en": "lantern",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a lantern",
+   "the_en": "the lantern",
+   "du": "une lanterne",
+   "x_du": "un lanterne",
+   "de": "de lanterne"
+  },
+  {
+   "on": [
+    "trade:cleric"
+   ],
+   "n": "redstone",
+   "g": "f",
+   "en": "redstone",
+   "tags": [
+    "item"
+   ],
+   "some_en": "some redstone",
+   "the_en": "the redstone"
+  },
+  {
+   "on": [
+    "trade:cleric"
+   ],
+   "n": "lapis",
+   "g": "m",
+   "en": "lapis",
+   "tags": [
+    "item"
+   ],
+   "some_en": "some lapis",
+   "the_en": "the lapis",
+   "pl": "lapis"
+  },
+  {
+   "on": [
+    "trade:cleric"
+   ],
+   "n": "perle de l'Ender",
+   "g": "f",
+   "en": "ender pearl",
+   "tags": [
+    "item",
+    "countable"
+   ],
+   "some_en": "ender pearls",
+   "the_en": "the ender pearls",
+   "du": "des perles de l'Ender",
+   "de": "de perles de l'Ender",
+   "le": "les perles de l'Ender",
+   "coute": "coûtent",
+   "pl": "perles de l'Ender"
+  },
+  {
+   "on": [
+    "trade:armorer"
+   ],
+   "n": "casque",
+   "g": "m",
+   "en": "helmet",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a helmet",
+   "the_en": "the helmet",
+   "du": "un casque",
+   "x_du": "une casque",
+   "de": "de casque"
+  },
+  {
+   "on": [
+    "trade:armorer"
+   ],
+   "n": "plastron",
+   "g": "m",
+   "en": "chestplate",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a chestplate",
+   "the_en": "the chestplate",
+   "du": "un plastron",
+   "x_du": "une plastron",
+   "de": "de plastron"
+  },
+  {
+   "on": [
+    "trade:armorer"
+   ],
+   "n": "bouclier",
+   "g": "m",
+   "en": "shield",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a shield",
+   "the_en": "the shield",
+   "du": "un bouclier",
+   "x_du": "une bouclier",
+   "de": "de bouclier"
+  },
+  {
+   "on": [
+    "trade:weaponsmith"
+   ],
+   "n": "épée",
+   "g": "f",
+   "en": "sword",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a sword",
+   "the_en": "the sword",
+   "du": "une épée",
+   "x_du": "un épée",
+   "de": "d'épée"
+  },
+  {
+   "on": [
+    "trade:weaponsmith"
+   ],
+   "n": "hache",
+   "g": "f",
+   "en": "axe",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "an axe",
+   "the_en": "the axe",
+   "h": "aspiré",
+   "du": "une hache",
+   "x_du": "un hache",
+   "de": "de hache"
+  },
+  {
+   "on": [
+    "trade:toolsmith"
+   ],
+   "n": "pioche",
+   "g": "f",
+   "en": "pickaxe",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a pickaxe",
+   "the_en": "the pickaxe",
+   "du": "une pioche",
+   "x_du": "un pioche",
+   "de": "de pioche"
+  },
+  {
+   "on": [
+    "trade:toolsmith"
+   ],
+   "n": "pelle",
+   "g": "f",
+   "en": "shovel",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a shovel",
+   "the_en": "the shovel",
+   "du": "une pelle",
+   "x_du": "un pelle",
+   "de": "de pelle"
+  },
+  {
+   "on": [
+    "trade:fisherman"
+   ],
+   "n": "saumon",
+   "g": "m",
+   "en": "salmon",
+   "tags": [
+    "item"
+   ],
+   "some_en": "some salmon",
+   "the_en": "the salmon"
+  },
+  {
+   "on": [
+    "trade:fisherman"
+   ],
+   "n": "morue",
+   "g": "f",
+   "en": "cod",
+   "tags": [
+    "item"
+   ],
+   "some_en": "some cod",
+   "the_en": "the cod"
+  },
+  {
+   "on": [
+    "trade:fisherman"
+   ],
+   "n": "canne à pêche",
+   "g": "f",
+   "en": "fishing rod",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a fishing rod",
+   "the_en": "the fishing rod",
+   "pl": "cannes à pêche",
+   "du": "une canne à pêche",
+   "x_du": "un canne à pêche",
+   "de": "de canne à pêche"
+  },
+  {
+   "on": [
+    "trade:shepherd"
+   ],
+   "n": "laine",
+   "g": "f",
+   "en": "wool",
+   "tags": [
+    "item"
+   ],
+   "some_en": "some wool",
+   "the_en": "the wool"
+  },
+  {
+   "on": [
+    "trade:shepherd"
+   ],
+   "n": "tapis",
+   "g": "m",
+   "en": "carpet",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a carpet",
+   "the_en": "the carpet",
+   "pl": "tapis",
+   "du": "un tapis",
+   "x_du": "une tapis",
+   "de": "de tapis"
+  },
+  {
+   "on": [
+    "trade:butcher"
+   ],
+   "n": "porc",
+   "g": "m",
+   "en": "pork",
+   "tags": [
+    "item"
+   ],
+   "some_en": "some pork",
+   "the_en": "the pork"
+  },
+  {
+   "on": [
+    "trade:butcher"
+   ],
+   "n": "poulet",
+   "g": "m",
+   "en": "chicken",
+   "tags": [
+    "item"
+   ],
+   "some_en": "some chicken",
+   "the_en": "the chicken"
+  },
+  {
+   "on": [
+    "trade:cartographer"
+   ],
+   "n": "carte",
+   "g": "f",
+   "en": "map",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a map",
+   "the_en": "the map",
+   "du": "une carte",
+   "x_du": "un carte",
+   "de": "de carte"
+  },
+  {
+   "on": [
+    "trade:cartographer"
+   ],
+   "n": "bannière",
+   "g": "f",
+   "en": "banner",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a banner",
+   "the_en": "the banner",
+   "du": "une bannière",
+   "x_du": "un bannière",
+   "de": "de bannière"
+  },
+  {
+   "on": [
+    "trade:fletcher"
+   ],
+   "n": "flèche",
+   "g": "f",
+   "en": "arrow",
+   "tags": [
+    "item",
+    "countable"
+   ],
+   "some_en": "arrows",
+   "the_en": "the arrows",
+   "du": "des flèches",
+   "de": "de flèches",
+   "le": "les flèches",
+   "coute": "coûtent",
+   "pl": "flèches"
+  },
+  {
+   "on": [
+    "trade:fletcher"
+   ],
+   "n": "arc",
+   "g": "m",
+   "en": "bow",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a bow",
+   "the_en": "the bow",
+   "du": "un arc",
+   "x_du": "une arc",
+   "de": "d'arc"
+  },
+  {
+   "on": [
+    "trade:fletcher"
+   ],
+   "n": "arbalète",
+   "g": "f",
+   "en": "crossbow",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a crossbow",
+   "the_en": "the crossbow",
+   "du": "une arbalète",
+   "x_du": "un arbalète",
+   "de": "d'arbalète"
+  },
+  {
+   "on": [
+    "trade:mason"
+   ],
+   "n": "brique",
+   "g": "f",
+   "en": "brick",
+   "tags": [
+    "item",
+    "countable"
+   ],
+   "some_en": "bricks",
+   "the_en": "the bricks",
+   "du": "des briques",
+   "de": "de briques",
+   "le": "les briques",
+   "coute": "coûtent",
+   "pl": "briques"
+  },
+  {
+   "on": [
+    "trade:mason"
+   ],
+   "n": "argile",
+   "g": "f",
+   "en": "clay",
+   "tags": [
+    "item"
+   ],
+   "some_en": "some clay",
+   "the_en": "the clay"
+  },
+  {
+   "on": [
+    "trade:leatherworker"
+   ],
+   "n": "selle",
+   "g": "f",
+   "en": "saddle",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a saddle",
+   "the_en": "the saddle",
+   "du": "une selle",
+   "x_du": "un selle",
+   "de": "de selle"
+  },
+  {
+   "on": [
+    "trade:leatherworker"
+   ],
+   "n": "cuir",
+   "g": "m",
+   "en": "leather",
+   "tags": [
+    "item"
+   ],
+   "some_en": "some leather",
+   "the_en": "the leather"
+  },
+  {
+   "on": [
+    "trade:leatherworker"
+   ],
+   "n": "chapeau",
+   "g": "m",
+   "en": "hat",
+   "tags": [
+    "item",
+    "single"
+   ],
+   "some_en": "a hat",
+   "the_en": "the hat",
+   "pl": "chapeaux",
+   "du": "un chapeau",
+   "x_du": "une chapeau",
+   "de": "de chapeau"
   }
  ]
 }

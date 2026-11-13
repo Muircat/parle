@@ -33,6 +33,12 @@ challenge opens: you type the sentence in French, and you can't carry on until y
   pourriez-vous me donner, est-ce que je pourrais avoir…), questions and politeness, so each line accepts thousands
   of correct phrasings. They must be grammatical and in the right register: tutoyer a librarian and they tell you
   to use vous (being formal with a farmer is fine).
+- **Rarely the same question twice.** Challenges are templates filled in with what actually happened: the mob you
+  killed (with its real gender: *une araignée*, *je l'ai tuée*), the ore you mined (*du fer*, *de l'or*, *des
+  diamants*), the biome you walked into, the item a villager sells, and how many you've had today ("J'ai tué cinq
+  zombies aujourd'hui", digits accepted too). A challenge you've just done rests for 20 minutes or more (longer the
+  better you know it, 4 minutes after a miss), the last 8 never come straight back, and grammar topics are mixed up.
+  When everything for a moment is resting, that moment simply doesn't ask you anything.
 - **Revisits weak spots.** Spaced repetition per challenge (Leitner boxes); missed challenges and weak topics
   come back more often. Mistakes are listed in the notebook.
 - **Helpful marking.** Word-by-word feedback: wrong words underlined in red, missing words shown in green,
@@ -46,7 +52,8 @@ challenge opens: you type the sentence in French, and you can't carry on until y
 - **Says it your way.** Event challenges accept synonyms (tué, vaincu, battu…), different word orders and an
   interjection first ("Ouf, je suis revenu vivant !"); when you use a different phrasing the game shows you its own
   as another way to say it.
-- **Curated content.** 117 challenges across 16 topics (passé composé avec avoir/être, futur proche, négation,
+- **Curated content.** 117 challenges plus 42 templates over 91 mobs, ores, biomes and trade items (well over 700
+  filled-in challenges), across 16 topics (passé composé avec avoir/être, futur proche, négation,
   pronoms, imparfait, conditionnel, il faut/devoir, questions, prépositions de lieu, accords, verbes
   pronominaux, connecteurs, articles partitifs, pronoms relatifs, subjonctif). No AI generation during play.
 - Solving a challenge gives vanilla XP (3 / 6 / 10 by level, halved after a hint or a wrong try, none if you
@@ -85,6 +92,12 @@ Drop `.json` files into `config/parle/packs/` using the same format as
   "extra": ["suis", "tuer"], "next": ["kill_zombie_pron"],
   "traps": [ { "match": "Je suis tué {un|le} zombie", "why": "tuer takes avoir: j'ai tué.", "skill": "aux_avoir" } ] } ] }
 ```
+Templates use `{$…}` slots filled from the pack's `"lexicon"`: each entry has `on` (the triggers it's for), the
+French noun `n` with its gender `g` (and `pl` if irregular), the English `en`, and `tags` a template can require with
+`"needs"`. From that the mod works out `{$un}`, `{$le}`, `{$ce}`, `{$du}`, `{$de}`, `{$les}`, `{$il}`, `{$e}` (agreement
+ending), wrong-gender twins for traps (`{$x_un}`, `{$x_du}`…) and `{$count}` / `{$count_n}` (today's tally; set
+`"min_count"`). Any field in the entry (e.g. `"du": "des diamants"`) overrides the worked-out form.
+
 `say_fr` (a French instruction) and `cue` (a French question that doesn't give the answer away) unlock the top two
 steps of the ladder. `next` lists follow-up challenges that rework the sentence. `traps` are known wrong answers
 (same markup, compared without accents) with an explanation and a habit tag; a pack's top-level `"traps"` list is

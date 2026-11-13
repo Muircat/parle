@@ -35,13 +35,16 @@ public final class Profile {
     }
 
     public static final class Mistake {
-        public String id, given, why;
-        Mistake(String id, String given, String why) { this.id = id; this.given = given; this.why = why; }
+        public String id, given, why, want;
+        Mistake(String id, String given, String why, String want) { this.id = id; this.given = given; this.why = why; this.want = want; }
     }
 
     public Map<String, Integer> score = new HashMap<>(), box = new HashMap<>(), stage = new HashMap<>(), weak = new HashMap<>();
     public Map<String, Long> seen = new HashMap<>();
     public List<Mistake> mistakes = new ArrayList<>();
+    /** The last few challenges met, newest first: none of them comes back straight away. */
+    public List<String> recent = new ArrayList<>();
+    public String lastTopic;
     public int solved, streak, best, cooldown = 60;
     private transient Path file;
 
@@ -93,17 +96,32 @@ public final class Profile {
 
     public boolean missed(String id) { return mistakes.stream().anyMatch(m -> m.id.equals(id)); }
 
-    double weight(Content.Challenge c) {
+    /** Minutes before a challenge may come back: soon after a miss, otherwise longer the better you know it. */
+    static long rest(int box, boolean missed) { return missed ? 4 : 20L + 15L * box; }
+
+    /**
+     * How likely c is to be picked. fresh = leave out anything met recently (the last few challenges, or one
+     * still resting), so the same sentence doesn't keep coming back; without it recent ones are only rarer.
+     */
+    double weight(Content.Challenge c, boolean fresh) {
         int reach = Math.max(tier(c.topic), level());
         if (c.level > reach) return 0; // too hard for now
-        int b = 6 - box.getOrDefault(c.id, 0);
+        int bx = box.getOrDefault(c.id, 0), b = 6 - bx;
         double w = b * b * (1 + (MAX - score(c.topic)) / 5.0) * (c.level == reach ? 3 : 1); // favour the learner's edge
         int shaky = 0;
         for (String k : c.skills()) shaky += weak.getOrDefault(k, 0);
         w *= 1 + shaky / 2.0; // practise the habits that keep going wrong
-        if (System.currentTimeMillis() - seen.getOrDefault(c.id, 0L) < 600_000) w *= 0.05;
-        return missed(c.id) ? w * 3 : w;
+        boolean miss = missed(c.id);
+        long ago = System.currentTimeMillis() - seen.getOrDefault(c.id, 0L);
+        boolean resting = ago < rest(bx, miss) * 60_000;
+        if (fresh && (resting || recent.contains(c.id))) return 0;
+        if (resting) w *= 0.05;
+        if (!recent.isEmpty() && c.topic.equals(lastTopic)) w *= 0.4; // mix grammar topics up
+        if (c.isTemplate() || c.vars != null) w *= 1.5; // filled-in templates are different every time
+        return miss ? w * 3 : w;
     }
+
+    double weight(Content.Challenge c) { return weight(c, false); }
 
     /**
      * ok = answered correctly; help = hints used plus 2 for a wrong try first; asked = how it was asked;
@@ -112,6 +130,10 @@ public final class Profile {
      */
     public void record(Content.Challenge c, boolean ok, int help, String given, Mode asked, Content.Trap trap) {
         seen.put(c.id, System.currentTimeMillis());
+        recent.remove(c.id);
+        recent.add(0, c.id);
+        while (recent.size() > 8) recent.remove(recent.size() - 1);
+        lastTopic = c.topic;
         mistakes.removeIf(m -> m.id.equals(c.id));
         if (trap != null && trap.skill != null) weak.merge(trap.skill, 2, (a, b) -> Math.min(6, a + b));
         if (ok) {
@@ -129,7 +151,7 @@ public final class Profile {
             stage.put(c.id, (down != null ? down : asked).ordinal());
             score.put(c.topic, Math.max(0, score(c.topic) - 2));
             streak = 0;
-            mistakes.add(0, new Mistake(c.id, given, trap != null ? trap.why : null));
+            mistakes.add(0, new Mistake(c.id, given, trap != null ? trap.why : null, c.sentence()));
             if (mistakes.size() > 12) mistakes.remove(12);
         }
         save();
